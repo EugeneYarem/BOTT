@@ -7,7 +7,7 @@
 View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
 {
     this->bottomView = bottomView;
-
+    btf=new Battlefield();
     if(bottomView)
     {
         lastSceneX = 1255;
@@ -46,6 +46,7 @@ View::~View()
 
     delete inMenuTimer;
     delete pauseMenuTimer;
+    delete btf;
 }
 
 void View::setConfiguration()

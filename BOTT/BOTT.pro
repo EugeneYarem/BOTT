@@ -34,7 +34,10 @@ SOURCES += \
     gameMenus/mainmenu.cpp \
     gameMenus/minemenu.cpp \
     gameMenus/sciencemenu.cpp \
-    gameMenus/workshopmenu.cpp
+    gameMenus/workshopmenu.cpp \
+    Military/troop.cpp \
+    Military/army.cpp \
+    Military/battlefield.cpp
 
 HEADERS += \
         widget.h \
@@ -46,10 +49,12 @@ HEADERS += \
     gameMenus/mainmenu.h \
     gameMenus/minemenu.h \
     gameMenus/sciencemenu.h \
-    gameMenus/workshopmenu.h
+    gameMenus/workshopmenu.h \
+    Military/troop.h \
+    Military/army.h \
+    Military/battlefield.h
 
-FORMS += \
-        widget.ui
+FORMS +=
 
 RESOURCES += \
     resources.qrc
