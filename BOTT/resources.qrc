@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/gameMenuBackground.png</file>
+        <file>images/focus.png</file>
+        <file>images/sc1.png</file>
+        <file>images/sc2.png</file>
+        <file>images/sc3.png</file>
+        <file>images/sc4.png</file>
+        <file>images/sc5.png</file>
+        <file>images/h1.png</file>
+        <file>images/h2.png</file>
+        <file>images/m1.png</file>
+        <file>images/mBarracks.png</file>
+        <file>images/mHospital.png</file>
+        <file>images/mMine.png</file>
+        <file>images/mScienceCentre.png</file>
+        <file>images/mWorkshop.png</file>
+        <file>images/w1.png</file>
+        <file>images/w2.png</file>
+        <file>images/w3.png</file>
+        <file>images/w4.png</file>
+        <file>images/w5.png</file>
+        <file>images/mB.png</file>
+        <file>images/mH.png</file>
+        <file>images/mM.png</file>
+        <file>images/mSc.png</file>
+        <file>images/mW.png</file>
+        <file>images/background.png</file>
+    </qresource>
+</RCC>
