@@ -1613,7 +1613,8 @@ release/gamemenu.o: ../BOTT/gamemenu.cpp ../BOTT/gamemenu.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtWidgets/qgraphicsscene.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qbrush.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qfont.h \
-		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h
+		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h \
+		E:/Qt/5.9.1/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gamemenu.o ..\BOTT\gamemenu.cpp
 
 release/gamemenuhandler.o: ../BOTT/gamemenuhandler.cpp ../BOTT/gamemenuhandler.h \
@@ -1713,7 +1714,8 @@ release/gamemenuhandler.o: ../BOTT/gamemenuhandler.cpp ../BOTT/gamemenuhandler.h
 		E:/Qt/5.9.1/mingw53_32/include/QtWidgets/qgraphicsscene.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qbrush.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qfont.h \
-		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h
+		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpen.h \
+		E:/Qt/5.9.1/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gamemenuhandler.o ..\BOTT\gamemenuhandler.cpp
 
 release/hospitalmenu.o: ../BOTT/gameMenus/hospitalmenu.cpp ../BOTT/gameMenus/hospitalmenu.h \
@@ -1804,7 +1806,8 @@ release/hospitalmenu.o: ../BOTT/gameMenus/hospitalmenu.cpp ../BOTT/gameMenus/hos
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qimage.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpixelformat.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qtransform.h \
-		../BOTT/gamemenuhandler.h
+		../BOTT/gamemenuhandler.h \
+		E:/Qt/5.9.1/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\hospitalmenu.o ..\BOTT\gameMenus\hospitalmenu.cpp
 
 release/mainmenu.o: ../BOTT/gameMenus/mainmenu.cpp ../BOTT/gameMenus/mainmenu.h \
@@ -1895,7 +1898,8 @@ release/mainmenu.o: ../BOTT/gameMenus/mainmenu.cpp ../BOTT/gameMenus/mainmenu.h 
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qimage.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpixelformat.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qtransform.h \
-		../BOTT/gamemenuhandler.h
+		../BOTT/gamemenuhandler.h \
+		E:/Qt/5.9.1/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainmenu.o ..\BOTT\gameMenus\mainmenu.cpp
 
 release/minemenu.o: ../BOTT/gameMenus/minemenu.cpp ../BOTT/gameMenus/minemenu.h \
@@ -1986,7 +1990,8 @@ release/minemenu.o: ../BOTT/gameMenus/minemenu.cpp ../BOTT/gameMenus/minemenu.h 
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qimage.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpixelformat.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qtransform.h \
-		../BOTT/gamemenuhandler.h
+		../BOTT/gamemenuhandler.h \
+		E:/Qt/5.9.1/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\minemenu.o ..\BOTT\gameMenus\minemenu.cpp
 
 release/sciencemenu.o: ../BOTT/gameMenus/sciencemenu.cpp ../BOTT/gameMenus/sciencemenu.h \
@@ -2077,7 +2082,8 @@ release/sciencemenu.o: ../BOTT/gameMenus/sciencemenu.cpp ../BOTT/gameMenus/scien
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qimage.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpixelformat.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qtransform.h \
-		../BOTT/gamemenuhandler.h
+		../BOTT/gamemenuhandler.h \
+		E:/Qt/5.9.1/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\sciencemenu.o ..\BOTT\gameMenus\sciencemenu.cpp
 
 release/workshopmenu.o: ../BOTT/gameMenus/workshopmenu.cpp ../BOTT/gameMenus/workshopmenu.h \
@@ -2168,7 +2174,8 @@ release/workshopmenu.o: ../BOTT/gameMenus/workshopmenu.cpp ../BOTT/gameMenus/wor
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qimage.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qpixelformat.h \
 		E:/Qt/5.9.1/mingw53_32/include/QtGui/qtransform.h \
-		../BOTT/gamemenuhandler.h
+		../BOTT/gamemenuhandler.h \
+		E:/Qt/5.9.1/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\workshopmenu.o ..\BOTT\gameMenus\workshopmenu.cpp
 
 release/qrc_resources.o: release/qrc_resources.cpp 
