@@ -5,13 +5,13 @@
 HospitalMenu::HospitalMenu()
 {
     nameOfMenu = new QGraphicsPixmapItem();
-    nameOfMenu->setPixmap(QPixmap(":images/images/mHospital.png"));
+    nameOfMenu->setPixmap(QPixmap(":images/images/Hospital_Menu/mHospital.png"));
 
     QGraphicsPixmapItem * m1 = new QGraphicsPixmapItem(),
                         * m2 = new QGraphicsPixmapItem();
 
-    m1->setPixmap(QPixmap(":images/images/h1.png"));
-    m2->setPixmap(QPixmap(":images/images/h2.png"));
+    m1->setPixmap(QPixmap(":images/images/Hospital_Menu/h1.png"));
+    m2->setPixmap(QPixmap(":images/images/Hospital_Menu/h2.png"));
     menuItems.push_back(m1);
     menuItems.push_back(m2);
 }

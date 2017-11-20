@@ -5,7 +5,7 @@
 WorkshopMenu::WorkshopMenu()
 {
     nameOfMenu = new QGraphicsPixmapItem();
-    nameOfMenu->setPixmap(QPixmap(":images/images/mWorkshop.png"));
+    nameOfMenu->setPixmap(QPixmap(":images/images/Workshop_Menu/mWorkshop.png"));
 
     QGraphicsPixmapItem * m1 = new QGraphicsPixmapItem(),
                         * m2 = new QGraphicsPixmapItem(),
@@ -13,11 +13,11 @@ WorkshopMenu::WorkshopMenu()
                         * m4 = new QGraphicsPixmapItem(),
                         * m5 = new QGraphicsPixmapItem();
 
-    m1->setPixmap(QPixmap(":images/images/w1.png"));
-    m2->setPixmap(QPixmap(":images/images/w2.png"));
-    m3->setPixmap(QPixmap(":images/images/w3.png"));
-    m4->setPixmap(QPixmap(":images/images/w4.png"));
-    m5->setPixmap(QPixmap(":images/images/w5.png"));
+    m1->setPixmap(QPixmap(":images/images/Workshop_Menu/w1.png"));
+    m2->setPixmap(QPixmap(":images/images/Workshop_Menu/w2.png"));
+    m3->setPixmap(QPixmap(":images/images/Workshop_Menu/w3.png"));
+    m4->setPixmap(QPixmap(":images/images/Workshop_Menu/w4.png"));
+    m5->setPixmap(QPixmap(":images/images/Workshop_Menu/w5.png"));
     menuItems.push_back(m1);
     menuItems.push_back(m2);
     menuItems.push_back(m3);

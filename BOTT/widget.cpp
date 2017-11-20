@@ -2,6 +2,7 @@
 #include "ui_widget.h"
 #include "rect.h"
 #include "view.h"
+#include "Military/battlefield.h"
 #include <QGraphicsScene>
 #include <qDebug>
 #include <QBrush>
@@ -38,6 +39,9 @@ Widget::Widget(QWidget *parent) :
     view->installEventFilter(this);
     view_2->installEventFilter(this);
 
+    btf = new Battlefield();
+    btf->setScene(scene);
+
     // Временные объекты сцены
     rect1 = new Rect();
     rect2 = new Rect();
@@ -60,6 +64,7 @@ Widget::Widget(QWidget *parent) :
 Widget::~Widget()
 {
     delete ui;
+    delete btf;
 }
 
 void Widget::updateViewWithOpenMenu(View * sender)

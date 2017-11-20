@@ -7,8 +7,6 @@
 
 #include <QGraphicsView>
 #include <QMap>
-#include "Military/battlefield.h"
-
 
 class GameMenuHandler;
 class QTimer;
@@ -26,7 +24,7 @@ class View : public QGraphicsView
     QMap<QString, Qt::Key> controlKeys; // Словарь с клавишами управления этой сценой
     bool canMenuOpen; // Переменная, по которой определяется можно ли открыть меню этого игрока (нельзя, если с момента последнего открытия меню этого игрока не прошло нужное время)
     bool menuOpen; // Указывает, что сейчас меню открыто (эта переменная нужна, т.к. canMenuOpen, указывает на то, что меню можно открыть, но не указывает, что оно открыто)
-    Battlefield *btf;
+
 public:
     View(bool bottomView, QWidget * parent = 0);
     ~View();

@@ -4,10 +4,11 @@
 #include <QWidget>
 
 namespace Ui {
-class Widget;
+    class Widget;
 }
 
 class View;
+class Battlefield;
 
 class Widget : public QWidget
 {
@@ -25,6 +26,7 @@ private:
     View * view; // Верхний view
     View * view_2; // Нижний view
     View * viewWithOpenMenu; // view, у которого активно меню
+    Battlefield * btf;
 
     // QObject interface
 public:

@@ -2,21 +2,27 @@
 #define BATTLEFIELD_H
 
 #include <QObject>
-#include <QTimer>
-#include "Military/army.h"
-#include <cmath>
 
-class Battlefield:public QObject
+class QTimer;
+class Army;
+class QGraphicsScene;
+
+class Battlefield : public QObject
 {
     Q_OBJECT
-    QTimer*timer;
-    Army *arm1,*arm2;
+
+    QGraphicsScene * scene;
+    QTimer * timer;
+    Army * arm1, * arm2;
+
 public:
     Battlefield();
     ~Battlefield();
+    void setScene(QGraphicsScene *);
 
 public slots:
     void Battle();
+
 };
 
 #endif // BATTLEFIELD_H

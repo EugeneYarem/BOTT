@@ -5,7 +5,7 @@
 ScienceMenu::ScienceMenu()
 {
     nameOfMenu = new QGraphicsPixmapItem();
-    nameOfMenu->setPixmap(QPixmap(":images/images/mScienceCentre.png"));
+    nameOfMenu->setPixmap(QPixmap(":images/images/Science_Menu/mScienceCentre.png"));
 
     QGraphicsPixmapItem * m1 = new QGraphicsPixmapItem(),
                         * m2 = new QGraphicsPixmapItem(),
@@ -13,11 +13,11 @@ ScienceMenu::ScienceMenu()
                         * m4 = new QGraphicsPixmapItem(),
                         * m5 = new QGraphicsPixmapItem();
 
-    m1->setPixmap(QPixmap(":images/images/sc1.png"));
-    m2->setPixmap(QPixmap(":images/images/sc2.png"));
-    m3->setPixmap(QPixmap(":images/images/sc3.png"));
-    m4->setPixmap(QPixmap(":images/images/sc4.png"));
-    m5->setPixmap(QPixmap(":images/images/sc5.png"));
+    m1->setPixmap(QPixmap(":images/images/Science_Menu/sc1.png"));
+    m2->setPixmap(QPixmap(":images/images/Science_Menu/sc2.png"));
+    m3->setPixmap(QPixmap(":images/images/Science_Menu/sc3.png"));
+    m4->setPixmap(QPixmap(":images/images/Science_Menu/sc4.png"));
+    m5->setPixmap(QPixmap(":images/images/Science_Menu/sc5.png"));
     menuItems.push_back(m1);
     menuItems.push_back(m2);
     menuItems.push_back(m3);

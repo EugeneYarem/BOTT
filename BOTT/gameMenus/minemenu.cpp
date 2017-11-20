@@ -5,10 +5,10 @@
 MineMenu::MineMenu()
 {
     nameOfMenu = new QGraphicsPixmapItem();
-    nameOfMenu->setPixmap(QPixmap(":images/images/mMine.png"));
+    nameOfMenu->setPixmap(QPixmap(":images/images/Mine_Menu/mMine.png"));
 
     QGraphicsPixmapItem * m1 = new QGraphicsPixmapItem();
-    m1->setPixmap(QPixmap(":images/images/m1.png"));
+    m1->setPixmap(QPixmap(":images/images/Mine_Menu/m1.png"));
     menuItems.push_back(m1);
 }
 

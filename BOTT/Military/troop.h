@@ -3,14 +3,14 @@
 
 #include <QGraphicsPixmapItem>
 #include <QString>
-#include <QTimer>
+
+class QTimer;
+
 enum Status{stand, run, attack};
 
-class troop:public QObject,public QGraphicsPixmapItem
+class troop : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
-
-
 
 public:
     float hp;//1-...
@@ -24,9 +24,7 @@ public:
     troop();
 
 public slots:
-
     virtual void Animation(){}
-
     virtual void Run(){}
 };
 
