@@ -19,6 +19,7 @@ public:
     Battlefield();
     ~Battlefield();
     void setScene(QGraphicsScene *);
+    void setArmies(Army * , Army * );
 
 public slots:
     void Battle();

@@ -18,6 +18,8 @@ HospitalMenu::HospitalMenu()
 
 void HospitalMenu::processSelectAction(int currentItem)
 {
+    if(currentItem == -1)
+        return;
     if(currentItem == 0)
         emit H_EnterQuarantine();
     if(currentItem == 1)

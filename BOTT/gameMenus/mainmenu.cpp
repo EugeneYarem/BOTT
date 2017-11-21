@@ -27,6 +27,9 @@ MainMenu::MainMenu()
 
 void MainMenu::processSelectAction(int currentItem)
 {
+    if(currentItem == -1)
+        return;
+
     parent->hideCurrentOpenMenu();
 
     if(currentItem == 0)

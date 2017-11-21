@@ -27,6 +27,8 @@ WorkshopMenu::WorkshopMenu()
 
 void WorkshopMenu::processSelectAction(int currentItem)
 {
+    if(currentItem == -1)
+        return;
     if(currentItem == 0)
         emit W_MakeGun();
     if(currentItem == 1)

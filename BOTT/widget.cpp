@@ -41,6 +41,7 @@ Widget::Widget(QWidget *parent) :
 
     btf = new Battlefield();
     btf->setScene(scene);
+    btf->setArmies(view->getArmy(), view_2->getArmy());
 
     // Временные объекты сцены
     rect1 = new Rect();

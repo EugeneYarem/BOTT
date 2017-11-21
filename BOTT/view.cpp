@@ -1,5 +1,7 @@
 #include "view.h"
 #include "gamemenuhandler.h"
+#include "town.h"
+#include "Military/army.h"
 #include <QResizeEvent>
 #include <QDebug>
 #include <QTimer>
@@ -9,20 +11,12 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
     this->bottomView = bottomView;
 
     if(bottomView)
-    {
         lastSceneX = 1255;
-        gameMenu = NULL;
-        gameMenu_2 = new GameMenuHandler();
 
-        connect(gameMenu_2, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
-    }
-    else
-    {
-        gameMenu = new GameMenuHandler();
-        gameMenu_2 = NULL;
-
-        connect(gameMenu, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
-    }
+    gameMenu = new GameMenuHandler();
+    connect(gameMenu, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
+    town = new Town();
+    army = new Army();
 
     canMenuOpen = true;
     menuOpen = false;
@@ -39,11 +33,9 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
 
 View::~View()
 {
-    if(bottomView)
-        delete gameMenu_2;
-    else
-        delete gameMenu;
-
+    delete gameMenu;
+    delete town;
+    delete army;
     delete inMenuTimer;
     delete pauseMenuTimer;
 }
@@ -58,11 +50,7 @@ void View::setConfiguration()
         controlKeys.insert("menu select", Qt::Key_Return);
         controlKeys.insert("exit from menu", Qt::Key_Backspace);
 
-        gameMenu_2->setPos(scene()->width() - gameMenu_2->pixmap().width(), 0);
-        gameMenu_2->setFlags(QGraphicsItem::ItemIsFocusable);
-        gameMenu_2->setVisible(false);
-        scene()->addItem(gameMenu_2);
-        gameMenu_2->addMenusToScene();
+        gameMenu->setPos(scene()->width() - gameMenu->pixmap().width(), 0);
     }
     else
     {
@@ -73,11 +61,12 @@ void View::setConfiguration()
         controlKeys.insert("exit from menu", Qt::Key_E);
 
         gameMenu->setPos(0, 0);
-        gameMenu->setFlags(QGraphicsItem::ItemIsFocusable);
-        gameMenu->setVisible(false);
-        scene()->addItem(gameMenu);
-        gameMenu->addMenusToScene();
     }
+
+    gameMenu->setFlags(QGraphicsItem::ItemIsFocusable);
+    gameMenu->setVisible(false);
+    scene()->addItem(gameMenu);
+    gameMenu->addMenusToScene();
 }
 
 bool View::isCanMenuOpen()
@@ -89,16 +78,8 @@ void View::hideMenu()
 {
     // прячем меню и переводим нужные переменные в начальные значения
 
-    if(bottomView)
-    {
-        gameMenu_2->setVisible(false);
-        gameMenu_2->hideCurrentOpenMenu();
-    }
-    if(!bottomView)
-    {
-        gameMenu->setVisible(false);
-        gameMenu->hideCurrentOpenMenu();
-    }
+    gameMenu->setVisible(false);
+    gameMenu->hideCurrentOpenMenu();
 
     canMenuOpen = false;
     menuOpen = false;
@@ -133,64 +114,32 @@ void View::resizeEvent(QResizeEvent *event)
 
 void View::keyPressEvent(QKeyEvent *event)
 {
-    if(bottomView)
+    if(canMenuOpen && (event->nativeVirtualKey() == getControlKey("menu") || event->key() == getControlKey("menu")))
     {
-        if(canMenuOpen && (event->nativeVirtualKey() == getControlKey("menu") || event->key() == getControlKey("menu")))
-        {
-            if(menuOpen)
-                return;
-
-            if(gameMenu_2->scene() != this->scene())
-                scene()->addItem(gameMenu_2);
-
-            gameMenu_2->setVisible(true);
-            gameMenu_2->setFocus();
-            gameMenu_2->showMainMenu();
-
-            inMenuTimer->start(30000);
-            menuOpen = true;
-            return;
-        }
         if(menuOpen)
-        {
-            if(event->nativeVirtualKey() == getControlKey("menu up") || event->key() == getControlKey("menu up"))
-                gameMenu_2->setCurrentItem(true);
-            if(event->nativeVirtualKey() == getControlKey("menu down") || event->key() == getControlKey("menu down"))
-                gameMenu_2->setCurrentItem(false);
-            if(event->nativeVirtualKey() == getControlKey("menu select") || event->key() == getControlKey("menu select"))
-                gameMenu_2->processSelectAction();
-            if(event->nativeVirtualKey() == getControlKey("exit from menu") || event->key() == getControlKey("exit from menu"))
-                gameMenu_2->processExitAction();
-        }
+            return;
+
+        if(gameMenu->scene() != this->scene())
+            scene()->addItem(gameMenu);
+
+        gameMenu->setVisible(true);
+        gameMenu->setFocus();
+        gameMenu->showMainMenu();
+
+        inMenuTimer->start(30000);
+        menuOpen = true;
+        return;
     }
-    else
+    if(menuOpen)
     {
-        if(canMenuOpen && (event->nativeVirtualKey() == getControlKey("menu") || event->key() == getControlKey("menu")))
-        {
-            if(menuOpen)
-                return;
-
-            if(gameMenu->scene() != this->scene())
-                scene()->addItem(gameMenu);
-
-            gameMenu->setVisible(true);
-            gameMenu->setFocus();
-            gameMenu->showMainMenu();
-            inMenuTimer->start(30000);
-            menuOpen = true;
-            return;
-        }
-        if(menuOpen)
-        {
-            if(event->nativeVirtualKey() == getControlKey("menu up") || event->key() == getControlKey("menu up"))
-                gameMenu->setCurrentItem(true);
-            if(event->nativeVirtualKey() == getControlKey("menu down") || event->key() == getControlKey("menu down"))
-                gameMenu->setCurrentItem(false);
-            if(event->nativeVirtualKey() == getControlKey("menu select") || event->key() == getControlKey("menu select"))
-                gameMenu->processSelectAction();
-            if(event->nativeVirtualKey() == getControlKey("exit from menu") || event->key() == getControlKey("exit from menu"))
-                gameMenu->processExitAction();
-        }
+        if(event->nativeVirtualKey() == getControlKey("menu up") || event->key() == getControlKey("menu up"))
+            gameMenu->setCurrentItem(true);
+        if(event->nativeVirtualKey() == getControlKey("menu down") || event->key() == getControlKey("menu down"))
+            gameMenu->setCurrentItem(false);
+        if(event->nativeVirtualKey() == getControlKey("menu select") || event->key() == getControlKey("menu select"))
+            gameMenu->processSelectAction();
+        if(event->nativeVirtualKey() == getControlKey("exit from menu") || event->key() == getControlKey("exit from menu"))
+            gameMenu->processExitAction();
     }
 }
 
@@ -231,4 +180,9 @@ bool View::isControlKey(int key)
 Qt::Key View::getControlKey(QString key)
 {
     return controlKeys[key];
+}
+
+Army *View::getArmy()
+{
+    return army;
 }

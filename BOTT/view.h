@@ -8,6 +8,8 @@
 #include <QGraphicsView>
 #include <QMap>
 
+class Town;
+class Army;
 class GameMenuHandler;
 class QTimer;
 
@@ -16,7 +18,8 @@ class View : public QGraphicsView
     Q_OBJECT
 
     GameMenuHandler * gameMenu;
-    GameMenuHandler * gameMenu_2;
+    Town * town;
+    Army * army;
     QTimer * inMenuTimer; // Таймер следит за временем нахождения в меню
     QTimer * pauseMenuTimer; // Таймер следит за паузой между вызовом меню этого view
     bool bottomView; // Переменная, указывающая, что это нижняя сцена на виджете
@@ -33,6 +36,7 @@ public:
     bool isControlKey(quint32); // Проверка, что нажатая клавиша - клавиша управления игрока
     bool isControlKey(int); // Проверка, что нажатая клавиша - клавиша управления игрока
     Qt::Key getControlKey(QString key); // Возвращает код кнопки по ключу
+    Army * getArmy();
 
 private slots:
     void hideMenu(); // Закрывает окно меню

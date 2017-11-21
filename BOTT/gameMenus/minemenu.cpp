@@ -14,6 +14,8 @@ MineMenu::MineMenu()
 
 void MineMenu::processSelectAction(int currentItem)
 {
+    if(currentItem == -1)
+        return;
     if(currentItem == 0)
         emit M_LevelUp();
 }

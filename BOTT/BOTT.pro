@@ -37,7 +37,8 @@ SOURCES += \
     gameMenus/workshopmenu.cpp \
     Military/troop.cpp \
     Military/army.cpp \
-    Military/battlefield.cpp
+    Military/battlefield.cpp \
+    town.cpp
 
 HEADERS += \
         widget.h \
@@ -52,7 +53,8 @@ HEADERS += \
     gameMenus/workshopmenu.h \
     Military/troop.h \
     Military/army.h \
-    Military/battlefield.h
+    Military/battlefield.h \
+    town.h
 
 FORMS +=
 

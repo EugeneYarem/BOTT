@@ -7,21 +7,25 @@
 Battlefield::Battlefield()
 {
     timer = new QTimer();
-    arm1 = new Army();
-    arm2 = new Army();
     connect(timer, SIGNAL(timeout()), this, SLOT(Battle()));//каждую секунду проверяем есть ли войска рядом
     timer->start(1000);//и каждую секунду бьем противника, если он близко
 }
 
 Battlefield::~Battlefield()
 {
-    delete arm1;
-    delete arm2;
+    // армии удалять не нужно, т.к. каждый view сам удалит свою армию
+    delete timer;
 }
 
 void Battlefield::setScene(QGraphicsScene * scene)
 {
     this->scene = scene;
+}
+
+void Battlefield::setArmies(Army * army1, Army * army2)
+{
+    arm1 = army1;
+    arm2 = army2;
 }
 
 void Battlefield::Battle()
