@@ -1,10 +1,12 @@
 #include "gamemenuhandler.h"
 #include "gamemenu.h"
+#include "Military/army.h"
 #include "gameMenus/mainmenu.h"
 #include "gameMenus/sciencemenu.h"
 #include "gameMenus/workshopmenu.h"
 #include "gameMenus/hospitalmenu.h"
 #include "gameMenus/minemenu.h"
+#include "town.h"
 #include <QGraphicsScene>
 #include <QDebug>
 
@@ -147,22 +149,12 @@ void GameMenuHandler::processExitAction()
     currentOpenMenu->processExitAction();
 }
 
-void GameMenuHandler::connectToSCMenu(QGraphicsPixmapItem * build)
+void GameMenuHandler::connectToMenus(QObject * objectForConnect)
 {
-    scienceMenu->connectWithBuild(build);
+    scienceMenu->connectWithObject(objectForConnect);
+    workshopMenu->connectWithObject(objectForConnect);
+    hospitalMenu->connectWithObject(objectForConnect);
+    mineMenu->connectWithObject(objectForConnect);
 }
 
-void GameMenuHandler::connectToWMenu(QGraphicsPixmapItem * build)
-{
-    workshopMenu->connectWithBuild(build);
-}
 
-void GameMenuHandler::connectToHMenu(QGraphicsPixmapItem * build)
-{
-    hospitalMenu->connectWithBuild(build);
-}
-
-void GameMenuHandler::connectToMMenu(QGraphicsPixmapItem * build)
-{
-    mineMenu->connectWithBuild(build);
-}

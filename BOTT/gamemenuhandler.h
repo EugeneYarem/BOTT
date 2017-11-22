@@ -16,6 +16,7 @@ class ScienceMenu;
 class WorkshopMenu;
 class HospitalMenu;
 class MineMenu;
+class Army;
 
 class GameMenuHandler : public QObject, public QGraphicsPixmapItem
 {
@@ -52,12 +53,7 @@ public:
     void processSelectAction(); // Метод, который вызывает обработчик выбора пункта соответствующего меню
     void processExitAction(); // Метод, который обрабатывает действие выхода из текущего меню
 
-    // Методы, через которые можно законнектить здания с меню. То есть, когда пользователь выберет улучшение, то меню кинет сигнал его зданию и здание улучшится.
-    // SC - Science Centre, W - Workshop, H - Hospital, M - Mine
-    void connectToSCMenu(QGraphicsPixmapItem * );
-    void connectToWMenu(QGraphicsPixmapItem * );
-    void connectToHMenu(QGraphicsPixmapItem * );
-    void connectToMMenu(QGraphicsPixmapItem * );
+    void connectToMenus(QObject *);
 
 signals:
     void closeMenu();

@@ -56,7 +56,8 @@ HEADERS += \
     Military/battlefield.h \
     town.h
 
-FORMS +=
+FORMS += \
+    widget.ui
 
 RESOURCES += \
     resources.qrc

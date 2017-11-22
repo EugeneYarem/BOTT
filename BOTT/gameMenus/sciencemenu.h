@@ -23,7 +23,7 @@ signals:
     // GameMenu interface
 public:
     void processSelectAction(int );
-    void connectWithBuild(QGraphicsPixmapItem *);
+    void connectWithObject(QObject * );
 };
 
 #endif // SCIENCEMENU_H

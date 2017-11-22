@@ -1,5 +1,6 @@
 #include "workshopmenu.h"
 #include "gamemenuhandler.h"
+#include "Military/army.h"
 #include <QDebug>
 
 WorkshopMenu::WorkshopMenu()
@@ -41,11 +42,14 @@ void WorkshopMenu::processSelectAction(int currentItem)
         emit W_WeaponLevelUp();
 }
 
-void WorkshopMenu::connectWithBuild(QGraphicsPixmapItem * build)
+void WorkshopMenu::connectWithObject(QObject * objectForConnect)
 {
-    /*connect(this, SIGNAL(W_MakeGun()), build, SLOT());
-    connect(this, SIGNAL(W_MakeArquebus()), build, SLOT());
-    connect(this, SIGNAL(W_HauberkExplored()), build, SLOT());
-    connect(this, SIGNAL(W_ArmorExplored()), build, SLOT());
-    connect(this, SIGNAL(W_WeaponLevelUp()), build, SLOT());*/
+    if(typeid(*objectForConnect) == typeid(Army))
+    {
+        /*connect(this, SIGNAL(W_MakeGun()), build, SLOT());
+        connect(this, SIGNAL(W_MakeArquebus()), build, SLOT());
+        connect(this, SIGNAL(W_HauberkExplored()), build, SLOT());
+        connect(this, SIGNAL(W_ArmorExplored()), build, SLOT());
+        connect(this, SIGNAL(W_WeaponLevelUp()), build, SLOT());*/
+    }
 }

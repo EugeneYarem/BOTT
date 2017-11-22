@@ -1,5 +1,6 @@
 #include "hospitalmenu.h"
 #include "gamemenuhandler.h"
+#include "Military/army.h"
 #include <QDebug>
 
 HospitalMenu::HospitalMenu()
@@ -26,8 +27,11 @@ void HospitalMenu::processSelectAction(int currentItem)
         emit H_DoctorsCountUp();
 }
 
-void HospitalMenu::connectWithBuild(QGraphicsPixmapItem * build)
+void HospitalMenu::connectWithObject(QObject * objectForConnect)
 {
-    //connect(this, SIGNAL(H_EnterQuarantine()), build, SLOT());
-    //connect(this, SIGNAL(H_DoctorsCountUp()), build, SLOT());
+    if(typeid(*objectForConnect) == typeid(Army))
+    {
+        //connect(this, SIGNAL(H_EnterQuarantine()), objectForConnect, SLOT());
+        //connect(this, SIGNAL(H_DoctorsCountUp()), objectForConnect, SLOT());
+    }
 }

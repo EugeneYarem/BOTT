@@ -1,5 +1,6 @@
 #include "sciencemenu.h"
 #include "gamemenuhandler.h"
+#include "Military/army.h"
 #include <QDebug>
 
 ScienceMenu::ScienceMenu()
@@ -41,11 +42,14 @@ void ScienceMenu::processSelectAction(int currentItem)
         emit SC_SpinningWheelExplored();
 }
 
-void ScienceMenu::connectWithBuild(QGraphicsPixmapItem * build)
+void ScienceMenu::connectWithObject(QObject * objectForConnect)
 {
-    /*connect(this, SIGNAL(SC_WaterWheelExplored()), build, SLOT());
-    connect(this, SIGNAL(SC_BlastFurnaceExplored()), build, SLOT());
-    connect(this, SIGNAL(SC_ArtilleryExplored()), build, SLOT());
-    connect(this, SIGNAL(SC_ArquebusExplored()), build, SLOT());
-    connect(this, SIGNAL(SC_SpinningWheelExplored()), build, SLOT());*/
+    if(typeid(*objectForConnect) == typeid(Army))
+    {
+        /*connect(this, SIGNAL(SC_WaterWheelExplored()), build, SLOT());
+        connect(this, SIGNAL(SC_BlastFurnaceExplored()), build, SLOT());
+        connect(this, SIGNAL(SC_ArtilleryExplored()), build, SLOT());
+        connect(this, SIGNAL(SC_ArquebusExplored()), build, SLOT());
+        connect(this, SIGNAL(SC_SpinningWheelExplored()), build, SLOT());*/
+    }
 }

@@ -1,5 +1,6 @@
 #include "mainmenu.h"
 #include "gamemenuhandler.h"
+#include "Military/army.h"
 #include <QDebug>
 
 MainMenu::MainMenu()
@@ -47,5 +48,5 @@ void MainMenu::processExitAction()
     emit parent->closeMenu();
 }
 
-void MainMenu::connectWithBuild(QGraphicsPixmapItem *)
+void MainMenu::connectWithObject(QObject * objectForConnect)
 {}

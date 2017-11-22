@@ -16,7 +16,7 @@ public:
 public:
     void processSelectAction(int );
     void processExitAction();
-    void connectWithBuild(QGraphicsPixmapItem *);
+    void connectWithObject(QObject * );
 };
 
 #endif // MAINMENU_H

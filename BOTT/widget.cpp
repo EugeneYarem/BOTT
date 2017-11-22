@@ -76,6 +76,11 @@ void Widget::updateViewWithOpenMenu(View * sender)
         viewWithOpenMenu = NULL;
 }
 
+void Widget::createSettingsPage()
+{
+
+}
+
 bool Widget::eventFilter(QObject *watched, QEvent *event)
 {
     //qDebug() << "\teventFilter";
@@ -86,19 +91,21 @@ bool Widget::eventFilter(QObject *watched, QEvent *event)
         if (event->type() == QEvent::KeyPress)
         {
             //qDebug() << "\t\t\teventFilter";
-            if((view->isControlKey(((QKeyEvent *)event)->nativeVirtualKey()) || view->isControlKey(((QKeyEvent *)event)->key())) && (view == viewWithOpenMenu || viewWithOpenMenu == NULL) && view->isCanMenuOpen())
+            if(((view->isControlKey(((QKeyEvent *)event)->nativeVirtualKey()) || view->isControlKey(((QKeyEvent *)event)->key())) && (view == viewWithOpenMenu || viewWithOpenMenu == NULL) && view->isCanMenuOpen())
+              || view->isShortcut(((QKeyEvent *)event)->nativeVirtualKey()) || view->isShortcut(((QKeyEvent *)event)->key()))
             {
                 //qDebug() << "\t\t\t\teventFilter view";
-                if(viewWithOpenMenu == NULL)
+                if(!view->isShortcut(((QKeyEvent *)event)->nativeVirtualKey()) && !view->isShortcut(((QKeyEvent *)event)->key()) && viewWithOpenMenu == NULL)
                     viewWithOpenMenu = view;
                 view->setFocus();
                 view->event(event);
                 return true;
             }
-            if((view_2->isControlKey(((QKeyEvent *)event)->nativeVirtualKey()) || view_2->isControlKey(((QKeyEvent *)event)->key())) && (view_2 == viewWithOpenMenu || viewWithOpenMenu == NULL) && view_2->isCanMenuOpen())
+            if(((view_2->isControlKey(((QKeyEvent *)event)->nativeVirtualKey()) || view_2->isControlKey(((QKeyEvent *)event)->key())) && (view_2 == viewWithOpenMenu || viewWithOpenMenu == NULL) && view_2->isCanMenuOpen())
+              || view_2->isShortcut(((QKeyEvent *)event)->nativeVirtualKey()) || view_2->isShortcut(((QKeyEvent *)event)->key())      )
             {
                 //qDebug() << "\t\t\t\teventFilter view_2";
-                if(viewWithOpenMenu == NULL)
+                if(!view_2->isShortcut(((QKeyEvent *)event)->nativeVirtualKey()) && !view_2->isShortcut(((QKeyEvent *)event)->key()) && viewWithOpenMenu == NULL)
                     viewWithOpenMenu = view_2;
                 view_2->setFocus();
                 view_2->event(event);

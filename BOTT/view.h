@@ -34,8 +34,11 @@ public:
     void setConfiguration(); // Настройка кнопок управления и игровых меню
     bool isCanMenuOpen();
     bool isControlKey(quint32); // Проверка, что нажатая клавиша - клавиша управления игрока
-    bool isControlKey(int); // Проверка, что нажатая клавиша - клавиша управления игрока
+    bool isControlKey(int);
+    bool isShortcut(quint32); // Проверка, что это горячая клавиша создания юнита
+    bool isShortcut(int);
     Qt::Key getControlKey(QString key); // Возвращает код кнопки по ключу
+    QMap<QString, Qt::Key> * getControlKeys(); // Возвращает все управляющие кнопки
     Army * getArmy();
 
 private slots:

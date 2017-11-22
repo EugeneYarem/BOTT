@@ -11,6 +11,7 @@
 #include <QGraphicsPixmapItem>
 
 class GameMenuHandler;
+class Army;
 
 class GameMenu : public QObject, public QGraphicsPixmapItem
 {
@@ -24,7 +25,7 @@ public:
     QVector<QGraphicsPixmapItem *> * getMenuItems(); // Возвращает вектор с пунктами меню
     virtual void processExitAction(); // Метод, который обрабатывает действие выхода из меню
     virtual void processSelectAction(int ) = 0; // Обработчик выбора пункта меню
-    virtual void connectWithBuild(QGraphicsPixmapItem * ) = 0;
+    virtual void connectWithObject(QObject * ) = 0;
 
 protected:
     QGraphicsPixmapItem * nameOfMenu;

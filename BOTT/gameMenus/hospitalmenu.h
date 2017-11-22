@@ -20,7 +20,7 @@ signals:
     // GameMenu interface
 public:
     void processSelectAction(int );
-    void connectWithBuild(QGraphicsPixmapItem *);
+    void connectWithObject(QObject * );
 };
 
 #endif // HOSPITALMENU_H

@@ -17,6 +17,8 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
     connect(gameMenu, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
     town = new Town();
     army = new Army();
+    gameMenu->connectToMenus(town);
+    gameMenu->connectToMenus(army);
 
     canMenuOpen = true;
     menuOpen = false;
@@ -49,6 +51,10 @@ void View::setConfiguration()
         controlKeys.insert("menu down", Qt::Key_Down);
         controlKeys.insert("menu select", Qt::Key_Return);
         controlKeys.insert("exit from menu", Qt::Key_Backspace);
+        controlKeys.insert("create soldier", Qt::Key_7);
+        controlKeys.insert("create archer", Qt::Key_8);
+        controlKeys.insert("create rider", Qt::Key_9);
+        controlKeys.insert("create wizard", Qt::Key_0);
 
         gameMenu->setPos(scene()->width() - gameMenu->pixmap().width(), 0);
     }
@@ -59,6 +65,10 @@ void View::setConfiguration()
         controlKeys.insert("menu down", Qt::Key_S);
         controlKeys.insert("menu select", Qt::Key_F);
         controlKeys.insert("exit from menu", Qt::Key_E);
+        controlKeys.insert("create soldier", Qt::Key_1);
+        controlKeys.insert("create archer", Qt::Key_2);
+        controlKeys.insert("create rider", Qt::Key_3);
+        controlKeys.insert("create wizard", Qt::Key_4);
 
         gameMenu->setPos(0, 0);
     }
@@ -141,6 +151,27 @@ void View::keyPressEvent(QKeyEvent *event)
         if(event->nativeVirtualKey() == getControlKey("exit from menu") || event->key() == getControlKey("exit from menu"))
             gameMenu->processExitAction();
     }
+
+    if(event->nativeVirtualKey() == getControlKey("create soldier") || event->key() == getControlKey("create soldier"))
+    {
+        //qDebug() << "create soldier " << this;
+        army->addTroop("soldier", scene());
+    }
+    if(event->nativeVirtualKey() == getControlKey("create archer") || event->key() == getControlKey("create archer"))
+    {
+        //qDebug() << "create archer " << this;
+        army->addTroop("archer", scene());
+    }
+    if(event->nativeVirtualKey() == getControlKey("create rider") || event->key() == getControlKey("create rider"))
+    {
+        //qDebug() << "create rider " << this;
+        army->addTroop("rider", scene());
+    }
+    if(event->nativeVirtualKey() == getControlKey("create wizard") || event->key() == getControlKey("create wizard"))
+    {
+        //qDebug() << "create wizard " << this;
+        army->addTroop("wizard", scene());
+    }
 }
 
 bool View::event(QEvent *event)
@@ -177,9 +208,42 @@ bool View::isControlKey(int key)
     return false;
 }
 
+bool View::isShortcut(quint32 key)
+{
+    if(controlKeys.value("create soldier") == key)
+        return true;
+    if(controlKeys.value("create archer") == key)
+        return true;
+    if(controlKeys.value("create rider") == key)
+        return true;
+    if(controlKeys.value("create wizard") == key)
+        return true;
+
+    return false;
+}
+
+bool View::isShortcut(int key)
+{
+    if(controlKeys.value("create soldier") == key)
+        return true;
+    if(controlKeys.value("create archer") == key)
+        return true;
+    if(controlKeys.value("create rider") == key)
+        return true;
+    if(controlKeys.value("create wizard") == key)
+        return true;
+
+    return false;
+}
+
 Qt::Key View::getControlKey(QString key)
 {
     return controlKeys[key];
+}
+
+QMap<QString, Qt::Key> *View::getControlKeys()
+{
+    return &controlKeys;
 }
 
 Army *View::getArmy()

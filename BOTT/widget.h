@@ -27,6 +27,7 @@ private:
     View * view_2; // Нижний view
     View * viewWithOpenMenu; // view, у которого активно меню
     Battlefield * btf;
+    void createSettingsPage();
 
     // QObject interface
 public:

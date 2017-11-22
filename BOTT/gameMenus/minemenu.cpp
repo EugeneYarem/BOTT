@@ -1,5 +1,7 @@
 #include "minemenu.h"
 #include "gamemenuhandler.h"
+#include "Military/army.h"
+#include "town.h"
 #include <QDebug>
 
 MineMenu::MineMenu()
@@ -20,7 +22,10 @@ void MineMenu::processSelectAction(int currentItem)
         emit M_LevelUp();
 }
 
-void MineMenu::connectWithBuild(QGraphicsPixmapItem * build)
+void MineMenu::connectWithObject(QObject * objectForConnect)
 {
-    //connect(this, SIGNAL(M_LevelUp()), build, SLOT());
+    if(typeid(*objectForConnect) == typeid(Town))
+    {
+        connect(this, SIGNAL(M_LevelUp()), (Town *)objectForConnect, SLOT(setNewIncome()));
+    }
 }
