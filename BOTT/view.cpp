@@ -16,6 +16,12 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
     gameMenu = new GameMenuHandler();
     connect(gameMenu, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
     town = new Town();
+
+    if(bottomView)
+        town->setPixmap(QPixmap(":images/images/towns/town_2.png"));
+    else town->setPixmap(QPixmap(":images/images/towns/town.png"));
+
+
     army = new Army();
     gameMenu->connectToMenus(town);
     gameMenu->connectToMenus(army);
@@ -28,6 +34,8 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
 
     inMenuTimer = new QTimer();
     pauseMenuTimer = new QTimer();
+    inMenuTimer_remainingTime = -1;
+    pauseMenuTimer_remainingTime = -1;
 
     connect(inMenuTimer, SIGNAL(timeout()), this, SLOT(hideMenu()));
     connect(pauseMenuTimer, SIGNAL(timeout()), this, SLOT(setCanMenuOpenInTrue()));
@@ -57,6 +65,7 @@ void View::setConfiguration()
         controlKeys.insert("create wizard", Qt::Key_0);
 
         gameMenu->setPos(scene()->width() - gameMenu->pixmap().width(), 0);
+        town->setPos(scene()->width() - town->pixmap().width(), 0);
     }
     else
     {
@@ -71,10 +80,13 @@ void View::setConfiguration()
         controlKeys.insert("create wizard", Qt::Key_4);
 
         gameMenu->setPos(0, 0);
+        town->setPos(0, 0);
     }
 
     gameMenu->setFlags(QGraphicsItem::ItemIsFocusable);
     gameMenu->setVisible(false);
+    scene()->addItem(town);
+    town->addHealthMoneyToScene();
     scene()->addItem(gameMenu);
     gameMenu->addMenusToScene();
 }
@@ -109,6 +121,7 @@ void View::setCanMenuOpenInTrue()
 void View::resizeEvent(QResizeEvent *event)
 {
     // В этом if настраивается sceneRect нижнего view после события View::resizeEvent
+
     if(bottomView)
     {
         if(event->size().width() == 1256)
@@ -136,7 +149,7 @@ void View::keyPressEvent(QKeyEvent *event)
         gameMenu->setFocus();
         gameMenu->showMainMenu();
 
-        inMenuTimer->start(30000);
+        inMenuTimer->start(2000);
         menuOpen = true;
         return;
     }
@@ -176,11 +189,11 @@ void View::keyPressEvent(QKeyEvent *event)
 
 bool View::event(QEvent *event)
 {
-    //qDebug() << "View event " << bottomView;
-    //qDebug() << event->type();
-
     if (event->type() == QEvent::KeyPress)
     {
+        if(((QKeyEvent *)event)->key() == Qt::Key_Escape)
+            return false;
+
         // Проверка, что нажатая клавиша - клавиша управления игрока
 
         if(isControlKey(((QKeyEvent *)event)->nativeVirtualKey()) || isControlKey(((QKeyEvent *)event)->key()))
@@ -241,12 +254,46 @@ Qt::Key View::getControlKey(QString key)
     return controlKeys[key];
 }
 
-QMap<QString, Qt::Key> *View::getControlKeys()
+QString View::getValueByControlKey(QString key)
 {
-    return &controlKeys;
+    foreach (Qt::Key value, controlKeys) {
+        if(QKeySequence(value).toString() == key)
+            return controlKeys.key(value);
+    }
+}
+
+void View::setControlKey(QString key, Qt::Key value)
+{
+    controlKeys[key] = value;
+}
+
+bool View::checkControlKey(Qt::Key key)
+{
+    foreach (Qt::Key value, controlKeys) {
+        if(value == key)
+            return true;
+    }
+    return false;
 }
 
 Army *View::getArmy()
 {
     return army;
+}
+
+void View::stopAllTimers()
+{
+    inMenuTimer_remainingTime = inMenuTimer->remainingTime();
+    pauseMenuTimer_remainingTime = pauseMenuTimer->remainingTime();
+    inMenuTimer->stop();
+    pauseMenuTimer->stop();
+
+    town->stopAllTimers();
+}
+
+void View::startAllTimers()
+{
+    inMenuTimer->start(inMenuTimer_remainingTime);
+    pauseMenuTimer->start(pauseMenuTimer_remainingTime);
+    town->startAllTimers();
 }

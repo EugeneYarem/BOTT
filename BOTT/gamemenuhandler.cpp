@@ -156,5 +156,3 @@ void GameMenuHandler::connectToMenus(QObject * objectForConnect)
     hospitalMenu->connectWithObject(objectForConnect);
     mineMenu->connectWithObject(objectForConnect);
 }
-
-

@@ -11,13 +11,13 @@ class Army: public QObject
 {
     Q_OBJECT
 
-    QVector<troop *> arm;
-    troop wizard, soldier, archer, rider;//for upgrade
+    QVector<Troop *> arm;
+    Troop wizard, soldier, archer, rider;//for upgrade
 
 public:
     Army();
     void addTroop(QString type, QGraphicsScene * scene);
-    troop * getTroop(int n);
+    Troop * getTroop(int n);
     int size();
 
 };

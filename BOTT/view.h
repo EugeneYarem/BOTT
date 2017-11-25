@@ -22,6 +22,8 @@ class View : public QGraphicsView
     Army * army;
     QTimer * inMenuTimer; // Таймер следит за временем нахождения в меню
     QTimer * pauseMenuTimer; // Таймер следит за паузой между вызовом меню этого view
+    int inMenuTimer_remainingTime; // При выходе в меню таймер остановится и сохранит оставшееся время в переменную, чтобы потом возобновить отсчёт
+    int pauseMenuTimer_remainingTime; // При выходе в меню таймер остановится и сохранит оставшееся время в переменную, чтобы потом возобновить отсчёт
     bool bottomView; // Переменная, указывающая, что это нижняя сцена на виджете
     int lastSceneX; // Переменная, нужная для нижнего view, которая хранит координату x, с которой view будет отображать сцену
     QMap<QString, Qt::Key> controlKeys; // Словарь с клавишами управления этой сценой
@@ -38,8 +40,12 @@ public:
     bool isShortcut(quint32); // Проверка, что это горячая клавиша создания юнита
     bool isShortcut(int);
     Qt::Key getControlKey(QString key); // Возвращает код кнопки по ключу
-    QMap<QString, Qt::Key> * getControlKeys(); // Возвращает все управляющие кнопки
+    QString getValueByControlKey(QString);
+    void setControlKey(QString, Qt::Key);
+    bool checkControlKey(Qt::Key);
     Army * getArmy();
+    void stopAllTimers();
+    void startAllTimers();
 
 private slots:
     void hideMenu(); // Закрывает окно меню

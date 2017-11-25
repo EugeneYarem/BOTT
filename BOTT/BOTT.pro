@@ -26,7 +26,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         widget.cpp \
-    rect.cpp \
     view.cpp \
     gamemenu.cpp \
     gamemenuhandler.cpp \
@@ -38,11 +37,12 @@ SOURCES += \
     Military/troop.cpp \
     Military/army.cpp \
     Military/battlefield.cpp \
-    town.cpp
+    town.cpp \
+    message.cpp \
+    dialog.cpp
 
 HEADERS += \
         widget.h \
-    rect.h \
     view.h \
     gamemenu.h \
     gamemenuhandler.h \
@@ -54,10 +54,14 @@ HEADERS += \
     Military/troop.h \
     Military/army.h \
     Military/battlefield.h \
-    town.h
+    town.h \
+    message.h \
+    dialog.h
 
 FORMS += \
-    widget.ui
+    widget.ui \
+    message.ui \
+    dialog.ui
 
 RESOURCES += \
     resources.qrc

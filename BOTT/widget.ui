@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>496</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,6 +24,12 @@
   </property>
   <property name="windowTitle">
    <string>Battle Of The Towns</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-image: url(:/images/images/mainMenuBackground.png);</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -43,6 +49,9 @@
    </property>
    <item row="0" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
      <widget class="QWidget" name="battlefield">
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
@@ -51,120 +60,326 @@
       </layout>
      </widget>
      <widget class="QWidget" name="menu">
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <widget class="QLabel" name="labelMenu">
-             <property name="text">
-              <string>Меню</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>13</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonContinue">
-             <property name="text">
-              <string>Продолжить сражение</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonNew">
-             <property name="text">
-              <string>Начать новое сражение</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonSettings">
-             <property name="text">
-              <string>Настройки</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonStatistics">
-             <property name="text">
-              <string>Статистика</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonEnd">
-             <property name="text">
-              <string>Закончить сражение</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>17</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonExit">
-             <property name="text">
-              <string>Выйти</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-      </layout>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>130</y>
+         <width>431</width>
+         <height>441</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/logo.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>810</x>
+         <y>95</y>
+         <width>287</width>
+         <height>529</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>287</width>
+         <height>529</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>287</width>
+         <height>529</height>
+        </size>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/bg.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonContinue">
+       <property name="geometry">
+        <rect>
+         <x>866</x>
+         <y>240</y>
+         <width>174</width>
+         <height>39</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/continue.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonEnd">
+       <property name="geometry">
+        <rect>
+         <x>866</x>
+         <y>440</y>
+         <width>174</width>
+         <height>39</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/finish.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonExit">
+       <property name="geometry">
+        <rect>
+         <x>893</x>
+         <y>526</y>
+         <width>121</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>121</width>
+         <height>29</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>121</width>
+         <height>29</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/exit.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonNew">
+       <property name="geometry">
+        <rect>
+         <x>866</x>
+         <y>290</y>
+         <width>174</width>
+         <height>39</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/new.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonSettings">
+       <property name="geometry">
+        <rect>
+         <x>866</x>
+         <y>340</y>
+         <width>174</width>
+         <height>39</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/settings.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="buttonStatistics">
+       <property name="geometry">
+        <rect>
+         <x>866</x>
+         <y>390</y>
+         <width>174</width>
+         <height>39</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>174</width>
+         <height>39</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/statistics.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelMenu">
+       <property name="geometry">
+        <rect>
+         <x>894</x>
+         <y>167</y>
+         <width>119</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>119</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>119</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/menu.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>0</width>
+         <height>0</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <zorder>label_3</zorder>
+      <zorder>label_2</zorder>
+      <zorder>buttonContinue</zorder>
+      <zorder>buttonEnd</zorder>
+      <zorder>buttonExit</zorder>
+      <zorder>buttonNew</zorder>
+      <zorder>buttonSettings</zorder>
+      <zorder>buttonStatistics</zorder>
+      <zorder>labelMenu</zorder>
+      <zorder>pushButton</zorder>
      </widget>
      <widget class="QWidget" name="settings">
       <layout class="QGridLayout" name="gridLayout_4">
@@ -386,13 +601,13 @@
                 <widget class="QLineEdit" name="lineEditMenu">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -441,13 +656,13 @@
                 <widget class="QLineEdit" name="lineEditChoose">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -496,13 +711,13 @@
                 <widget class="QLineEdit" name="lineEditExit">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -551,13 +766,13 @@
                 <widget class="QLineEdit" name="lineEditUp">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -606,13 +821,13 @@
                 <widget class="QLineEdit" name="lineEditDown">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -661,13 +876,13 @@
                 <widget class="QLineEdit" name="lineEditSoldier">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -716,13 +931,13 @@
                 <widget class="QLineEdit" name="lineEditArcher">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -771,13 +986,13 @@
                 <widget class="QLineEdit" name="lineEditRider">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -826,13 +1041,13 @@
                 <widget class="QLineEdit" name="lineEditWizard">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -938,13 +1153,13 @@
                 <widget class="QLineEdit" name="lineEditMenu_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -993,13 +1208,13 @@
                 <widget class="QLineEdit" name="lineEditChoose_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1048,13 +1263,13 @@
                 <widget class="QLineEdit" name="lineEditExit_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1103,13 +1318,13 @@
                 <widget class="QLineEdit" name="lineEditUp_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1158,13 +1373,13 @@
                 <widget class="QLineEdit" name="lineEditDown_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1213,13 +1428,13 @@
                 <widget class="QLineEdit" name="lineEditSoldier_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1268,13 +1483,13 @@
                 <widget class="QLineEdit" name="lineEditArcher_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1323,13 +1538,13 @@
                 <widget class="QLineEdit" name="lineEditRider_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1378,13 +1593,13 @@
                 <widget class="QLineEdit" name="lineEditWizard_2">
                  <property name="minimumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>30</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1490,6 +1705,34 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>buttonContinue</tabstop>
+  <tabstop>buttonNew</tabstop>
+  <tabstop>buttonSettings</tabstop>
+  <tabstop>buttonStatistics</tabstop>
+  <tabstop>buttonEnd</tabstop>
+  <tabstop>buttonExit</tabstop>
+  <tabstop>lineEditMenu</tabstop>
+  <tabstop>lineEditChoose</tabstop>
+  <tabstop>lineEditExit</tabstop>
+  <tabstop>lineEditUp</tabstop>
+  <tabstop>lineEditDown</tabstop>
+  <tabstop>lineEditSoldier</tabstop>
+  <tabstop>lineEditArcher</tabstop>
+  <tabstop>lineEditRider</tabstop>
+  <tabstop>lineEditWizard</tabstop>
+  <tabstop>lineEditMenu_2</tabstop>
+  <tabstop>lineEditChoose_2</tabstop>
+  <tabstop>lineEditExit_2</tabstop>
+  <tabstop>lineEditUp_2</tabstop>
+  <tabstop>lineEditDown_2</tabstop>
+  <tabstop>lineEditSoldier_2</tabstop>
+  <tabstop>lineEditArcher_2</tabstop>
+  <tabstop>lineEditRider_2</tabstop>
+  <tabstop>lineEditWizard_2</tabstop>
+  <tabstop>buttonSave</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

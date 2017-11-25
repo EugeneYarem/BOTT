@@ -27,5 +27,25 @@
         <file>images/Workshop_Menu/w3.png</file>
         <file>images/Workshop_Menu/w4.png</file>
         <file>images/Workshop_Menu/w5.png</file>
+        <file>images/towns/town.png</file>
+        <file>images/towns/town_2.png</file>
+        <file>images/logo.png</file>
+        <file>images/mainMenuBackground.png</file>
+        <file>images/hpMoneyBG.png</file>
+        <file>images/Main_Menu_Of_BOTT/bg.png</file>
+        <file>images/Main_Menu_Of_BOTT/continue.png</file>
+        <file>images/Main_Menu_Of_BOTT/exit.png</file>
+        <file>images/Main_Menu_Of_BOTT/finish.png</file>
+        <file>images/Main_Menu_Of_BOTT/menu.png</file>
+        <file>images/Main_Menu_Of_BOTT/new.png</file>
+        <file>images/Main_Menu_Of_BOTT/settings.png</file>
+        <file>images/Main_Menu_Of_BOTT/statistics.png</file>
+        <file>images/Main_Menu_Of_BOTT/continueFocused.png</file>
+        <file>images/Main_Menu_Of_BOTT/exitFocused.png</file>
+        <file>images/Main_Menu_Of_BOTT/finishFocused.png</file>
+        <file>images/Main_Menu_Of_BOTT/newFocused.png</file>
+        <file>images/Main_Menu_Of_BOTT/settingsFocused.png</file>
+        <file>images/Main_Menu_Of_BOTT/statisticsFocused.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

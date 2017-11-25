@@ -13,6 +13,8 @@ class Battlefield : public QObject
 
     QGraphicsScene * scene;
     QTimer * timer;
+    int timer_interval;
+    int timer_remainingTime;
     Army * arm1, * arm2;
 
 public:
@@ -20,6 +22,8 @@ public:
     ~Battlefield();
     void setScene(QGraphicsScene *);
     void setArmies(Army * , Army * );
+    void stopAllTimers();
+    void startAllTimers();
 
 public slots:
     void Battle();
