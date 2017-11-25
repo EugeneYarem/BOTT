@@ -31,7 +31,7 @@ void HospitalMenu::connectWithObject(QObject * objectForConnect)
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        //connect(this, SIGNAL(H_EnterQuarantine()), objectForConnect, SLOT());
-        //connect(this, SIGNAL(H_DoctorsCountUp()), objectForConnect, SLOT());
+        //connect(this, SIGNAL(H_EnterQuarantine()), (Army *)objectForConnect, SLOT());
+        //connect(this, SIGNAL(H_DoctorsCountUp()), (Army *)objectForConnect, SLOT());
     }
 }

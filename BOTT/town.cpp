@@ -75,9 +75,13 @@ void Town::addMoney()
     money += income;
     moneyItem->setPlainText(QString::number(money));
     incomeTimer->start(incomeTimer_interval);
+    emit moneyEarned(income);
 }
 
 void Town::setNewIncome()
 {
+    // Тут должна быть проверка на то, хватает ли денег на улучшение шахты (увеличение дохода)
     income += 100;
+
+    //emit moneyWasted(int); Тут должен выкидываться этот сигнал с ценой улучшения
 }

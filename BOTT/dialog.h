@@ -14,8 +14,9 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
-    QString getName1();
-    QString getName2();
+
+private slots:
+    void on_pushButton_pressed();
 
 private:
     Ui::Dialog *ui;

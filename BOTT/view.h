@@ -44,6 +44,7 @@ public:
     void setControlKey(QString, Qt::Key);
     bool checkControlKey(Qt::Key);
     Army * getArmy();
+    Town * getTown();
     void stopAllTimers();
     void startAllTimers();
 
@@ -53,6 +54,7 @@ private slots:
 
 signals:
     void menuVisibleStatusChanged(View *); // Сигнал, сообщающий виджету, что время нахождения игрока в меню закончилось
+    void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги. Кидать этот сигнал, при создании юнитов
 
     // QWidget interface
 protected:

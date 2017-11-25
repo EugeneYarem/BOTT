@@ -1,5 +1,6 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include "widget.h"
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -13,12 +14,10 @@ Dialog::~Dialog()
     delete ui;
 }
 
-QString Dialog::getName1()
+void Dialog::on_pushButton_pressed()
 {
-    return ui->lineEdit->text();
-}
-
-QString Dialog::getName2()
-{
-    return ui->lineEdit_2->text();
+    ((Widget *)this->parent())->setGamerNameP1(ui->lineEdit->text());
+    ((Widget *)this->parent())->setGamerNameP2(ui->lineEdit_2->text());
+    ((Widget *)this->parent())->startNewGame();
+    close();
 }

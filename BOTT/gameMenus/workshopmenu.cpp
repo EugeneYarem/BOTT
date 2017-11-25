@@ -46,10 +46,10 @@ void WorkshopMenu::connectWithObject(QObject * objectForConnect)
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        /*connect(this, SIGNAL(W_MakeGun()), build, SLOT());
-        connect(this, SIGNAL(W_MakeArquebus()), build, SLOT());
-        connect(this, SIGNAL(W_HauberkExplored()), build, SLOT());
-        connect(this, SIGNAL(W_ArmorExplored()), build, SLOT());
-        connect(this, SIGNAL(W_WeaponLevelUp()), build, SLOT());*/
+        /*connect(this, SIGNAL(W_MakeGun()), (Army *)objectForConnect, SLOT());
+        connect(this, SIGNAL(W_MakeArquebus()), (Army *)objectForConnect, SLOT());
+        connect(this, SIGNAL(W_HauberkExplored()), (Army *)objectForConnect, SLOT());
+        connect(this, SIGNAL(W_ArmorExplored()), (Army *)objectForConnect, SLOT());
+        connect(this, SIGNAL(W_WeaponLevelUp()), (Army *)objectForConnect, SLOT());*/
     }
 }

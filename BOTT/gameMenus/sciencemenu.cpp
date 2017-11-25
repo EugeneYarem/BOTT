@@ -46,10 +46,10 @@ void ScienceMenu::connectWithObject(QObject * objectForConnect)
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        /*connect(this, SIGNAL(SC_WaterWheelExplored()), build, SLOT());
-        connect(this, SIGNAL(SC_BlastFurnaceExplored()), build, SLOT());
-        connect(this, SIGNAL(SC_ArtilleryExplored()), build, SLOT());
-        connect(this, SIGNAL(SC_ArquebusExplored()), build, SLOT());
-        connect(this, SIGNAL(SC_SpinningWheelExplored()), build, SLOT());*/
+        /*connect(this, SIGNAL(SC_WaterWheelExplored()), (Army *)objectForConnect, SLOT());
+        connect(this, SIGNAL(SC_BlastFurnaceExplored()), (Army *)objectForConnect, SLOT());
+        connect(this, SIGNAL(SC_ArtilleryExplored()), (Army *)objectForConnect, SLOT());
+        connect(this, SIGNAL(SC_ArquebusExplored()), (Army *)objectForConnect, SLOT());
+        connect(this, SIGNAL(SC_SpinningWheelExplored()), (Army *)objectForConnect, SLOT());*/
     }
 }

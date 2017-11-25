@@ -20,6 +20,10 @@ class Town : public QObject, public QGraphicsPixmapItem
     QGraphicsTextItem * healthItem;
     QGraphicsTextItem * moneyItem;
 
+signals:
+    void moneyEarned(int); // Сигнал, указывающий на то, что шахта принесла прибыль
+    void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги на улучшение шахты
+
 public:
     Town();
     int getHealth();

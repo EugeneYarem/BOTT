@@ -2,8 +2,10 @@
 #include "ui_widget.h"
 #include "view.h"
 #include "Military/battlefield.h"
+#include "Military/army.h"
 #include "message.h"
 #include "dialog.h"
+#include "town.h"
 #include <QGraphicsScene>
 #include <qDebug>
 #include <QBrush>
@@ -15,6 +17,14 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
+    gameDuration = 0;
+    wastedMoneyP1 = 0;
+    wastedMoneyP2 = 0;
+    countOfUnitsP1 = 0;
+    countOfUnitsP2 = 0;
+    countOfModicationP1 = 0;
+    countOfModicationP2 = 0;
 
     // Устанавливаем минимальный размер окна (1280 х 720)
     this->setMinimumSize(1280, 720);
@@ -52,6 +62,22 @@ Widget::Widget(QWidget *parent) :
     // Эти две функции обязательно вызывать только после того, как добавлены другие элементы на сцену, чтобы меню всегда были на первом плане
     view->setConfiguration();
     view_2->setConfiguration();
+    earnedMoneyP1 = view->getTown()->getMoney();
+    earnedMoneyP2 = view_2->getTown()->getMoney();
+
+    // Коннэкты для сбора статистики о доходах и затратах
+    connect(view, SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
+    connect(view_2, SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
+    connect(view->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP1Plus(int)));
+    connect(view_2->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP2Plus(int)));
+    connect(view->getTown(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
+    connect(view_2->getTown(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
+    connect(view->getArmy(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
+    connect(view_2->getArmy(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
+    connect(view->getArmy(), SIGNAL(uniteCreated()), this, SLOT(countOfUnitsP1Plus()));
+    connect(view_2->getArmy(), SIGNAL(uniteCreated()), this, SLOT(countOfUnitsP2Plus()));
+    connect(view->getArmy(), SIGNAL(modificate()), this, SLOT(countOfModicationP1Plus()));
+    connect(view_2->getArmy(), SIGNAL(modificate()), this, SLOT(countOfModicationP2Plus()));
 
     viewWithOpenMenu = NULL;
 
@@ -70,12 +96,70 @@ Widget::~Widget()
     delete btf;
 }
 
+void Widget::setGamerNameP1(QString name)
+{
+    gamerNameP1 = name;
+}
+
+void Widget::setGamerNameP2(QString name)
+{
+    gamerNameP2 = name;
+}
+
+void Widget::startNewGame()
+{
+    startAllTimers();
+    ui->stackedWidget->setCurrentIndex(0);
+    clearFocusOfMainMenu();
+    setMaximumWidth(16777215);
+}
+
 void Widget::updateViewWithOpenMenu(View * sender)
 {
     // Если view-отправитель сигнала таймера об истечении времени нахождения в меню - это нынешний view с открытым меню
 
     if(viewWithOpenMenu == sender)
         viewWithOpenMenu = NULL;
+}
+
+void Widget::earnedMoneyP1Plus(int income)
+{
+    earnedMoneyP1 += income;
+}
+
+void Widget::earnedMoneyP2Plus(int income)
+{
+    earnedMoneyP2 += income;
+}
+
+void Widget::wastedMoneyP1Plus(int wasted)
+{
+    wastedMoneyP1 += wasted;
+}
+
+void Widget::wastedMoneyP2Plus(int wasted)
+{
+    wastedMoneyP2 += wasted;
+}
+
+void Widget::countOfUnitsP1Plus()
+{
+    countOfUnitsP1++;
+}
+
+void Widget::countOfUnitsP2Plus()
+{
+    countOfUnitsP2++;
+}
+
+void Widget::countOfModicationP1Plus()
+{
+    countOfModicationP1++;
+}
+
+void Widget::countOfModicationP2Plus()
+{
+    countOfModicationP2++;
 }
 
 void Widget::createSettingsPage()
@@ -168,18 +252,13 @@ bool Widget::isLineEditOfFirstPlayer(QObject * watched)
 void Widget::clearFocusOfMainMenu()
 {
     ui->buttonContinue->clearFocus();
-    this->eventFilter(ui->buttonContinue, new QEvent(QEvent::FocusOut));
+    //this->eventFilter(ui->buttonContinue, new QEvent(QEvent::FocusOut));
     //ui->buttonContinue->eventFilter(this, new QEvent(QEvent::FocusOut));
     ui->buttonNew->clearFocus();
-    ui->buttonNew->eventFilter(this, new QEvent(QEvent::FocusOut));
     ui->buttonSettings->clearFocus();
-    ui->buttonSettings->eventFilter(this, new QEvent(QEvent::FocusOut));
     ui->buttonStatistics->clearFocus();
-    ui->buttonStatistics->eventFilter(this, new QEvent(QEvent::FocusOut));
     ui->buttonEnd->clearFocus();
-    ui->buttonEnd->eventFilter(this, new QEvent(QEvent::FocusOut));
     ui->buttonExit->clearFocus();
-    ui->buttonExit->eventFilter(this, new QEvent(QEvent::FocusOut));
 }
 
 void Widget::stopAllTimers()
@@ -524,10 +603,8 @@ bool Widget::event(QEvent *event)
 void Widget::on_buttonNew_pressed()
 {
     lastVisitedPage = 1;
-    startAllTimers();
-    ui->stackedWidget->setCurrentIndex(0);
-    clearFocusOfMainMenu();
-    setMaximumWidth(16777215);
+    Dialog * dialog = new Dialog(this);
+    dialog->show();
 }
 
 void Widget::on_buttonExit_pressed()

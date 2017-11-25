@@ -22,7 +22,7 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
     else town->setPixmap(QPixmap(":images/images/towns/town.png"));
 
 
-    army = new Army();
+    army = new Army(this);
     gameMenu->connectToMenus(town);
     gameMenu->connectToMenus(army);
 
@@ -109,7 +109,7 @@ void View::hideMenu()
     emit menuVisibleStatusChanged(this);
 
     inMenuTimer->stop();
-    pauseMenuTimer->start(10000);
+    pauseMenuTimer->start(5000);
 }
 
 void View::setCanMenuOpenInTrue()
@@ -149,7 +149,7 @@ void View::keyPressEvent(QKeyEvent *event)
         gameMenu->setFocus();
         gameMenu->showMainMenu();
 
-        inMenuTimer->start(2000);
+        inMenuTimer->start(10000);
         menuOpen = true;
         return;
     }
@@ -165,24 +165,22 @@ void View::keyPressEvent(QKeyEvent *event)
             gameMenu->processExitAction();
     }
 
+    // В следющих 4 ифах происходит создание юнита в зависимости от нажатой кнопки. В этих ифах нужно добавить и проверку на наличие нужной суммы
+    // Если есть нужная сумма, то создвать юнита и обязательно кидать сигнал moneyWasted с ценой создания этого юнита
     if(event->nativeVirtualKey() == getControlKey("create soldier") || event->key() == getControlKey("create soldier"))
     {
-        //qDebug() << "create soldier " << this;
         army->addTroop("soldier", scene());
     }
     if(event->nativeVirtualKey() == getControlKey("create archer") || event->key() == getControlKey("create archer"))
     {
-        //qDebug() << "create archer " << this;
         army->addTroop("archer", scene());
     }
     if(event->nativeVirtualKey() == getControlKey("create rider") || event->key() == getControlKey("create rider"))
     {
-        //qDebug() << "create rider " << this;
         army->addTroop("rider", scene());
     }
     if(event->nativeVirtualKey() == getControlKey("create wizard") || event->key() == getControlKey("create wizard"))
     {
-        //qDebug() << "create wizard " << this;
         army->addTroop("wizard", scene());
     }
 }
@@ -279,6 +277,11 @@ bool View::checkControlKey(Qt::Key key)
 Army *View::getArmy()
 {
     return army;
+}
+
+Town *View::getTown()
+{
+    return town;
 }
 
 void View::stopAllTimers()

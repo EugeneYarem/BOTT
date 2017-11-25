@@ -40,12 +40,12 @@
         <file>images/Main_Menu_Of_BOTT/new.png</file>
         <file>images/Main_Menu_Of_BOTT/settings.png</file>
         <file>images/Main_Menu_Of_BOTT/statistics.png</file>
-        <file>images/Main_Menu_Of_BOTT/continueFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/exitFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/finishFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/newFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/settingsFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/statisticsFocused.png</file>
+        <file>images/Main_Menu_Of_BOTT/continueFocused.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

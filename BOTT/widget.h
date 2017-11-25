@@ -30,15 +30,42 @@ class Widget : public QWidget
     void stopAllTimers();
     void startAllTimers();
 
+    // Переменные, которые хранят данные для сохранения статистики
+    // P1 - player 1, P2 - player 2
+    QString gamerNameP1;
+    QString gamerNameP2;
+    int gameDuration;
+    int earnedMoneyP1;
+    int earnedMoneyP2;
+    int wastedMoneyP1;
+    int wastedMoneyP2;
+    int countOfUnitsP1;
+    int countOfUnitsP2;
+    int countOfModicationP1;
+    int countOfModicationP2;
+
 public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
+    void setGamerNameP1(QString );
+    void setGamerNameP2(QString );
+    void startNewGame();
 
 private slots:
     void on_buttonSettings_pressed();
     void on_buttonContinue_pressed();
     void on_buttonNew_pressed();
     void on_buttonExit_pressed();
+
+    // Слоты для сбора статистики
+    void earnedMoneyP1Plus(int);
+    void earnedMoneyP2Plus(int);
+    void wastedMoneyP1Plus(int);
+    void wastedMoneyP2Plus(int);
+    void countOfUnitsP1Plus();
+    void countOfUnitsP2Plus();
+    void countOfModicationP1Plus();
+    void countOfModicationP2Plus();
 
 public slots:
     void updateViewWithOpenMenu(View * );
