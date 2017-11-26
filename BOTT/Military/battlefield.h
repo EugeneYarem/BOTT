@@ -12,9 +12,11 @@ class Battlefield : public QObject
     Q_OBJECT
 
     QGraphicsScene * scene;
-    QTimer * timer;
+    QTimer * timer,*timer_B;
     int timer_interval;
     int timer_remainingTime;
+    int timerB_interval;
+    int timerB_remainingTime;
     Army * arm1, * arm2;
 
 public:
@@ -27,6 +29,7 @@ public:
 
 public slots:
     void Battle();
+    void ArmyControl();
 
 };
 

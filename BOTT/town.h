@@ -31,6 +31,8 @@ public:
     void stopAllTimers();
     void startAllTimers();
     void addHealthMoneyToScene();
+    void setHealth(int);
+    void setMoney(int);
 
 public slots:
     void damage(int );

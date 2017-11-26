@@ -5,6 +5,7 @@
 #include <QVector>
 #include "Military/troop.h"
 
+
 class View;
 class QGraphicsScene;
 
@@ -14,13 +15,20 @@ class Army: public QObject
 
     View * parent; // Указатель на view. Нужен, чтобы из армии получить доступ к данным из класса Town
     QVector<Troop *> arm;
-    Troop wizard, soldier, archer, rider;//for upgrade
+    Troop mage ,soldier, archer, rider;//for upgrade
+
+    PoC party;
 
 public:
-    Army(View * );
+    Army(View * , PoC party);
     void addTroop(QString type, QGraphicsScene * scene);
     Troop * getTroop(int n);
     int size();
+    void setParty(PoC);
+    void deleteTroop();
+    int getTownHp();
+    void setTownHp(int hp);
+
 
 signals:
     void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги. Кидать этот сигнал, при покупке улучшений

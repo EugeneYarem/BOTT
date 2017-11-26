@@ -39,7 +39,12 @@ SOURCES += \
     Military/battlefield.cpp \
     town.cpp \
     message.cpp \
-    dialog.cpp
+    dialog.cpp \
+    Military/type/infantry.cpp \
+    Military/transform.cpp \
+    Military/type/archer.cpp \
+    Military/type/raider.cpp \
+    Military/type/mage.cpp
 
 HEADERS += \
         widget.h \
@@ -56,7 +61,12 @@ HEADERS += \
     Military/battlefield.h \
     town.h \
     message.h \
-    dialog.h
+    dialog.h \
+    Military/type/infantry.h \
+    Military/transform.h \
+    Military/type/archer.h \
+    Military/type/raider.h \
+    Military/type/mage.h
 
 FORMS += \
     widget.ui \

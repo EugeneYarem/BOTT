@@ -22,7 +22,15 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
     else town->setPixmap(QPixmap(":images/images/towns/town.png"));
 
 
-    army = new Army(this);
+
+    if(bottomView)
+    {
+         army = new Army(this,Right);
+    }
+    else
+    {
+          army = new Army(this,Left);
+    }
     gameMenu->connectToMenus(town);
     gameMenu->connectToMenus(army);
 
@@ -181,7 +189,7 @@ void View::keyPressEvent(QKeyEvent *event)
     }
     if(event->nativeVirtualKey() == getControlKey("create wizard") || event->key() == getControlKey("create wizard"))
     {
-        army->addTroop("wizard", scene());
+        army->addTroop("mage", scene());
     }
 }
 

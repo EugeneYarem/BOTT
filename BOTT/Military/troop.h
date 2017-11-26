@@ -3,10 +3,11 @@
 
 #include <QGraphicsPixmapItem>
 #include <QString>
-
-class QTimer;
+#include <QTimer>
+#include "Military/transform.h"
 
 enum Status{stand, run, attack};
+enum PoC{Left,Right};//сторона конфликта
 
 class Troop : public QObject, public QGraphicsPixmapItem
 {
@@ -14,27 +15,38 @@ class Troop : public QObject, public QGraphicsPixmapItem
 
     // ЛЁША, ПОЖАЛУЙСТА, ИСПОЛЬЗУЙ ФУНКЦИИ (SET-еры, GET-еры) ДЛЯ ДОСТУПА К ПОЛЯМ КЛАССА ИЗ ДРУГИХ КЛАССОВ
     // НЕ ЗАБЫВАЙ ПРО ИНКАПСУЛЯЦИЮ
-
-    float hp;//1-...
-    float atack;//1-...
-    float def;//0-100
-    QString type;//type of the troop
+protected:
+    double hp;//1-...
+    double atack;//1-...
+    double def;//0-100
     QString img_pref;//begin in the file's names of the troop's sprite list
     QTimer * timer;//timer for the animation
     int timer_interval;
     int timer_remainingTime;
     int amt_cnt;//counter for animation
     Status sts;//is run, stay,attack...
-
+    PoC party;
+    QString type;
 public:
-    // Сейчас тут только те SET-еры, GET-еры, которые понадобились, чтобы откомпилировался код
+
     Troop();
-    void stopAllTimers();
-    void startAllTimers();
-    float getHp();
-    float getAtack();
-    QString getType();
+    double getHp();
+    double getAtack();
     void setHp(float);
+    void startAllTimers();
+    void stopAllTimers();
+    void setParty(PoC);
+    int getTime_interval();
+    int getTime_remainingTime();
+    PoC getParty();
+    Status getSts();
+    void setSts(Status);
+    void setType(QString);
+    QString getType();
+    void setAtack(int atack);
+    void setDef(int def);
+    void setImg_Pref(QString);
+    QString getImg_pref();
 
 public slots:
     virtual void Animation(){}
