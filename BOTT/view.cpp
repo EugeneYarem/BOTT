@@ -99,14 +99,14 @@ void View::setConfiguration()
     scene()->addItem(gameMenu);
     gameMenu->addMenusToScene();
 
-    priceUpgrade.insert("Hauberk",1000);
-    priceUpgrade.insert("Armor",2000);
-    priceUpgrade.insert("Weapon",4000);
+    priceUpgrade.insert("Hauberk",5000);
+    priceUpgrade.insert("Armor",8000);
+    priceUpgrade.insert("Weapon",12000);
     priceUpgrade.insert("Quarantine",500);
     priceUpgrade.insert("Doctors",5000);
-    priceUpgrade.insert("Mage_Hp",400);
-    priceUpgrade.insert("Mage_Attack",400);
-    priceUpgrade.insert("Arquebus",2000);
+    priceUpgrade.insert("Mage_Hp",2000);
+    priceUpgrade.insert("Mage_Attack",2000);
+    priceUpgrade.insert("Arquebus",5000);
 }
 
 bool View::isCanMenuOpen()

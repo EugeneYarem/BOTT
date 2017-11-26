@@ -204,7 +204,7 @@ void Battlefield::ArmyControl()
         else arm2->getTroop(0)->setSts(run);
 
         for(int i=1;i<arm2->size();i++)
-            if(arm2->getTroop(i)->x()<=(arm2->getTroop(i-1)->x()+80))arm2->getTroop(i)->setSts(stand);
+            if(arm2->getTroop(i)->x()<=(arm2->getTroop(i-1)->x()+130))arm2->getTroop(i)->setSts(stand);
              else arm2->getTroop(i)->setSts(run);
     }
 }

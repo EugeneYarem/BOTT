@@ -7,7 +7,7 @@
 Town::Town() : QObject()
 {
     health = 100;
-    money = 1000;
+    money = 100000;
     income = 1000;
     incomeTimer = new QTimer;
     incomeTimer_interval = 5000;

@@ -26,7 +26,7 @@ Army::Army(View * parent,PoC party)
     soldier->setPixmap(QPixmap(":/images/images/Military/infantry/farmer_stand_1.png"));
     soldier->setParty(party);
     soldier->setType("soldier");
-    soldier->setAtack(200);
+    soldier->setAtack(100);
     soldier->setHp(1000);
     soldier->setDef(0);
     soldier->setImg_Pref(":/images/images/Military/infantry/farmer_");
@@ -34,7 +34,7 @@ Army::Army(View * parent,PoC party)
     archer->setPixmap(QPixmap(":/images/images/Military/archer/archer_stand_1.png"));
     archer->setParty(party);
     archer->setType("archer");
-    archer->setAtack(100);
+    archer->setAtack(70);
     archer->setHp(1000);
     archer->setDef(0);
     archer->setImg_Pref(":/images/images/Military/archer/archer_");
@@ -42,8 +42,8 @@ Army::Army(View * parent,PoC party)
     rider->setPixmap(QPixmap(":/images/images/Military/rider/cavalier_stand_1.png"));
     rider->setParty(party);
     rider->setType("rider");
-    rider->setAtack(200);
-    rider->setHp(2000);
+    rider->setAtack(140);
+    rider->setHp(1500);
     rider->setDef(0);
     rider->setImg_Pref(":/images/images/Military/rider/cavalier_");
 
@@ -166,16 +166,16 @@ void Army::improveHauberk()
     str.resize(str.size()-7);
     str+="soldier_";
     soldier->setImg_Pref(str);
-    soldier->setAtack(soldier->getAtack()+100);
-    soldier->setHp(soldier->getHp()+300);
+    soldier->setAtack(soldier->getAtack()+30);
+    soldier->setHp(soldier->getHp()+250);
     soldier->setPixmap(QPixmap(soldier->getImg_pref()+"stand_1"));
     for(int i=0;i<arm.size();i++)
     {
         if(arm[i]->getType()=="soldier")
         {
             arm[i]->setImg_Pref(str);
-            arm[i]->setAtack(arm[i]->getAtack()+100);
-            arm[i]->setHp(arm[i]->getHp()+300);
+            arm[i]->setAtack(arm[i]->getAtack()+30);
+            arm[i]->setHp(arm[i]->getHp()+250);
         }
     }
     parent->getTown()->setMoney(parent->getTown()->getMoney()-parent->getPriceUpgrade("Hauberk"));
@@ -196,7 +196,7 @@ void Army::improveArmor()
     str+="knight_";
     soldier->setImg_Pref(str);
 
-    soldier->setAtack(soldier->getAtack()+100);
+    soldier->setAtack(soldier->getAtack()+20);
     soldier->setHp(soldier->getHp()+300);
     soldier->setPixmap(QPixmap(soldier->getImg_pref()+"stand_1"));
 
@@ -205,7 +205,7 @@ void Army::improveArmor()
         if(arm[i]->getType()=="soldier")
         {
             arm[i]->setImg_Pref(str);
-            arm[i]->setAtack(arm[i]->getAtack()+100);
+            arm[i]->setAtack(arm[i]->getAtack()+20);
             arm[i]->setHp(arm[i]->getHp()+300);
         }
     }
@@ -229,16 +229,25 @@ void Army::improveWeapon()
     str+="rider_";
     rider->setImg_Pref(str);
 
-    rider->setAtack(rider->getAtack()+200);
+    rider->setAtack(rider->getAtack()+60);
     rider->setHp(rider->getHp()+600);
     rider->setPixmap(QPixmap(rider->getImg_pref()+"stand_1"));
 
+    soldier->setAtack(soldier->getAtack()+40);
+
+
     for(int i=0;i<arm.size();i++)
     {
-        if(arm[i]->getType()=="rider")
-        {
-            arm[i]->setImg_Pref(str);
-        }
+            if(arm[i]->getType()=="rider")
+            {
+                arm[i]->setImg_Pref(str);
+                arm[i]->setAtack(arm[i]->getAtack()+60);
+                arm[i]->setHp(arm[i]->getHp()+600);
+            }
+            if(arm[i]->getType()=="soldier")
+            {
+                 arm[i]->setAtack(arm[i]->getAtack()+40);
+            }
     }
 
         parent->getTown()->setMoney(parent->getTown()->getMoney()-parent->getPriceUpgrade("Weapon"));
@@ -252,14 +261,14 @@ void Army::improveQuarantine()
 {
     if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Quarantine"))
     {
-    soldier->setHp(soldier->getHp()+200);
-    rider->setHp(soldier->getHp()+200);
-    archer->setHp(soldier->getHp()+200);
-    mage->setHp(soldier->getHp()+200);
+    soldier->setHp(soldier->getHp()+50);
+    rider->setHp(soldier->getHp()+50);
+    archer->setHp(soldier->getHp()+50);
+    mage->setHp(soldier->getHp()+50);
 
     for(int i=0;i<arm.size();i++)
     {
-        arm[i]->setHp(arm[i]->getHp()+200);
+        arm[i]->setHp(arm[i]->getHp()+50);
     }
 
     int price=parent->getPriceUpgrade("Quarantine");
@@ -303,7 +312,7 @@ void Army::improveArquebus()
     str+="crossbow_";
     archer->setImg_Pref(str);
 
-    archer->setAtack(archer->getAtack()+200);
+    archer->setAtack(archer->getAtack()+100);
     archer->setHp(archer->getHp()+400);
     archer->setPixmap(QPixmap(rider->getImg_pref()+"stand_1"));
 
@@ -312,6 +321,8 @@ void Army::improveArquebus()
         if(arm[i]->getType()=="archer")
         {
             arm[i]->setImg_Pref(str);
+            arm[i]->setAtack(arm[i]->getAtack()+100);
+            arm[i]->setHp(arm[i]->getHp()+400);
         }
     }
     parent->getTown()->setMoney(parent->getTown()->getMoney()-parent->getPriceUpgrade("Arquebus"));
