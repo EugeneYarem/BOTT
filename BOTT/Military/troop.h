@@ -49,8 +49,8 @@ public:
     QString getImg_pref();
 
 public slots:
-    virtual void Animation(){}
-    virtual void Run(){}
+    virtual void Animation()=0;
+    virtual void Run()=0;
 };
 
 #endif // TROOP_H

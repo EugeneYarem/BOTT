@@ -66,8 +66,8 @@ Widget::Widget(QWidget *parent) :
     earnedMoneyP2 = view_2->getTown()->getMoney();
 
     // Коннэкты для сбора статистики о доходах и затратах
-    connect(view, SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
-    connect(view_2, SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
+    connect(view->getArmy(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
+    connect(view_2->getArmy(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
     connect(view->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP1Plus(int)));
     connect(view_2->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP2Plus(int)));
     connect(view->getTown(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));

@@ -137,5 +137,33 @@
         <file>images/Military/infantry/soldier_attack_5.png</file>
         <file>images/Military/infantry/soldier_attack_6.png</file>
         <file>images/Military/infantry/soldier_attack_7.png</file>
+        <file>images/Military/archer/crossbow_attack_1.png</file>
+        <file>images/Military/archer/crossbow_attack_2.png</file>
+        <file>images/Military/archer/crossbow_attack_3.png</file>
+        <file>images/Military/archer/crossbow_attack_4.png</file>
+        <file>images/Military/archer/crossbow_attack_5.png</file>
+        <file>images/Military/archer/crossbow_attack_6.png</file>
+        <file>images/Military/archer/crossbow_attack_7.png</file>
+        <file>images/Military/archer/crossbow_run_1.png</file>
+        <file>images/Military/archer/crossbow_run_2.png</file>
+        <file>images/Military/archer/crossbow_run_3.png</file>
+        <file>images/Military/archer/crossbow_run_4.png</file>
+        <file>images/Military/archer/crossbow_run_5.png</file>
+        <file>images/Military/archer/crossbow_run_6.png</file>
+        <file>images/Military/archer/crossbow_run_7.png</file>
+        <file>images/Military/archer/crossbow_stand_1.png</file>
+        <file>images/Military/rider/cavalier_attack_1.png</file>
+        <file>images/Military/rider/cavalier_attack_2.png</file>
+        <file>images/Military/rider/cavalier_attack_3.png</file>
+        <file>images/Military/rider/cavalier_attack_4.png</file>
+        <file>images/Military/rider/cavalier_run_1.png</file>
+        <file>images/Military/rider/cavalier_run_2.png</file>
+        <file>images/Military/rider/cavalier_run_3.png</file>
+        <file>images/Military/rider/cavalier_run_4.png</file>
+        <file>images/Military/rider/cavalier_run_5.png</file>
+        <file>images/Military/rider/cavalier_run_6.png</file>
+        <file>images/Military/rider/cavalier_run_7.png</file>
+        <file>images/Military/rider/cavalier_run_8.png</file>
+        <file>images/Military/rider/cavalier_stand_1.png</file>
     </qresource>
 </RCC>

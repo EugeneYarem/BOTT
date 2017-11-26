@@ -29,6 +29,7 @@ class View : public QGraphicsView
     QMap<QString, Qt::Key> controlKeys; // Словарь с клавишами управления этой сценой
     bool canMenuOpen; // Переменная, по которой определяется можно ли открыть меню этого игрока (нельзя, если с момента последнего открытия меню этого игрока не прошло нужное время)
     bool menuOpen; // Указывает, что сейчас меню открыто (эта переменная нужна, т.к. canMenuOpen, указывает на то, что меню можно открыть, но не указывает, что оно открыто)
+    QMap<QString, int> priceUpgrade;
 
 public:
     View(bool bottomView, QWidget * parent = 0);
@@ -42,6 +43,8 @@ public:
     Qt::Key getControlKey(QString key); // Возвращает код кнопки по ключу
     QString getValueByControlKey(QString);
     void setControlKey(QString, Qt::Key);
+    void setPriceUpgrade(QString, int);
+    int getPriceUpgrade(QString key);
     bool checkControlKey(Qt::Key);
     Army * getArmy();
     Town * getTown();
@@ -54,8 +57,6 @@ private slots:
 
 signals:
     void menuVisibleStatusChanged(View *); // Сигнал, сообщающий виджету, что время нахождения игрока в меню закончилось
-    void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги. Кидать этот сигнал, при создании юнитов
-
     // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event);

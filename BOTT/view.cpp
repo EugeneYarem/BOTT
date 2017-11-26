@@ -31,6 +31,7 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
     {
           army = new Army(this,Left);
     }
+
     gameMenu->connectToMenus(town);
     gameMenu->connectToMenus(army);
 
@@ -97,6 +98,15 @@ void View::setConfiguration()
     town->addHealthMoneyToScene();
     scene()->addItem(gameMenu);
     gameMenu->addMenusToScene();
+
+    priceUpgrade.insert("Hauberk",1000);
+    priceUpgrade.insert("Armor",2000);
+    priceUpgrade.insert("Weapon",4000);
+    priceUpgrade.insert("Quarantine",500);
+    priceUpgrade.insert("Doctors",5000);
+    priceUpgrade.insert("Mage_Hp",400);
+    priceUpgrade.insert("Mage_Attack",400);
+    priceUpgrade.insert("Arquebus",2000);
 }
 
 bool View::isCanMenuOpen()
@@ -271,6 +281,16 @@ QString View::getValueByControlKey(QString key)
 void View::setControlKey(QString key, Qt::Key value)
 {
     controlKeys[key] = value;
+}
+
+void View::setPriceUpgrade(QString key, int value)
+{
+    priceUpgrade[key] = value;
+}
+
+int View::getPriceUpgrade(QString key)
+{
+    return priceUpgrade[key];
 }
 
 bool View::checkControlKey(Qt::Key key)

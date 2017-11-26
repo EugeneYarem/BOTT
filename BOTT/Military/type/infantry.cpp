@@ -58,6 +58,7 @@ void Infantry::Animation()
 
 void Infantry::Run()
 {
+
     if(sts!=run)return;
     if(this->party==Left)
     {

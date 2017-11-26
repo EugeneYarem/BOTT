@@ -15,10 +15,13 @@ class Army: public QObject
 
     View * parent; // Указатель на view. Нужен, чтобы из армии получить доступ к данным из класса Town
     QVector<Troop *> arm;
-    Troop mage ,soldier, archer, rider;//for upgrade
-
+    Troop *mage ,*soldier, *archer, *rider;//for upgrade
     PoC party;
-
+    bool isArmorImprove;
+    bool isHauberkImprove;
+    bool isWeaponImprove;
+    bool isDoctorsImprove;
+    bool isArquebusImprove;
 public:
     Army(View * , PoC party);
     void addTroop(QString type, QGraphicsScene * scene);
@@ -29,6 +32,15 @@ public:
     int getTownHp();
     void setTownHp(int hp);
 
+public slots:
+    void improveHauberk();
+    void improveArmor();
+    void improveWeapon();
+    void improveQuarantine();
+    void improveDoctors();
+    void improveArquebus();
+    void increaseMageHitPoint();
+    void increaseMageAttack();
 
 signals:
     void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги. Кидать этот сигнал, при покупке улучшений

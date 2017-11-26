@@ -40,6 +40,11 @@ void ScienceMenu::processSelectAction(int currentItem)
         emit SC_ArquebusExplored();
     if(currentItem == 4)
         emit SC_SpinningWheelExplored();
+    //------------------------------------------ADD--------------------------
+    if(currentItem==5)
+        emit SC_MageHealth();
+    if(currentItem==6)
+        emit SC_MageAttack();
 }
 
 void ScienceMenu::connectWithObject(QObject * objectForConnect)
@@ -51,5 +56,7 @@ void ScienceMenu::connectWithObject(QObject * objectForConnect)
         connect(this, SIGNAL(SC_ArtilleryExplored()), (Army *)objectForConnect, SLOT());
         connect(this, SIGNAL(SC_ArquebusExplored()), (Army *)objectForConnect, SLOT());
         connect(this, SIGNAL(SC_SpinningWheelExplored()), (Army *)objectForConnect, SLOT());*/
+        connect(this,SIGNAL(SC_MageHealth()),(Army*)(objectForConnect),SLOT(increaseMageHitPoint()));
+        connect(this,SIGNAL(SC_MageAttack()),(Army*)(objectForConnect),SLOT(increaseMageAttack()));
     }
 }

@@ -19,6 +19,8 @@ signals:
     void SC_ArtilleryExplored();
     void SC_ArquebusExplored();
     void SC_SpinningWheelExplored(); // spinning wheel - прялка
+    void SC_MageHealth();
+    void SC_MageAttack();
 
     // GameMenu interface
 public:

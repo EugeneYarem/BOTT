@@ -14,8 +14,8 @@ Battlefield::Battlefield()
     connect(timer_B,SIGNAL(timeout()),this,SLOT(Battle()));
     timer_interval = 50;
     timer_remainingTime = 50;
-    timerB_interval = 500;
-    timerB_remainingTime = 500;
+    timerB_interval = 1000;
+    timerB_remainingTime = 1000;
 }
 
 Battlefield::~Battlefield()
@@ -111,7 +111,7 @@ void Battlefield::Battle()
              if(arm1->size()>=1)
              {
                   arm1->getTroop(0)->setHp(arm1->getTroop(0)->getHp()-dmg2);
-                  arm1->getTroop(0)->setSts(run);
+                 // arm1->getTroop(0)->setSts(run);
 
              }
          }
@@ -124,18 +124,18 @@ void Battlefield::Battle()
              if(arm2->size()>=1)
              {
                   arm2->getTroop(0)->setHp(arm2->getTroop(0)->getHp()-dmg1);
-                  arm2->getTroop(0)->setSts(run);
+                 // arm2->getTroop(0)->setSts(run);
              }
          }
 
-         if(arm1->size()==0&&arm2->size()!=0)
+     /*    if(arm1->size()==0&&arm2->size()!=0)
          {
              arm2->getTroop(0)->setSts(run);
          }
          else if(arm2->size()==0&&arm1->size()!=0)
          {
               arm1->getTroop(0)->setSts(run);
-         }
+         }*/
 
 
     }
@@ -156,7 +156,7 @@ void Battlefield::Battle()
         }
         else if(arm2->size()!=0)
         {
-            if(arm2->getTroop(0)->x()<=300)
+            if(arm2->getTroop(0)->x()<=310)
             {
                 double dmg=0;
                 for(int i=0;i<arm2->size();i++)
@@ -175,12 +175,14 @@ void Battlefield::ArmyControl()
     if(arm1->size() != 0)
     {
 
-        if(arm1->getTroop(0)->x()>=2120)arm1->getTroop(0)->setSts(attack);
-
-        if(arm2->size() != 0)
+        if(arm1->getTroop(0)->x()>=2110)arm1->getTroop(0)->setSts(attack);
+        else if(arm2->size() != 0)
         {
-            if(arm1->getTroop(0)->x()>=arm2->getTroop(0)->x()-100)arm1->getTroop(0)->setSts(attack);
+           if(arm1->getTroop(0)->x()>=arm2->getTroop(0)->x()-100)arm1->getTroop(0)->setSts(attack);
+           else arm1->getTroop(0)->setSts(run);
+
         }
+        else arm1->getTroop(0)->setSts(run);
 
         for(int i=1;i<arm1->size();i++)
         {
@@ -193,10 +195,13 @@ void Battlefield::ArmyControl()
     if(arm2->size() != 0)
     {
         if(arm2->getTroop(0)->x()<=290)arm2->getTroop(0)->setSts(attack);
-        if(arm1->size() != 0)
+        else if(arm1->size() != 0)
         {
            if(arm2->getTroop(0)->x()<=arm1->getTroop(0)->x()+100)arm2->getTroop(0)->setSts(attack);
+           else arm2->getTroop(0)->setSts(run);
+
         }
+        else arm2->getTroop(0)->setSts(run);
 
         for(int i=1;i<arm2->size();i++)
             if(arm2->getTroop(i)->x()<=(arm2->getTroop(i-1)->x()+80))arm2->getTroop(i)->setSts(stand);

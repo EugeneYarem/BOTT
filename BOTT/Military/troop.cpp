@@ -3,7 +3,6 @@
 
 Troop::Troop()
 {
-
 }
 
 double Troop::getHp()
