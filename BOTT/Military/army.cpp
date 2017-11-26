@@ -63,39 +63,39 @@ void Army::addTroop(QString type, QGraphicsScene * scene)
     {
     if(type=="soldier")
     {
-        if(parent->getTown()->getMoney()>=0)
+        if(parent->getTown()->getMoney()>=1000)
         {
         arm.resize(arm.size()+1);
         arm[arm.size()-1]=new Infantry(*soldier);
         arm[arm.size()-1]->startAllTimers();
         scene->addItem(arm[arm.size()-1]);
-        parent->getTown()->setMoney(parent->getTown()->getMoney()-0);
+        parent->getTown()->setMoney(parent->getTown()->getMoney()-1000);
         emit this->moneyWasted(1000);
         emit this->uniteCreated();
         }
     }
     if(type=="archer")
     {
-        if(parent->getTown()->getMoney()>=0)
+        if(parent->getTown()->getMoney()>=1000)
         {
         arm.resize(arm.size()+1);
         arm[arm.size()-1]=new Archer(*archer);
         arm[arm.size()-1]->startAllTimers();
         scene->addItem(arm[arm.size()-1]);
-        parent->getTown()->setMoney(parent->getTown()->getMoney()-0);
+        parent->getTown()->setMoney(parent->getTown()->getMoney()-1000);
         emit this->moneyWasted(1000);
         emit this->uniteCreated();
         }
     }
     if(type=="rider")
     {
-        if(parent->getTown()->getMoney()>=0)
+        if(parent->getTown()->getMoney()>=3000)
         {
         arm.resize(arm.size()+1);
         arm[arm.size()-1]=new Rider(*rider);
         arm[arm.size()-1]->startAllTimers();
         scene->addItem(arm[arm.size()-1]);
-        parent->getTown()->setMoney(parent->getTown()->getMoney()-0);
+        parent->getTown()->setMoney(parent->getTown()->getMoney()-3000);
         emit this->moneyWasted(3000);
         emit this->uniteCreated();
         }
