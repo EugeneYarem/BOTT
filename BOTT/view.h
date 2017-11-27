@@ -43,9 +43,9 @@ public:
     Qt::Key getControlKey(QString key); // Возвращает код кнопки по ключу
     QString getValueByControlKey(QString);
     void setControlKey(QString, Qt::Key);
-    void setPriceUpgrade(QString, int);
-    int getPriceUpgrade(QString key);
     bool checkControlKey(Qt::Key);
+    void setPriceUpgrade(QString, int);
+    int getPriceUpgrade(QString);
     Army * getArmy();
     Town * getTown();
     void stopAllTimers();
@@ -57,6 +57,7 @@ private slots:
 
 signals:
     void menuVisibleStatusChanged(View *); // Сигнал, сообщающий виджету, что время нахождения игрока в меню закончилось
+
     // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event);

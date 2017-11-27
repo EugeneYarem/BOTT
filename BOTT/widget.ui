@@ -44,13 +44,10 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <property name="horizontalSpacing">
-    <number>6</number>
-   </property>
    <item row="0" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="battlefield">
       <layout class="QGridLayout" name="gridLayout_2">
@@ -382,11 +379,27 @@
       <zorder>pushButton</zorder>
      </widget>
      <widget class="QWidget" name="settings">
-      <layout class="QGridLayout" name="gridLayout_4">
+      <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout_6">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="maximumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
            <item>
             <spacer name="horizontalSpacer_7">
              <property name="orientation">
@@ -402,6 +415,29 @@
            </item>
            <item>
             <widget class="QLabel" name="labelSettings">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Century Gothic</family>
+               <pointsize>16</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string>Настройки</string>
              </property>
@@ -432,8 +468,79 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
+             <width>1239</width>
+             <height>13</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelSLogo">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>150</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>150</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="resources.qrc">:/images/images/logo.png</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
              <width>20</width>
-             <height>18</height>
+             <height>17</height>
             </size>
            </property>
           </spacer>
@@ -457,6 +564,18 @@
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
               <widget class="QLabel" name="label">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgba(255, 255, 255, 0);</string>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -464,6 +583,23 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsMenu">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Вызов меню</string>
                </property>
@@ -471,6 +607,23 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsChoose">
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Выбор пункта меню</string>
                </property>
@@ -478,6 +631,23 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsExit">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Выход из меню</string>
                </property>
@@ -485,6 +655,23 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsUp">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Вверх по меню</string>
                </property>
@@ -492,6 +679,25 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsDown">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgba(255, 255, 255, 100);
+padding-left: 5px;
+padding-right: 5px</string>
+               </property>
                <property name="text">
                 <string>Вниз по меню</string>
                </property>
@@ -499,6 +705,23 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsSoldier">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Создать пехотинца</string>
                </property>
@@ -506,6 +729,23 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsArcher">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Создать лучника</string>
                </property>
@@ -513,6 +753,23 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsRider">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Создать наездника</string>
                </property>
@@ -520,6 +777,23 @@
              </item>
              <item>
               <widget class="QLabel" name="labelSettingsWizard">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Century Gothic</family>
+                 <pointsize>16</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Создать мага</string>
                </property>
@@ -559,6 +833,23 @@
                </item>
                <item>
                 <widget class="QLabel" name="labelSPlayer">
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>16</pointsize>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
                  <property name="text">
                   <string>Игрок 1</string>
                  </property>
@@ -601,14 +892,14 @@
                 <widget class="QLineEdit" name="lineEditMenu">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -616,6 +907,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -656,14 +959,14 @@
                 <widget class="QLineEdit" name="lineEditChoose">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -671,6 +974,21 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="autoFillBackground">
+                  <bool>false</bool>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -711,14 +1029,14 @@
                 <widget class="QLineEdit" name="lineEditExit">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -726,6 +1044,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -766,14 +1096,14 @@
                 <widget class="QLineEdit" name="lineEditUp">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -781,6 +1111,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -821,14 +1163,14 @@
                 <widget class="QLineEdit" name="lineEditDown">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -836,6 +1178,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -876,14 +1230,14 @@
                 <widget class="QLineEdit" name="lineEditSoldier">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -891,6 +1245,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -931,14 +1297,14 @@
                 <widget class="QLineEdit" name="lineEditArcher">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -946,6 +1312,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -986,14 +1364,14 @@
                 <widget class="QLineEdit" name="lineEditRider">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1001,6 +1379,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1041,14 +1431,14 @@
                 <widget class="QLineEdit" name="lineEditWizard">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1056,6 +1446,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1111,6 +1513,23 @@
                </item>
                <item>
                 <widget class="QLabel" name="labelSPlayer_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>16</pointsize>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
                  <property name="text">
                   <string>Игрок 2</string>
                  </property>
@@ -1153,14 +1572,14 @@
                 <widget class="QLineEdit" name="lineEditMenu_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1168,6 +1587,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1208,14 +1639,14 @@
                 <widget class="QLineEdit" name="lineEditChoose_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1223,6 +1654,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1263,14 +1706,14 @@
                 <widget class="QLineEdit" name="lineEditExit_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1278,6 +1721,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1318,14 +1773,14 @@
                 <widget class="QLineEdit" name="lineEditUp_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1333,6 +1788,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1373,14 +1840,14 @@
                 <widget class="QLineEdit" name="lineEditDown_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1388,6 +1855,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1428,14 +1907,14 @@
                 <widget class="QLineEdit" name="lineEditSoldier_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1443,6 +1922,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1483,14 +1974,14 @@
                 <widget class="QLineEdit" name="lineEditArcher_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1498,6 +1989,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1538,14 +2041,14 @@
                 <widget class="QLineEdit" name="lineEditRider_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1553,6 +2056,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1593,14 +2108,14 @@
                 <widget class="QLineEdit" name="lineEditWizard_2">
                  <property name="minimumSize">
                   <size>
-                   <width>60</width>
-                   <height>0</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
-                   <height>16777215</height>
+                   <width>120</width>
+                   <height>30</height>
                   </size>
                  </property>
                  <property name="baseSize">
@@ -1608,6 +2123,18 @@
                    <width>30</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Century Gothic</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1646,57 +2173,61 @@
            </item>
           </layout>
          </item>
-         <item>
-          <spacer name="verticalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <spacer name="horizontalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonSave">
-             <property name="text">
-              <string>Сохранить</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_6">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
         </layout>
+       </item>
+       <item row="1" column="0">
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="statistics">
+      <layout class="QGridLayout" name="gridLayout_4">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="tableWidget">
+         <property name="maximumSize">
+          <size>
+           <width>1280</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>206</number>
+         </attribute>
+         <attribute name="verticalHeaderDefaultSectionSize">
+          <number>30</number>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -1713,6 +2244,7 @@
   <tabstop>buttonStatistics</tabstop>
   <tabstop>buttonEnd</tabstop>
   <tabstop>buttonExit</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>lineEditMenu</tabstop>
   <tabstop>lineEditChoose</tabstop>
   <tabstop>lineEditExit</tabstop>
@@ -1731,8 +2263,9 @@
   <tabstop>lineEditArcher_2</tabstop>
   <tabstop>lineEditRider_2</tabstop>
   <tabstop>lineEditWizard_2</tabstop>
-  <tabstop>buttonSave</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

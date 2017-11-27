@@ -1,13 +1,11 @@
 <RCC>
     <qresource prefix="/images">
         <file>images/gameMenuBackground.png</file>
-        <file>images/focus.png</file>
         <file>images/background.png</file>
         <file>images/Barracks_Menu/mBarracks.png</file>
         <file>images/Hospital_Menu/h1.png</file>
         <file>images/Hospital_Menu/h2.png</file>
         <file>images/Hospital_Menu/mHospital.png</file>
-        <file>images/Main_Menu/mB.png</file>
         <file>images/Main_Menu/mH.png</file>
         <file>images/Main_Menu/mM.png</file>
         <file>images/Main_Menu/mMain.png</file>
@@ -22,11 +20,9 @@
         <file>images/Science_Menu/sc4.png</file>
         <file>images/Science_Menu/sc5.png</file>
         <file>images/Workshop_Menu/mWorkshop.png</file>
-        <file>images/Workshop_Menu/w1.png</file>
         <file>images/Workshop_Menu/w2.png</file>
         <file>images/Workshop_Menu/w3.png</file>
         <file>images/Workshop_Menu/w4.png</file>
-        <file>images/Workshop_Menu/w5.png</file>
         <file>images/towns/town.png</file>
         <file>images/towns/town_2.png</file>
         <file>images/logo.png</file>
@@ -40,12 +36,15 @@
         <file>images/Main_Menu_Of_BOTT/new.png</file>
         <file>images/Main_Menu_Of_BOTT/settings.png</file>
         <file>images/Main_Menu_Of_BOTT/statistics.png</file>
+        <file>images/dialogBG.jpg</file>
+        <file>images/Main_Menu_Of_BOTT/continueFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/exitFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/finishFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/newFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/settingsFocused.png</file>
         <file>images/Main_Menu_Of_BOTT/statisticsFocused.png</file>
-        <file>images/Main_Menu_Of_BOTT/continueFocused.png</file>
+        <file>images/focus.png</file>
+        <file>images/Workshop_Menu/w1.png</file>
         <file>images/Military/archer/archer_attack_1.png</file>
         <file>images/Military/archer/archer_attack_2.png</file>
         <file>images/Military/archer/archer_attack_3.png</file>
@@ -61,12 +60,29 @@
         <file>images/Military/archer/archer_run_6.png</file>
         <file>images/Military/archer/archer_run_7.png</file>
         <file>images/Military/archer/archer_stand_1.png</file>
+        <file>images/Military/archer/crossbow_attack_1.png</file>
+        <file>images/Military/archer/crossbow_attack_2.png</file>
+        <file>images/Military/archer/crossbow_attack_3.png</file>
+        <file>images/Military/archer/crossbow_attack_4.png</file>
+        <file>images/Military/archer/crossbow_attack_5.png</file>
+        <file>images/Military/archer/crossbow_attack_6.png</file>
+        <file>images/Military/archer/crossbow_attack_7.png</file>
+        <file>images/Military/archer/crossbow_run_1.png</file>
+        <file>images/Military/archer/crossbow_run_2.png</file>
+        <file>images/Military/archer/crossbow_run_3.png</file>
+        <file>images/Military/archer/crossbow_run_4.png</file>
+        <file>images/Military/archer/crossbow_run_5.png</file>
+        <file>images/Military/archer/crossbow_run_6.png</file>
+        <file>images/Military/archer/crossbow_run_7.png</file>
+        <file>images/Military/archer/crossbow_stand_1.png</file>
+        <file>images/Military/archer/стрела.png</file>
         <file>images/Military/infantry/farmer_attack_1.png</file>
         <file>images/Military/infantry/farmer_attack_2.png</file>
         <file>images/Military/infantry/farmer_attack_3.png</file>
         <file>images/Military/infantry/farmer_attack_4.png</file>
         <file>images/Military/infantry/farmer_attack_5.png</file>
         <file>images/Military/infantry/farmer_attack_6.png</file>
+        <file>images/Military/infantry/farmer_attack_7.png</file>
         <file>images/Military/infantry/farmer_run_1.png</file>
         <file>images/Military/infantry/farmer_run_2.png</file>
         <file>images/Military/infantry/farmer_run_3.png</file>
@@ -96,6 +112,9 @@
         <file>images/Military/infantry/soldier_attack_2.png</file>
         <file>images/Military/infantry/soldier_attack_3.png</file>
         <file>images/Military/infantry/soldier_attack_4.png</file>
+        <file>images/Military/infantry/soldier_attack_5.png</file>
+        <file>images/Military/infantry/soldier_attack_6.png</file>
+        <file>images/Military/infantry/soldier_attack_7.png</file>
         <file>images/Military/infantry/soldier_run_1.png</file>
         <file>images/Military/infantry/soldier_run_2.png</file>
         <file>images/Military/infantry/soldier_run_3.png</file>
@@ -120,38 +139,6 @@
         <file>images/Military/mag/mag_run_7.png</file>
         <file>images/Military/mag/mag_run_8.png</file>
         <file>images/Military/mag/mag_stand_1.png</file>
-        <file>images/Military/rider/rider_attack_1.png</file>
-        <file>images/Military/rider/rider_attack_2.png</file>
-        <file>images/Military/rider/rider_attack_3.png</file>
-        <file>images/Military/rider/rider_attack_4.png</file>
-        <file>images/Military/rider/rider_run_1.png</file>
-        <file>images/Military/rider/rider_run_2.png</file>
-        <file>images/Military/rider/rider_run_3.png</file>
-        <file>images/Military/rider/rider_run_4.png</file>
-        <file>images/Military/rider/rider_run_5.png</file>
-        <file>images/Military/rider/rider_run_6.png</file>
-        <file>images/Military/rider/rider_run_7.png</file>
-        <file>images/Military/rider/rider_run_8.png</file>
-        <file>images/Military/rider/rider_stand_1.png</file>
-        <file>images/Military/infantry/farmer_attack_7.png</file>
-        <file>images/Military/infantry/soldier_attack_5.png</file>
-        <file>images/Military/infantry/soldier_attack_6.png</file>
-        <file>images/Military/infantry/soldier_attack_7.png</file>
-        <file>images/Military/archer/crossbow_attack_1.png</file>
-        <file>images/Military/archer/crossbow_attack_2.png</file>
-        <file>images/Military/archer/crossbow_attack_3.png</file>
-        <file>images/Military/archer/crossbow_attack_4.png</file>
-        <file>images/Military/archer/crossbow_attack_5.png</file>
-        <file>images/Military/archer/crossbow_attack_6.png</file>
-        <file>images/Military/archer/crossbow_attack_7.png</file>
-        <file>images/Military/archer/crossbow_run_1.png</file>
-        <file>images/Military/archer/crossbow_run_2.png</file>
-        <file>images/Military/archer/crossbow_run_3.png</file>
-        <file>images/Military/archer/crossbow_run_4.png</file>
-        <file>images/Military/archer/crossbow_run_5.png</file>
-        <file>images/Military/archer/crossbow_run_6.png</file>
-        <file>images/Military/archer/crossbow_run_7.png</file>
-        <file>images/Military/archer/crossbow_stand_1.png</file>
         <file>images/Military/rider/cavalier_attack_1.png</file>
         <file>images/Military/rider/cavalier_attack_2.png</file>
         <file>images/Military/rider/cavalier_attack_3.png</file>
@@ -165,5 +152,19 @@
         <file>images/Military/rider/cavalier_run_7.png</file>
         <file>images/Military/rider/cavalier_run_8.png</file>
         <file>images/Military/rider/cavalier_stand_1.png</file>
+        <file>images/Military/rider/rider_attack_1.png</file>
+        <file>images/Military/rider/rider_attack_2.png</file>
+        <file>images/Military/rider/rider_attack_3.png</file>
+        <file>images/Military/rider/rider_attack_4.png</file>
+        <file>images/Military/rider/rider_run_1.png</file>
+        <file>images/Military/rider/rider_run_2.png</file>
+        <file>images/Military/rider/rider_run_3.png</file>
+        <file>images/Military/rider/rider_run_4.png</file>
+        <file>images/Military/rider/rider_run_5.png</file>
+        <file>images/Military/rider/rider_run_6.png</file>
+        <file>images/Military/rider/rider_run_7.png</file>
+        <file>images/Military/rider/rider_run_8.png</file>
+        <file>images/Military/rider/rider_stand_1.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

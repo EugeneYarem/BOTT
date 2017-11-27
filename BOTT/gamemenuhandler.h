@@ -8,8 +8,8 @@
 */
 
 #include <QObject>
-#include <typeinfo>
 #include <QGraphicsPixmapItem>
+#include <typeinfo>
 
 class GameMenu;
 class MainMenu;

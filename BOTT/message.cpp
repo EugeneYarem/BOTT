@@ -7,6 +7,9 @@ Message::Message(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->pushButton->setDefault(true);
+
+    ui->label->setStyleSheet("QLabel{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
+    ui->pushButton->setStyleSheet("QPushButton{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
 }
 
 Message::~Message()

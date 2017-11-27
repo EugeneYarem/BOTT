@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <QTime>
 
 namespace Ui {
     class Widget;
@@ -21,28 +22,33 @@ class Widget : public QWidget
     Battlefield * btf;
     int lastVisitedPage;
     bool eventEvoke; // Переменная нужна для того, чтобы определить было ли обработано событие нажатие клавиши Esc одним из view.
-
-    void createSettingsPage();
-    bool isSettingLineEdit(QObject *);
-    void installEventFilters();
-    bool isLineEditOfFirstPlayer(QObject * );
-    void clearFocusOfMainMenu();
-    void stopAllTimers();
-    void startAllTimers();
+    bool settingsChanged; // Переменная, указывающая на то, что настройки управления были изменены. При возвращении в гавное меню в случае, если она true, то настройки сохранятся в файл
 
     // Переменные, которые хранят данные для сохранения статистики
     // P1 - player 1, P2 - player 2
     QString gamerNameP1;
     QString gamerNameP2;
-    int gameDuration;
+    QTime gameDuration;
     int earnedMoneyP1;
     int earnedMoneyP2;
     int wastedMoneyP1;
     int wastedMoneyP2;
     int countOfUnitsP1;
     int countOfUnitsP2;
-    int countOfModicationP1;
-    int countOfModicationP2;
+    int countOfModificationP1;
+    int countOfModificationP2;
+
+    void createSettingsPage();
+    void createStatisticsPage();
+    bool isSettingLineEdit(QObject *);
+    void installEventFilters();
+    bool isLineEditOfFirstPlayer(QObject * );
+    void clearFocusOfMainMenu();
+    void stopAllTimers();
+    void startAllTimers();
+    void writeStatistics();
+    void writeSettings();
+    void readSettings();
 
 public:
     explicit Widget(QWidget *parent = 0);
@@ -64,8 +70,10 @@ private slots:
     void wastedMoneyP2Plus(int);
     void countOfUnitsP1Plus();
     void countOfUnitsP2Plus();
-    void countOfModicationP1Plus();
-    void countOfModicationP2Plus();
+    void countOfModificationP1Plus();
+    void countOfModificationP2Plus();
+
+    void on_buttonStatistics_pressed();
 
 public slots:
     void updateViewWithOpenMenu(View * );
@@ -75,6 +83,9 @@ public:
     bool event(QEvent *event);
     bool eventFilter(QObject *watched, QEvent *event);
 
+    // QWidget interface
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // WIDGET_H

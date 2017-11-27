@@ -66,14 +66,15 @@ void Town::addHealthMoneyToScene()
 
 void Town::setHealth(int hp)
 {
-    this->health=hp;
-    if(health<0)health=0;
+    this->health = hp;
+    if(health < 0)
+        health = 0;
     this->healthItem->setPlainText(QString::number(health) + " hp");
 }
 
 void Town::setMoney(int mn)
 {
-    this->money=mn;
+    this->money = mn;
     this->moneyItem->setPlainText(QString::number(money));
 }
 

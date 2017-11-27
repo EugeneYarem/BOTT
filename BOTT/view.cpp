@@ -21,16 +21,10 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
         town->setPixmap(QPixmap(":images/images/towns/town_2.png"));
     else town->setPixmap(QPixmap(":images/images/towns/town.png"));
 
-
-
     if(bottomView)
-    {
-         army = new Army(this,Right);
-    }
+        army = new Army(this, Right);
     else
-    {
-          army = new Army(this,Left);
-    }
+        army = new Army(this, Left);
 
     gameMenu->connectToMenus(town);
     gameMenu->connectToMenus(army);
@@ -99,14 +93,14 @@ void View::setConfiguration()
     scene()->addItem(gameMenu);
     gameMenu->addMenusToScene();
 
-    priceUpgrade.insert("Hauberk",5000);
-    priceUpgrade.insert("Armor",8000);
-    priceUpgrade.insert("Weapon",12000);
-    priceUpgrade.insert("Quarantine",500);
-    priceUpgrade.insert("Doctors",5000);
-    priceUpgrade.insert("Mage_Hp",2000);
-    priceUpgrade.insert("Mage_Attack",2000);
-    priceUpgrade.insert("Arquebus",5000);
+    priceUpgrade.insert("Hauberk", 5000);
+    priceUpgrade.insert("Armor", 8000);
+    priceUpgrade.insert("Weapon", 12000);
+    priceUpgrade.insert("Quarantine", 500);
+    priceUpgrade.insert("Doctors", 5000);
+    priceUpgrade.insert("Mage_Hp", 2000);
+    priceUpgrade.insert("Mage_Attack", 2000);
+    priceUpgrade.insert("Arquebus", 5000);
 }
 
 bool View::isCanMenuOpen()
@@ -283,6 +277,15 @@ void View::setControlKey(QString key, Qt::Key value)
     controlKeys[key] = value;
 }
 
+bool View::checkControlKey(Qt::Key key)
+{
+    foreach (Qt::Key value, controlKeys) {
+        if(value == key)
+            return true;
+    }
+    return false;
+}
+
 void View::setPriceUpgrade(QString key, int value)
 {
     priceUpgrade[key] = value;
@@ -291,15 +294,6 @@ void View::setPriceUpgrade(QString key, int value)
 int View::getPriceUpgrade(QString key)
 {
     return priceUpgrade[key];
-}
-
-bool View::checkControlKey(Qt::Key key)
-{
-    foreach (Qt::Key value, controlKeys) {
-        if(value == key)
-            return true;
-    }
-    return false;
 }
 
 Army *View::getArmy()

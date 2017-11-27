@@ -14,11 +14,6 @@ public:
 
 signals:
     // SC - Science Center
-    void SC_WaterWheelExplored();
-    void SC_BlastFurnaceExplored(); // blast furnace - домна
-    void SC_ArtilleryExplored();
-    void SC_ArquebusExplored();
-    void SC_SpinningWheelExplored(); // spinning wheel - прялка
     void SC_MageHealth();
     void SC_MageAttack();
 

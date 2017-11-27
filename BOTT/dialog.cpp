@@ -7,6 +7,15 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+
+    ui->label->setStyleSheet("QLabel{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
+    ui->label_2->setStyleSheet("QLabel{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
+    ui->label_3->setStyleSheet("QLabel{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
+    ui->lineEdit->setStyleSheet("QLineEdit{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
+    ui->lineEdit_2->setStyleSheet("QLineEdit{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
+    ui->pushButton->setStyleSheet("QPushButton{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
+
+    ui->pushButton->setDefault(true);
 }
 
 Dialog::~Dialog()

@@ -40,11 +40,11 @@ SOURCES += \
     town.cpp \
     message.cpp \
     dialog.cpp \
-    Military/type/infantry.cpp \
-    Military/transform.cpp \
     Military/type/archer.cpp \
+    Military/type/infantry.cpp \
+    Military/type/mage.cpp \
     Military/type/raider.cpp \
-    Military/type/mage.cpp
+    Military/transform.cpp
 
 HEADERS += \
         widget.h \
@@ -62,11 +62,11 @@ HEADERS += \
     town.h \
     message.h \
     dialog.h \
-    Military/type/infantry.h \
-    Military/transform.h \
     Military/type/archer.h \
+    Military/type/infantry.h \
+    Military/type/mage.h \
     Military/type/raider.h \
-    Military/type/mage.h
+    Military/transform.h
 
 FORMS += \
     widget.ui \
