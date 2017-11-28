@@ -1,11 +1,15 @@
 #include "town.h"
+#include "view.h"
+#include "message.h"
 #include <QTimer>
 #include <QGraphicsTextItem>
 #include <QGraphicsScene>
 #include <QDebug>
 
-Town::Town() : QObject()
+Town::Town(View * parent) : QObject()
 {
+    this->parent = parent;
+
     health = 100;
     money = 100000;
     income = 1000;
@@ -18,12 +22,19 @@ Town::Town() : QObject()
 
     healthItem->setPlainText(QString::number(health) + " hp");
     healthItem->setFont(QFont("Old English Text MT", 23));
-    healthItem->setDefaultTextColor(Qt::darkRed);
+    healthItem->setDefaultTextColor(Qt::red);
     moneyItem->setPlainText(QString::number(money));
     moneyItem->setFont(QFont("Old English Text MT", 23));
-    moneyItem->setDefaultTextColor(Qt::darkYellow);
+    moneyItem->setDefaultTextColor(QColor(255, 246, 0));
 
     connect(incomeTimer, SIGNAL(timeout()), this, SLOT(addMoney()));
+}
+
+Town::~Town()
+{
+    delete incomeTimer;
+    delete healthItem;
+    delete moneyItem;
 }
 
 int Town::getHealth()
@@ -54,12 +65,12 @@ void Town::addHealthMoneyToScene()
         x = scene()->width() - 300;
 
     QGraphicsPixmapItem * background = new QGraphicsPixmapItem();
-    background->setPixmap(QPixmap(":images/images/hpMoneyBG.png"));
+    background->setPixmap(QPixmap(":images/images/HP_Money.png"));
     background->setPos(x, pos().y());
     scene()->addItem(background);
 
-    healthItem->setPos(x, pos().y());
-    moneyItem->setPos(x + 150, pos().y());
+    healthItem->setPos(x + 30, pos().y() - 2);
+    moneyItem->setPos(x + 150, pos().y() - 2);
     scene()->addItem(healthItem);
     scene()->addItem(moneyItem);
 }
@@ -94,8 +105,18 @@ void Town::addMoney()
 
 void Town::setNewIncome()
 {
-    // Тут должна быть проверка на то, хватает ли денег на улучшение шахты (увеличение дохода)
-    income += 100;
-
-    //emit moneyWasted(int); Тут должен выкидываться этот сигнал с ценой улучшения
+    if(money >= parent->getPriceUpgrade("Mine level up"))
+    {
+        emit moneyWasted(parent->getPriceUpgrade("Mine level up"));
+        emit modificate();
+        parent->setPriceUpgrade("Mine level up", parent->getPriceUpgrade("Mine level up") * 1.5);
+        income += 3000;
+    }
+    else
+    {
+        Message message((QWidget *)(parent->parent()));
+        message.setMessage("Недостаточно денег для покупки этого улучшения!");
+        message.show();
+        message.exec();
+    }
 }

@@ -1,6 +1,7 @@
 #include "mainmenu.h"
 #include "gamemenuhandler.h"
 #include "Military/army.h"
+#include <QGraphicsScene>
 #include <QDebug>
 
 MainMenu::MainMenu()
@@ -46,4 +47,13 @@ void MainMenu::processExitAction()
 }
 
 void MainMenu::connectWithObject(QObject * objectForConnect)
+{}
+
+void MainMenu::deleteMenuItem(int item)
+{
+    parent->scene()->removeItem(menuItems.at(item));
+    delete menuItems.at(item);
+}
+
+int MainMenu::getPriceOfCurrentItem(QMap<QString, int> *, int)
 {}

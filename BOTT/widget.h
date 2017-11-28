@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTime>
+#include <QMediaPlayer>
 
 namespace Ui {
     class Widget;
@@ -20,6 +21,7 @@ class Widget : public QWidget
     View * view_2; // Нижний view
     View * viewWithOpenMenu; // view, у которого активно меню
     Battlefield * btf;
+    QMediaPlayer * musicPlayer;
     int lastVisitedPage;
     bool eventEvoke; // Переменная нужна для того, чтобы определить было ли обработано событие нажатие клавиши Esc одним из view.
     bool settingsChanged; // Переменная, указывающая на то, что настройки управления были изменены. При возвращении в гавное меню в случае, если она true, то настройки сохранятся в файл
@@ -62,6 +64,7 @@ private slots:
     void on_buttonContinue_pressed();
     void on_buttonNew_pressed();
     void on_buttonExit_pressed();
+    void on_buttonStatistics_pressed();
 
     // Слоты для сбора статистики
     void earnedMoneyP1Plus(int);
@@ -73,7 +76,9 @@ private slots:
     void countOfModificationP1Plus();
     void countOfModificationP2Plus();
 
-    void on_buttonStatistics_pressed();
+    // Слоты управления аудиопроигрывателем
+    void restartMusic(QMediaPlayer::State);
+    void volumeChange(int);
 
 public slots:
     void updateViewWithOpenMenu(View * );

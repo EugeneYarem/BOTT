@@ -50,6 +50,8 @@ public:
     Town * getTown();
     void stopAllTimers();
     void startAllTimers();
+    void deleteCurrentMenuItem();
+    QMap<QString, int> * getPriceUpgradeMap();
 
 private slots:
     void hideMenu(); // Закрывает окно меню

@@ -12,7 +12,7 @@ class Battlefield : public QObject
     Q_OBJECT
 
     QGraphicsScene * scene;
-    QTimer * timer,*timer_B;
+    QTimer * timer, * timer_B;
     int timer_interval;
     int timer_remainingTime;
     int timerB_interval;
@@ -30,7 +30,6 @@ public:
 public slots:
     void Battle();
     void ArmyControl();
-
 };
 
 #endif // BATTLEFIELD_H

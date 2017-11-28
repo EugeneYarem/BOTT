@@ -35,3 +35,13 @@ void ScienceMenu::connectWithObject(QObject * objectForConnect)
         connect(this, SIGNAL(SC_MageAttack()), (Army *)(objectForConnect), SLOT(increaseMageAttack()));
     }
 }
+
+int ScienceMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+{
+    if(currentItem == -1)
+        return 0;
+    if(currentItem == 0)
+        return map->value("Mage_Hp");
+    if(currentItem == 1)
+        return map->value("Mage_Attack");
+}

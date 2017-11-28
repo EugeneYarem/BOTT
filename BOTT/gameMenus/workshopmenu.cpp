@@ -47,3 +47,17 @@ void WorkshopMenu::connectWithObject(QObject * objectForConnect)
         connect(this, SIGNAL(W_WeaponLevelUp()), (Army *)objectForConnect, SLOT(improveWeapon()));
     }
 }
+
+int WorkshopMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+{
+    if(currentItem == -1)
+        return 0;
+    if(currentItem == 0)
+        return map->value("Arquebus");
+    if(currentItem == 1)
+        return map->value("Hauberk");
+    if(currentItem == 2)
+        return map->value("Armor");
+    if(currentItem == 3)
+        return map->value("Weapon");
+}

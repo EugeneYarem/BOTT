@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 
+class View;
 class QTimer;
 class QGraphicsTextItem;
 
@@ -11,6 +12,7 @@ class Town : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
+    View * parent;
     int health;
     int money;
     int income; // доход от шахты
@@ -23,9 +25,11 @@ class Town : public QObject, public QGraphicsPixmapItem
 signals:
     void moneyEarned(int); // Сигнал, указывающий на то, что шахта принесла прибыль
     void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги на улучшение шахты
+    void modificate(); // Сигнал, уведомляющий о том, что игрок купил улучшение.
 
 public:
-    Town();
+    Town(View * );
+    ~Town();
     int getHealth();
     int getMoney();
     void stopAllTimers();
@@ -38,7 +42,6 @@ public slots:
     void damage(int );
     void addMoney();
     void setNewIncome();
-
 };
 
 #endif // TOWN_H

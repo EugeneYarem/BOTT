@@ -5,6 +5,11 @@ Troop::Troop()
 {
 }
 
+Troop::~Troop()
+{
+    delete timer;
+}
+
 double Troop::getHp()
 {
     return hp;
@@ -32,11 +37,11 @@ void Troop::stopAllTimers()
 
 void Troop::setParty(PoC p)
 {
-    party=p;
-    if(p==Right)
+    party = p;
+    if(p == Right)
     {
-        QTransform t = makeTransform( this->boundingRect().size() );
-        this->setTransform( t );
+        QTransform t = makeTransform(this->boundingRect().size());
+        this->setTransform(t);
     }
 }
 
@@ -62,14 +67,15 @@ Status Troop::getSts()
 
 void Troop::setSts(Status sts)
 {
-    if(this->sts==sts)return;
-    this->sts=sts;
-    amt_cnt=1;
+    if(this->sts == sts)
+        return;
+    this->sts = sts;
+    amt_cnt = 1;
 }
 
 void Troop::setType(QString type)
 {
-    this->type=type;
+    this->type = type;
 }
 
 QString Troop::getType()
@@ -79,12 +85,12 @@ QString Troop::getType()
 
 void Troop::setDef(int def)
 {
-    this->def=def;
+    this->def = def;
 }
 
 void Troop::setImg_Pref(QString ip)
 {
-    this->img_pref=ip;
+    this->img_pref = ip;
 }
 
 QString Troop::getImg_pref()
@@ -94,5 +100,5 @@ QString Troop::getImg_pref()
 
 void Troop::setAtack(int atack)
 {
-    this->atack=atack;
+    this->atack = atack;
 }

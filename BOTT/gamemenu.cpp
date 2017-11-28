@@ -8,7 +8,8 @@ GameMenu::GameMenu() : QObject()
 
 GameMenu::~GameMenu()
 {
-    delete nameOfMenu;
+    if(nameOfMenu != NULL)
+        delete nameOfMenu;
 }
 
 void GameMenu::addMenuToScene(GameMenuHandler * parent)
@@ -37,13 +38,24 @@ void GameMenu::setMenuVisible(bool visible)
 
     for(int i = 0; i < menuItems.size(); i++)
     {
-        menuItems[i]->setVisible(visible);
+        if(menuItems[i] != NULL)
+            menuItems[i]->setVisible(visible);
     }
 }
 
 QVector<QGraphicsPixmapItem *> * GameMenu::getMenuItems()
 {
     return &menuItems;
+}
+
+QGraphicsPixmapItem *GameMenu::getNameOfMenu()
+{
+    return nameOfMenu;
+}
+
+void GameMenu::setNameOfMenu(QGraphicsPixmapItem * item)
+{
+    nameOfMenu = item;
 }
 
 void GameMenu::processExitAction()

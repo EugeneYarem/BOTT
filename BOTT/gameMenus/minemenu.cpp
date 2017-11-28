@@ -29,3 +29,11 @@ void MineMenu::connectWithObject(QObject * objectForConnect)
         connect(this, SIGNAL(M_LevelUp()), (Town *)objectForConnect, SLOT(setNewIncome()));
     }
 }
+
+int MineMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+{
+    if(currentItem == -1)
+        return 0;
+    if(currentItem == 0)
+        return map->value("Mine level up");
+}

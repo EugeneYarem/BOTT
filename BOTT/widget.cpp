@@ -59,6 +59,11 @@ Widget::Widget(QWidget *parent) :
     btf->setScene(scene);
     btf->setArmies(view->getArmy(), view_2->getArmy());
 
+    musicPlayer = new QMediaPlayer();
+    musicPlayer->setMedia(QUrl("qrc:/sounds/musicBackground.mp3"));
+    musicPlayer->setVolume(50);
+    musicPlayer->play();
+
     lastVisitedPage = 1;
     eventEvoke = false;
     settingsChanged = false;
@@ -72,16 +77,21 @@ Widget::Widget(QWidget *parent) :
     // Коннэкты для сбора статистики о доходах и затратах
     connect(view->getArmy(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
     connect(view_2->getArmy(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
-    connect(view->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP1Plus(int)));
-    connect(view_2->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP2Plus(int)));
-    connect(view->getTown(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
-    connect(view_2->getTown(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
-    connect(view->getArmy(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
-    connect(view_2->getArmy(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
     connect(view->getArmy(), SIGNAL(uniteCreated()), this, SLOT(countOfUnitsP1Plus()));
     connect(view_2->getArmy(), SIGNAL(uniteCreated()), this, SLOT(countOfUnitsP2Plus()));
     connect(view->getArmy(), SIGNAL(modificate()), this, SLOT(countOfModificationP1Plus()));
     connect(view_2->getArmy(), SIGNAL(modificate()), this, SLOT(countOfModificationP2Plus()));
+    connect(view->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP1Plus(int)));
+    connect(view_2->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP2Plus(int)));
+    connect(view->getTown(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
+    connect(view_2->getTown(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP2Plus(int)));
+    connect(view->getTown(), SIGNAL(modificate()), this, SLOT(countOfModificationP1Plus()));
+    connect(view_2->getTown(), SIGNAL(modificate()), this, SLOT(countOfModificationP2Plus()));
+
+    // Коннэкты для работы с аудиопроигрывателем
+    connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(volumeChange(int)));
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(volumeChange(int)));
+    connect(musicPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(restartMusic(QMediaPlayer::State)));
 
     viewWithOpenMenu = NULL;
 
@@ -100,6 +110,7 @@ Widget::~Widget()
 {
     delete ui;
     delete btf;
+    delete musicPlayer;
 }
 
 void Widget::setGamerNameP1(QString name)
@@ -110,7 +121,6 @@ void Widget::setGamerNameP1(QString name)
 void Widget::setGamerNameP2(QString name)
 {
     gamerNameP2 = name;
-    writeStatistics();
 }
 
 void Widget::startNewGame()
@@ -168,6 +178,17 @@ void Widget::countOfModificationP2Plus()
     countOfModificationP2++;
 }
 
+void Widget::restartMusic(QMediaPlayer::State state)
+{
+    if(state == QMediaPlayer::StoppedState)
+        musicPlayer->play();
+}
+
+void Widget::volumeChange(int volume)
+{
+    musicPlayer->setVolume(volume);
+}
+
 void Widget::createSettingsPage()
 {
     ui->lineEditMenu->setText(QKeySequence(view->getControlKey("menu")).toString());
@@ -194,6 +215,10 @@ void Widget::createSettingsPage()
     ui->labelSLogo->setStyleSheet("QLabel{background: rgba(255, 255, 255, 0);}");
     ui->labelSPlayer->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}");
     ui->labelSPlayer_2->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}");
+    ui->labelSettingsSound->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px;}");
+    ui->labelSettingsSound->setFixedWidth(234);
+    ui->spinBox->setStyleSheet("QSpinBox{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}");
+    ui->horizontalSlider->setStyleSheet("QSlider{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}");
     ui->labelSettingsMenu->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}");
     ui->labelSettingsChoose->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}");
     ui->labelSettingsExit->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}");
@@ -222,6 +247,9 @@ void Widget::createSettingsPage()
     ui->lineEditRider_2->setStyleSheet("QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}");
     ui->lineEditWizard->setStyleSheet("QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}");
     ui->lineEditWizard_2->setStyleSheet("QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}");
+
+    connect(ui->spinBox, SIGNAL(valueChanged(int)), ui->horizontalSlider, SLOT(setValue(int)));
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), ui->spinBox, SLOT(setValue(int)));
 }
 
 void Widget::createStatisticsPage()
@@ -382,7 +410,7 @@ void Widget::writeStatistics()
     player2.insert("count of modification", countOfModificationP2);
 
     QJsonArray array;
-    array.insert(0, gameDuration.msec());
+    array.insert(0, gameDuration.msecsTo(QTime::currentTime()));
     array.insert(1, player1);
     array.insert(2, player2);
 
@@ -402,8 +430,6 @@ void Widget::writeStatistics()
     }
     else
     {
-        qDebug() << jsonDoc.array();
-
         QJsonArray temp = jsonDoc.array();
         temp.push_front(array);
         jsonDoc.setArray(temp);
@@ -797,6 +823,7 @@ void Widget::closeEvent(QCloseEvent *event)
 {
     if(settingsChanged)
         writeSettings();
+    writeStatistics();
 }
 
 void Widget::on_buttonSettings_pressed()

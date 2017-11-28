@@ -1,6 +1,7 @@
 #include "hospitalmenu.h"
 #include "gamemenuhandler.h"
 #include "Military/army.h"
+#include <QMap>
 #include <QDebug>
 
 HospitalMenu::HospitalMenu()
@@ -34,4 +35,14 @@ void HospitalMenu::connectWithObject(QObject * objectForConnect)
         connect(this, SIGNAL(H_EnterQuarantine()), (Army *)objectForConnect, SLOT(improveQuarantine()));
         connect(this, SIGNAL(H_DoctorsCountUp()), (Army *)objectForConnect, SLOT(improveDoctors()));
     }
+}
+
+int HospitalMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+{
+    if(currentItem == -1)
+        return 0;
+    if(currentItem == 0)
+        return map->value("Quarantine");
+    if(currentItem == 1)
+        return map->value("Doctors");
 }

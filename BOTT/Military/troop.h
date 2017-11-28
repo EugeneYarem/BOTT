@@ -3,18 +3,17 @@
 
 #include <QGraphicsPixmapItem>
 #include <QString>
-#include <QTimer>
 #include "Military/transform.h"
 
+class QTimer;
+
 enum Status{stand, run, attack};
-enum PoC{Left,Right};//сторона конфликта
+enum PoC{Left, Right};//сторона конфликта
 
 class Troop : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
-    // ЛЁША, ПОЖАЛУЙСТА, ИСПОЛЬЗУЙ ФУНКЦИИ (SET-еры, GET-еры) ДЛЯ ДОСТУПА К ПОЛЯМ КЛАССА ИЗ ДРУГИХ КЛАССОВ
-    // НЕ ЗАБЫВАЙ ПРО ИНКАПСУЛЯЦИЮ
 protected:
     double hp;//1-...
     double atack;//1-...
@@ -27,9 +26,10 @@ protected:
     Status sts;//is run, stay,attack...
     PoC party;
     QString type;
-public:
 
+public:
     Troop();
+    ~Troop();
     double getHp();
     double getAtack();
     void setHp(float);
@@ -49,8 +49,8 @@ public:
     QString getImg_pref();
 
 public slots:
-    virtual void Animation()=0;
-    virtual void Run()=0;
+    virtual void Animation() = 0;
+    virtual void Run() = 0;
 };
 
 #endif // TROOP_H

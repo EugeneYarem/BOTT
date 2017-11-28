@@ -13,9 +13,9 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
     if(bottomView)
         lastSceneX = 1255;
 
-    gameMenu = new GameMenuHandler();
+    gameMenu = new GameMenuHandler(this);
     connect(gameMenu, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
-    town = new Town();
+    town = new Town(this);
 
     if(bottomView)
         town->setPixmap(QPixmap(":images/images/towns/town_2.png"));
@@ -28,6 +28,10 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
 
     gameMenu->connectToMenus(town);
     gameMenu->connectToMenus(army);
+
+    if(bottomView)
+        gameMenu->setPriceSid(true);
+    else gameMenu->setPriceSid(false);
 
     canMenuOpen = true;
     menuOpen = false;
@@ -101,6 +105,7 @@ void View::setConfiguration()
     priceUpgrade.insert("Mage_Hp", 2000);
     priceUpgrade.insert("Mage_Attack", 2000);
     priceUpgrade.insert("Arquebus", 5000);
+    priceUpgrade.insert("Mine level up", 6000);
 }
 
 bool View::isCanMenuOpen()
@@ -321,4 +326,14 @@ void View::startAllTimers()
     inMenuTimer->start(inMenuTimer_remainingTime);
     pauseMenuTimer->start(pauseMenuTimer_remainingTime);
     town->startAllTimers();
+}
+
+void View::deleteCurrentMenuItem()
+{
+    gameMenu->deleteCurrentMenuItem();
+}
+
+QMap<QString, int> * View::getPriceUpgradeMap()
+{
+    return &priceUpgrade;
 }

@@ -20,6 +20,7 @@ signals:
 public:
     void processSelectAction(int );
     void connectWithObject(QObject * );
+    int getPriceOfCurrentItem(QMap<QString, int> *, int);
 };
 
 #endif // MINEMENU_H

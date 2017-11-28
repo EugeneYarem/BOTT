@@ -1,27 +1,27 @@
-#include "Military/army.h"
 #include "view.h"
 #include "town.h"
-#include <QGraphicsScene>
+#include "Military/army.h"
 #include "Military/type/infantry.h"
 #include "Military/type/archer.h"
 #include "Military/type/raider.h"
 #include "Military/type/mage.h"
+#include "message.h"
+#include <QGraphicsScene>
+#include <QDebug>
 
-
-
-Army::Army(View * parent,PoC party)
+Army::Army(View * parent, PoC party)
 {
     this->parent = parent;
-    this->party=party;
-    isArmorImprove=false;
-    isHauberkImprove=false;
-    isWeaponImprove=false;
-    isDoctorsImprove=false;
-    isArquebusImprove=false;
-    soldier=new Infantry();
-    archer=new Archer();
-    rider=new Rider();
-    mage=new Mage();
+    this->party = party;
+    isArmorImprove = false;
+    isHauberkImprove = false;
+    isWeaponImprove = false;
+    isDoctorsImprove = false;
+    isArquebusImprove = false;
+    soldier = new Infantry();
+    archer = new Archer();
+    rider = new Rider();
+    mage = new Mage();
 
     soldier->setPixmap(QPixmap(":/images/images/Military/infantry/farmer_stand_1.png"));
     soldier->setParty(party);
@@ -57,58 +57,66 @@ Army::Army(View * parent,PoC party)
 
 }
 
+Army::~Army()
+{
+    delete soldier;
+    delete archer;
+    delete rider;
+    delete mage;
+}
+
 void Army::addTroop(QString type, QGraphicsScene * scene)
 {
-    if(arm.size()<6)
+    if(arm.size() < 6)
     {
-        if(type=="soldier")
+        if(type == "soldier")
         {
-            if(parent->getTown()->getMoney()>=1000)
+            if(parent->getTown()->getMoney() >= 1000)
             {
-                arm.resize(arm.size()+1);
-                arm[arm.size()-1]=new Infantry(*soldier);
-                arm[arm.size()-1]->startAllTimers();
-                scene->addItem(arm[arm.size()-1]);
-                parent->getTown()->setMoney(parent->getTown()->getMoney()-1000);
+                arm.resize(arm.size() + 1);
+                arm[arm.size() - 1] = new Infantry(* soldier);
+                arm[arm.size() - 1]->startAllTimers();
+                scene->addItem(arm[arm.size() - 1]);
+                parent->getTown()->setMoney(parent->getTown()->getMoney() - 1000);
                 emit this->moneyWasted(1000);
                 emit this->uniteCreated();
             }
         }
-        if(type=="archer")
+        if(type == "archer")
         {
-            if(parent->getTown()->getMoney()>=1000)
+            if(parent->getTown()->getMoney() >= 1000)
             {
-                arm.resize(arm.size()+1);
-                arm[arm.size()-1]=new Archer(*archer);
-                arm[arm.size()-1]->startAllTimers();
-                scene->addItem(arm[arm.size()-1]);
-                parent->getTown()->setMoney(parent->getTown()->getMoney()-1000);
+                arm.resize(arm.size() + 1);
+                arm[arm.size() - 1] = new Archer(* archer);
+                arm[arm.size() - 1]->startAllTimers();
+                scene->addItem(arm[arm.size() - 1]);
+                parent->getTown()->setMoney(parent->getTown()->getMoney() - 1000);
                 emit this->moneyWasted(1000);
                 emit this->uniteCreated();
             }
         }
-        if(type=="rider")
+        if(type == "rider")
         {
-            if(parent->getTown()->getMoney()>=3000)
+            if(parent->getTown()->getMoney() >= 3000)
             {
-                arm.resize(arm.size()+1);
-                arm[arm.size()-1]=new Rider(*rider);
-                arm[arm.size()-1]->startAllTimers();
-                scene->addItem(arm[arm.size()-1]);
-                parent->getTown()->setMoney(parent->getTown()->getMoney()-3000);
+                arm.resize(arm.size() + 1);
+                arm[arm.size() - 1] = new Rider(* rider);
+                arm[arm.size() - 1]->startAllTimers();
+                scene->addItem(arm[arm.size() - 1]);
+                parent->getTown()->setMoney(parent->getTown()->getMoney() - 3000);
                 emit this->moneyWasted(3000);
                 emit this->uniteCreated();
             }
         }
-        if(type=="mage")
+        if(type == "mage")
         {
-            if(parent->getTown()->getMoney()>=2000)
+            if(parent->getTown()->getMoney() >= 2000)
             {
-                arm.resize(arm.size()+1);
-                arm[arm.size()-1]=new Mage(*mage);
-                arm[arm.size()-1]->startAllTimers();
-                scene->addItem(arm[arm.size()-1]);
-                parent->getTown()->setMoney(parent->getTown()->getMoney()-2000);
+                arm.resize(arm.size() + 1);
+                arm[arm.size() - 1] = new Mage(* mage);
+                arm[arm.size() - 1]->startAllTimers();
+                scene->addItem(arm[arm.size() - 1]);
+                parent->getTown()->setMoney(parent->getTown()->getMoney() - 2000);
                 emit this->moneyWasted(2000);
                 emit this->uniteCreated();
             }
@@ -130,18 +138,18 @@ int Army::size()
 
 void Army::setParty(PoC party)
 {
-    this->party=party;
+    this->party = party;
 }
 
 void Army::deleteTroop()
 {
     delete this->arm[0];
 
-    for(int i=0;i<arm.size()-1;i++)
+    for(int i = 0; i < arm.size() - 1; i++)
     {
-        arm[i]=arm[i+1];
+        arm[i] = arm[i + 1];
     }
-    arm.resize(arm.size()-1);
+    arm.resize(arm.size() - 1);
 }
 
 int Army::getTownHp()
@@ -158,121 +166,149 @@ void Army::improveHauberk()
 {
     if(!isHauberkImprove)
     {
-    if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Hauberk"))
-    {
-    QString str=soldier->getImg_pref();
-    str.resize(str.size()-7);
-    str+="soldier_";
-    soldier->setImg_Pref(str);
-    soldier->setAtack(soldier->getAtack()+30);
-    soldier->setHp(soldier->getHp()+250);
-    soldier->setPixmap(QPixmap(soldier->getImg_pref()+"stand_1"));
-    for(int i=0;i<arm.size();i++)
-    {
-        if(arm[i]->getType()=="soldier")
+        if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Hauberk"))
         {
-            arm[i]->setImg_Pref(str);
-            arm[i]->setAtack(arm[i]->getAtack()+30);
-            arm[i]->setHp(arm[i]->getHp()+250);
+            QString str = soldier->getImg_pref();
+            str.resize(str.size() - 7);
+            str += "soldier_";
+            soldier->setImg_Pref(str);
+            soldier->setAtack(soldier->getAtack() + 30);
+            soldier->setHp(soldier->getHp() + 250);
+            soldier->setPixmap(QPixmap(soldier->getImg_pref() + "stand_1"));
+
+            for(int i = 0; i < arm.size(); i++)
+            {
+                if(arm[i]->getType() == "soldier")
+                {
+                    arm[i]->setImg_Pref(str);
+                    arm[i]->setAtack(arm[i]->getAtack() + 30);
+                    arm[i]->setHp(arm[i]->getHp() + 250);
+                }
+            }
+            parent->getTown()->setMoney(parent->getTown()->getMoney() - parent->getPriceUpgrade("Hauberk"));
+            emit moneyWasted(parent->getPriceUpgrade("Hauberk"));
+            emit modificate();
+            isHauberkImprove = true;
+            parent->deleteCurrentMenuItem();
         }
-    }
-    parent->getTown()->setMoney(parent->getTown()->getMoney()-parent->getPriceUpgrade("Hauberk"));
-    moneyWasted(parent->getPriceUpgrade("Hauberk"));
-    isHauberkImprove=true;
-    }
+        else
+        {
+            Message message((QWidget *)(parent->parent()));
+            message.setMessage("Недостаточно денег для покупки этого улучшения!");
+            message.show();
+            message.exec();
+        }
     }
 }
 
 void Army::improveArmor()
 {
-    if(isHauberkImprove&&!isArmorImprove)
+    if(isHauberkImprove && !isArmorImprove)
     {
-        if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Armor"))
+        if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Armor"))
         {
-    QString str=soldier->getImg_pref();
-    str.resize(str.size()-8);
-    str+="knight_";
-    soldier->setImg_Pref(str);
+            QString str = soldier->getImg_pref();
+            str.resize(str.size() - 8);
+            str += "knight_";
+            soldier->setImg_Pref(str);
+            soldier->setAtack(soldier->getAtack() + 20);
+            soldier->setHp(soldier->getHp() + 300);
+            soldier->setPixmap(QPixmap(soldier->getImg_pref() + "stand_1"));
 
-    soldier->setAtack(soldier->getAtack()+20);
-    soldier->setHp(soldier->getHp()+300);
-    soldier->setPixmap(QPixmap(soldier->getImg_pref()+"stand_1"));
-
-    for(int i=0;i<arm.size();i++)
-    {
-        if(arm[i]->getType()=="soldier")
+            for(int i = 0; i < arm.size(); i++)
+            {
+                if(arm[i]->getType() == "soldier")
+                {
+                    arm[i]->setImg_Pref(str);
+                    arm[i]->setAtack(arm[i]->getAtack() + 20);
+                    arm[i]->setHp(arm[i]->getHp() + 300);
+                }
+            }
+            isArmorImprove = true;
+            parent->getTown()->setMoney(parent->getTown()->getMoney() - parent->getPriceUpgrade("Armor"));
+            emit moneyWasted(parent->getPriceUpgrade("Armor"));
+            emit modificate();
+            parent->deleteCurrentMenuItem();
+        }
+        else
         {
-            arm[i]->setImg_Pref(str);
-            arm[i]->setAtack(arm[i]->getAtack()+20);
-            arm[i]->setHp(arm[i]->getHp()+300);
+            Message message((QWidget *)(parent->parent()));
+            message.setMessage("Недостаточно денег для покупки этого улучшения!");
+            message.show();
+            message.exec();
         }
     }
-    isArmorImprove=true;
-    parent->getTown()->setMoney(parent->getTown()->getMoney()-parent->getPriceUpgrade("Armor"));
-    moneyWasted(parent->getPriceUpgrade("Armor"));
-    }
-    }
-
-
 }
 
 void Army::improveWeapon()
 {
-    if(isArmorImprove&&!isWeaponImprove)
+    if(isArmorImprove && !isWeaponImprove)
     {
-        if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Weapon"))
+        if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Weapon"))
         {
-    QString str=rider->getImg_pref();
-    str.resize(str.size()-9);
-    str+="rider_";
-    rider->setImg_Pref(str);
+            QString str = rider->getImg_pref();
+            str.resize(str.size() - 9);
+            str += "rider_";
+            rider->setImg_Pref(str);
+            rider->setAtack(rider->getAtack() + 60);
+            rider->setHp(rider->getHp() + 600);
+            rider->setPixmap(QPixmap(rider->getImg_pref() + "stand_1"));
+            soldier->setAtack(soldier->getAtack() + 40);
 
-    rider->setAtack(rider->getAtack()+60);
-    rider->setHp(rider->getHp()+600);
-    rider->setPixmap(QPixmap(rider->getImg_pref()+"stand_1"));
-
-    soldier->setAtack(soldier->getAtack()+40);
-
-
-    for(int i=0;i<arm.size();i++)
-    {
-            if(arm[i]->getType()=="rider")
+            for(int i = 0; i < arm.size(); i++)
             {
-                arm[i]->setImg_Pref(str);
-                arm[i]->setAtack(arm[i]->getAtack()+60);
-                arm[i]->setHp(arm[i]->getHp()+600);
+                if(arm[i]->getType() == "rider")
+                {
+                    arm[i]->setImg_Pref(str);
+                    arm[i]->setAtack(arm[i]->getAtack() + 60);
+                    arm[i]->setHp(arm[i]->getHp() + 600);
+                }
+                if(arm[i]->getType() == "soldier")
+                {
+                    arm[i]->setAtack(arm[i]->getAtack() + 40);
+                }
             }
-            if(arm[i]->getType()=="soldier")
-            {
-                 arm[i]->setAtack(arm[i]->getAtack()+40);
-            }
-    }
-
-        parent->getTown()->setMoney(parent->getTown()->getMoney()-parent->getPriceUpgrade("Weapon"));
-        moneyWasted(parent->getPriceUpgrade("Weapon"));
+            parent->getTown()->setMoney(parent->getTown()->getMoney() - parent->getPriceUpgrade("Weapon"));
+            emit moneyWasted(parent->getPriceUpgrade("Weapon"));
+            emit modificate();
+            isWeaponImprove = true;
+            parent->deleteCurrentMenuItem();
+        }
+        else
+        {
+            Message message((QWidget *)(parent->parent()));
+            message.setMessage("Недостаточно денег для покупки этого улучшения!");
+            message.show();
+            message.exec();
         }
     }
-
 }
 
 void Army::improveQuarantine()
 {
-    if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Quarantine"))
+    if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Quarantine"))
     {
-    soldier->setHp(soldier->getHp()+50);
-    rider->setHp(soldier->getHp()+50);
-    archer->setHp(soldier->getHp()+50);
-    mage->setHp(soldier->getHp()+50);
+        soldier->setHp(soldier->getHp() + 50);
+        rider->setHp(soldier->getHp() + 50);
+        archer->setHp(soldier->getHp() + 50);
+        mage->setHp(soldier->getHp() + 50);
 
-    for(int i=0;i<arm.size();i++)
-    {
-        arm[i]->setHp(arm[i]->getHp()+50);
+        for(int i = 0; i < arm.size(); i++)
+        {
+            arm[i]->setHp(arm[i]->getHp() + 50);
+        }
+        int price = parent->getPriceUpgrade("Quarantine");
+        parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
+        emit moneyWasted(parent->getPriceUpgrade("Quarantine"));
+        emit modificate();
+        parent->setPriceUpgrade("Quarantine", price * 1.5);
     }
-
-    int price=parent->getPriceUpgrade("Quarantine");
-    parent->getTown()->setMoney(parent->getTown()->getMoney()-price);
-    moneyWasted(parent->getPriceUpgrade("Quarantine"));
-    parent->setPriceUpgrade("Quarantine",price*1.5);
+    else
+    {
+        Message message((QWidget *)(parent->parent()));
+        message.setMessage("Недостаточно денег для покупки этого улучшения!");
+        message.show();
+        message.exec();
     }
 }
 
@@ -280,21 +316,31 @@ void Army::improveDoctors()
 {
     if(!isDoctorsImprove)
     {
-    if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Doctors"))
-    {
-    soldier->setHp(soldier->getHp()*2);
-    rider->setHp(soldier->getHp()*2);
-    archer->setHp(soldier->getHp()*2);
-    mage->setHp(soldier->getHp()*2);
+        if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Doctors"))
+        {
+            soldier->setHp(soldier->getHp() * 2);
+            rider->setHp(soldier->getHp() * 2);
+            archer->setHp(soldier->getHp() * 2);
+            mage->setHp(soldier->getHp() * 2);
 
-    for(int i=0;i<arm.size();i++)
-    {
-        arm[i]->setHp(arm[i]->getHp()*2);
-    }
-    int price=parent->getPriceUpgrade("Doctors");
-    parent->getTown()->setMoney(parent->getTown()->getMoney()-price);
-    moneyWasted(parent->getPriceUpgrade("Doctors"));
-    }
+            for(int i = 0; i < arm.size(); i++)
+            {
+                arm[i]->setHp(arm[i]->getHp() * 2);
+            }
+            int price = parent->getPriceUpgrade("Doctors");
+            parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
+            emit moneyWasted(parent->getPriceUpgrade("Doctors"));
+            emit modificate();
+            isDoctorsImprove = true;
+            parent->deleteCurrentMenuItem();
+        }
+        else
+        {
+            Message message((QWidget *)(parent->parent()));
+            message.setMessage("Недостаточно денег для покупки этого улучшения!");
+            message.show();
+            message.exec();
+        }
     }
 }
 
@@ -302,67 +348,91 @@ void Army::improveArquebus()
 {
     if(!isArquebusImprove)
     {
-    if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Arquebus"))
-    {
-
-    QString str=archer->getImg_pref();
-    str.resize(str.size()-7);
-    str+="crossbow_";
-    archer->setImg_Pref(str);
-
-    archer->setAtack(archer->getAtack()+100);
-    archer->setHp(archer->getHp()+400);
-    archer->setPixmap(QPixmap(rider->getImg_pref()+"stand_1"));
-
-    for(int i=0;i<arm.size();i++)
-    {
-        if(arm[i]->getType()=="archer")
+        if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Arquebus"))
         {
-            arm[i]->setImg_Pref(str);
-            arm[i]->setAtack(arm[i]->getAtack()+100);
-            arm[i]->setHp(arm[i]->getHp()+400);
+            QString str = archer->getImg_pref();
+            str.resize(str.size() - 7);
+            str += "crossbow_";
+            archer->setImg_Pref(str);
+
+            archer->setAtack(archer->getAtack() + 100);
+            archer->setHp(archer->getHp() + 400);
+            archer->setPixmap(QPixmap(rider->getImg_pref() + "stand_1"));
+
+            for(int i = 0; i < arm.size(); i++)
+            {
+                if(arm[i]->getType() == "archer")
+                {
+                    arm[i]->setImg_Pref(str);
+                    arm[i]->setAtack(arm[i]->getAtack() + 100);
+                    arm[i]->setHp(arm[i]->getHp() + 400);
+                }
+            }
+            parent->getTown()->setMoney(parent->getTown()->getMoney() - parent->getPriceUpgrade("Arquebus"));
+            emit moneyWasted(parent->getPriceUpgrade("Arquebus"));
+            emit modificate();
+            isArquebusImprove = true;
+            parent->deleteCurrentMenuItem();
+        }
+        else
+        {
+            Message message((QWidget *)(parent->parent()));
+            message.setMessage("Недостаточно денег для покупки этого улучшения!");
+            message.show();
+            message.exec();
         }
     }
-    parent->getTown()->setMoney(parent->getTown()->getMoney()-parent->getPriceUpgrade("Arquebus"));
-    moneyWasted(parent->getPriceUpgrade("Arquebus"));
-    }
-    }
-
 }
 
 void Army::increaseMageHitPoint()
 {
-    if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Quarantine"))
+    if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Mage_Hp"))
     {
-    mage->setHp(mage->getHp()+300);
+        mage->setHp(mage->getHp() + 300);
 
-    for(int i=0;i<arm.size();i++)
-    {
-        if(arm[i]->getType()=="mage")
-        arm[i]->setHp(arm[i]->getHp()+300);
+        for(int i = 0; i < arm.size(); i++)
+        {
+            if(arm[i]->getType() == "mage")
+                arm[i]->setHp(arm[i]->getHp() + 300);
+        }
+        int price = parent->getPriceUpgrade("Mage_Hp");
+        parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
+        emit moneyWasted(parent->getPriceUpgrade("Mage_Hp"));
+        emit modificate();
+        parent->setPriceUpgrade("Mage_Hp", price * 1.5);
     }
-    int price=parent->getPriceUpgrade("Quarantine");
-    parent->getTown()->setMoney(parent->getTown()->getMoney()-price);
-    moneyWasted(parent->getPriceUpgrade("Quarantine"));
-    parent->setPriceUpgrade("Quarantine",price*1.5);
+    else
+    {
+        Message message((QWidget *)(parent->parent()));
+        message.setMessage("Недостаточно денег для покупки этого улучшения!");
+        message.show();
+        message.exec();
     }
 }
 
 void Army::increaseMageAttack()
 {
-    if(parent->getTown()->getMoney()>=parent->getPriceUpgrade("Quarantine"))
+    if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Mage_Attack"))
     {
-    mage->setHp(mage->getAtack()+30);
+        mage->setHp(mage->getAtack() + 30);
 
-    for(int i=0;i<arm.size();i++)
-    {
-        if(arm[i]->getType()=="mage")
-        arm[i]->setHp(arm[i]->getAtack()+30);
+        for(int i = 0; i < arm.size(); i++)
+        {
+            if(arm[i]->getType() == "mage")
+                arm[i]->setHp(arm[i]->getAtack() + 30);
+        }
+        int price = parent->getPriceUpgrade("Mage_Attack");
+        parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
+        emit moneyWasted(parent->getPriceUpgrade("Mage_Attack"));
+        emit modificate();
+        parent->setPriceUpgrade("Mage_Attack", price * 1.5);
     }
-    int price=parent->getPriceUpgrade("Quarantine");
-    parent->getTown()->setMoney(parent->getTown()->getMoney()-price);
-    moneyWasted(parent->getPriceUpgrade("Quarantine"));
-    parent->setPriceUpgrade("Quarantine",price*1.5);
+    else
+    {
+        Message message((QWidget *)(parent->parent()));
+        message.setMessage("Недостаточно денег для покупки этого улучшения!");
+        message.show();
+        message.exec();
     }
 }
 

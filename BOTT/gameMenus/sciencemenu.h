@@ -21,6 +21,7 @@ signals:
 public:
     void processSelectAction(int );
     void connectWithObject(QObject * );
+    int getPriceOfCurrentItem(QMap<QString, int> *, int);
 };
 
 #endif // SCIENCEMENU_H

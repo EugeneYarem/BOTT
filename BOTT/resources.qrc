@@ -9,16 +9,9 @@
         <file>images/Main_Menu/mH.png</file>
         <file>images/Main_Menu/mM.png</file>
         <file>images/Main_Menu/mMain.png</file>
-        <file>images/Main_Menu/mSc.png</file>
         <file>images/Main_Menu/mW.png</file>
         <file>images/Mine_Menu/m1.png</file>
         <file>images/Mine_Menu/mMine.png</file>
-        <file>images/Science_Menu/mScienceCentre.png</file>
-        <file>images/Science_Menu/sc1.png</file>
-        <file>images/Science_Menu/sc2.png</file>
-        <file>images/Science_Menu/sc3.png</file>
-        <file>images/Science_Menu/sc4.png</file>
-        <file>images/Science_Menu/sc5.png</file>
         <file>images/Workshop_Menu/mWorkshop.png</file>
         <file>images/Workshop_Menu/w2.png</file>
         <file>images/Workshop_Menu/w3.png</file>
@@ -27,7 +20,6 @@
         <file>images/towns/town_2.png</file>
         <file>images/logo.png</file>
         <file>images/mainMenuBackground.png</file>
-        <file>images/hpMoneyBG.png</file>
         <file>images/Main_Menu_Of_BOTT/bg.png</file>
         <file>images/Main_Menu_Of_BOTT/continue.png</file>
         <file>images/Main_Menu_Of_BOTT/exit.png</file>
@@ -165,6 +157,15 @@
         <file>images/Military/rider/rider_run_7.png</file>
         <file>images/Military/rider/rider_run_8.png</file>
         <file>images/Military/rider/rider_stand_1.png</file>
+        <file>images/HP_Money.png</file>
+        <file>images/Science_Menu/sc1.png</file>
+        <file>images/Science_Menu/sc2.png</file>
+        <file>images/Science_Menu/mScienceCentre.png</file>
+        <file>images/Main_Menu/mSc.png</file>
+        <file>images/priceLeft.png</file>
+        <file>images/priceRight.png</file>
     </qresource>
-    <qresource prefix="/"/>
+    <qresource prefix="/sounds">
+        <file>musicBackground.mp3</file>
+    </qresource>
 </RCC>
