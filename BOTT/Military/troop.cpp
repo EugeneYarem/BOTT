@@ -27,11 +27,12 @@ void Troop::setHp(float hp)
 
 void Troop::startAllTimers()
 {
-    timer->start(timer_interval);
+    timer->start(timer_remainingTime);
 }
 
 void Troop::stopAllTimers()
 {
+    timer_remainingTime=timer->remainingTime();
     timer->stop();
 }
 
@@ -101,4 +102,14 @@ QString Troop::getImg_pref()
 void Troop::setAtack(int atack)
 {
     this->atack = atack;
+}
+
+void Troop::setTime_interval(int time)
+{
+    this->timer_interval=time;
+}
+
+void Troop::setTime_remainingTime(int time)
+{
+    this->timer_remainingTime=time;
 }

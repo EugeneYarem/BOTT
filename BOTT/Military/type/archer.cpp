@@ -19,14 +19,17 @@ Archer::Archer(Troop & i)
         this->setPos(300, 230);
     else
         this->setPos(2110, 230);
+
     sts = run;
+
     amt_cnt = 1;
     this->img_pref = i.getImg_pref();
-    //this->timer_interval = i.getTime_interval();
-   // this->timer_remainingTime = i.getTime_remainingTime();
+
+    this->timer_interval = i.getTime_interval();
+    this->timer_remainingTime = i.getTime_remainingTime();
+
     this->type = i.getType();
-    timer_interval = 100;
-    timer_remainingTime = 100;
+
     timer = new QTimer();
 
     connect(timer, SIGNAL(timeout()), this, SLOT(Animation()));
@@ -35,6 +38,7 @@ Archer::Archer(Troop & i)
 
 void Archer::Animation()
 {
+    timer->start(timer_interval);
     if(sts == stand)
         this->setPixmap(QPixmap(img_pref + "stand_1.png"));
     else if(sts == run)
@@ -55,6 +59,7 @@ void Archer::Animation()
 
 void Archer::Run()
 {
+    timer->start(timer_interval);
     if(sts != run)
         return;
     if(this->party == Left)

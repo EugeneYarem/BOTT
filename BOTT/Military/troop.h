@@ -38,6 +38,8 @@ public:
     void setParty(PoC);
     int getTime_interval();
     int getTime_remainingTime();
+    void setTime_interval(int time);
+    void setTime_remainingTime(int time);
     PoC getParty();
     Status getSts();
     void setSts(Status);

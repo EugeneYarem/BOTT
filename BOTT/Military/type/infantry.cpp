@@ -22,11 +22,10 @@ Infantry::Infantry(Troop & i)
     sts = run;
     amt_cnt = 1;
     this->img_pref = i.getImg_pref();
-    //this->timer_interval = i.getTime_interval();
-   // this->timer_remainingTime = i.getTime_remainingTime();
+    this->timer_interval = i.getTime_interval();
+    this->timer_remainingTime = i.getTime_remainingTime();
     this->type = i.getType();
-    timer_interval = 100;
-    timer_remainingTime = 100;
+
     timer = new QTimer();
 
     connect(timer, SIGNAL(timeout()), this, SLOT(Animation()));

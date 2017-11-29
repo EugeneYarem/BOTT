@@ -14,8 +14,8 @@ Battlefield::Battlefield()
     connect(timer_B, SIGNAL(timeout()), this, SLOT(Battle()));
     timer_interval = 50;
     timer_remainingTime = 50;
-    timerB_interval = 1000;
-    timerB_remainingTime = 1000;
+    timerB_interval = 2000;
+    timerB_remainingTime = 2000;
 }
 
 Battlefield::~Battlefield()
@@ -42,16 +42,27 @@ void Battlefield::stopAllTimers()
     timer->stop();
     timerB_remainingTime = timer_B->remainingTime();
     timer_B->stop();
+    arm1->stopAllTimers();
+    arm2->stopAllTimers();
 }
 
 void Battlefield::startAllTimers()
 {
     timer->start(timer_remainingTime);
     timer_B->start(timerB_remainingTime);
+    arm1->startAllTimers();
+    arm2->startAllTimers();
+}
+
+void Battlefield::ClearStart()
+{
+    arm1->ClearStart();
+    arm2->ClearStart();
 }
 
 void Battlefield::Battle()
 {  
+    this->timer_B->start(timerB_interval);
     if(arm1->size() != 0 && arm2->size() != 0)
     {
         if(arm2->getTroop(0)->x() - arm1->getTroop(0)->x() <= 150)//если они достаточно близко, то расчитываем показатели атаки
@@ -145,11 +156,12 @@ void Battlefield::Battle()
             }
         }
     }
-   //timer->start(timer_interval);
+   //
 }
 
 void Battlefield::ArmyControl()
 {
+    timer->start(timer_interval);
     if(arm1->size() != 0)
     {
 
@@ -161,7 +173,11 @@ void Battlefield::ArmyControl()
                arm1->getTroop(0)->setSts(attack);
            else arm1->getTroop(0)->setSts(run);
         }
-        else arm1->getTroop(0)->setSts(run);
+        else
+        {
+            arm1->getTroop(0)->setSts(run);
+            timer_B->start(timerB_interval);
+        }
 
         for(int i = 1; i < arm1->size(); i++)
         {
@@ -184,8 +200,13 @@ void Battlefield::ArmyControl()
         else arm2->getTroop(0)->setSts(run);
 
         for(int i = 1; i < arm2->size(); i++)
-            if(arm2->getTroop(i)->x() <= (arm2->getTroop(i - 1)->x() + 130))
+        {
+            int dist;
+            if(arm2->getTroop(i-1)->getType()=="rider"&&arm2->getTroop(i)->getType()!="rider") dist =130;
+            else dist=100;
+            if(arm2->getTroop(i)->x() <= (arm2->getTroop(i - 1)->x() + dist))
                 arm2->getTroop(i)->setSts(stand);
             else arm2->getTroop(i)->setSts(run);
+        }
     }
 }

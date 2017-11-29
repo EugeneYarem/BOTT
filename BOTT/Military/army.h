@@ -33,6 +33,9 @@ public:
     void deleteTroop();
     int getTownHp();
     void setTownHp(int hp);
+    void ClearStart();
+    void startAllTimers();
+    void stopAllTimers();
 
 public slots:
     void improveHauberk();

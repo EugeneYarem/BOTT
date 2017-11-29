@@ -26,6 +26,7 @@ public:
     void setArmies(Army * , Army * );
     void stopAllTimers();
     void startAllTimers();
+    void ClearStart();
 
 public slots:
     void Battle();

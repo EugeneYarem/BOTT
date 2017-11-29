@@ -23,10 +23,9 @@ Mage::Mage(Troop & i)
     amt_cnt = 1;
     this->img_pref = i.getImg_pref();
     this->type = i.getType();
-    //this->timer_interval = i.getTime_interval();
-   // this->timer_remainingTime = i.getTime_remainingTime();
-    timer_interval = 100;
-    timer_remainingTime = 100;
+    this->timer_interval = i.getTime_interval();
+    this->timer_remainingTime = i.getTime_remainingTime();
+
     timer = new QTimer();
 
     connect(timer, SIGNAL(timeout()), this, SLOT(Animation()));

@@ -13,47 +13,13 @@ Army::Army(View * parent, PoC party)
 {
     this->parent = parent;
     this->party = party;
-    isArmorImprove = false;
-    isHauberkImprove = false;
-    isWeaponImprove = false;
-    isDoctorsImprove = false;
-    isArquebusImprove = false;
+
     soldier = new Infantry();
     archer = new Archer();
     rider = new Rider();
     mage = new Mage();
 
-    soldier->setPixmap(QPixmap(":/images/images/Military/infantry/farmer_stand_1.png"));
-    soldier->setParty(party);
-    soldier->setType("soldier");
-    soldier->setAtack(100);
-    soldier->setHp(1000);
-    soldier->setDef(0);
-    soldier->setImg_Pref(":/images/images/Military/infantry/farmer_");
-
-    archer->setPixmap(QPixmap(":/images/images/Military/archer/archer_stand_1.png"));
-    archer->setParty(party);
-    archer->setType("archer");
-    archer->setAtack(70);
-    archer->setHp(1000);
-    archer->setDef(0);
-    archer->setImg_Pref(":/images/images/Military/archer/archer_");
-
-    rider->setPixmap(QPixmap(":/images/images/Military/rider/cavalier_stand_1.png"));
-    rider->setParty(party);
-    rider->setType("rider");
-    rider->setAtack(140);
-    rider->setHp(1500);
-    rider->setDef(0);
-    rider->setImg_Pref(":/images/images/Military/rider/cavalier_");
-
-    mage->setPixmap(QPixmap(":/images/images/Military/mag/mag_stand_1.png"));
-    mage->setParty(party);
-    mage->setType("mage");
-    mage->setAtack(50);
-    mage->setHp(500);
-    mage->setDef(0);
-    mage->setImg_Pref(":/images/images/Military/mag/mag_");
+    ClearStart();
 
 }
 
@@ -63,6 +29,10 @@ Army::~Army()
     delete archer;
     delete rider;
     delete mage;
+
+    for(int i=0;i<arm.size();i++)
+        delete arm[i];
+    arm.clear();
 }
 
 void Army::addTroop(QString type, QGraphicsScene * scene)
@@ -160,6 +130,71 @@ int Army::getTownHp()
 void Army::setTownHp(int hp)
 {
     parent->getTown()->setHealth(hp);
+}
+
+void Army::ClearStart()
+{
+    isArmorImprove = false;
+    isHauberkImprove = false;
+    isWeaponImprove = false;
+    isDoctorsImprove = false;
+    isArquebusImprove = false;
+
+    soldier->setPixmap(QPixmap(":/images/images/Military/infantry/farmer_stand_1.png"));
+    soldier->setParty(party);
+    soldier->setType("soldier");
+    soldier->setAtack(100);
+    soldier->setHp(1000);
+    soldier->setDef(0);
+    soldier->setImg_Pref(":/images/images/Military/infantry/farmer_");
+    soldier->setTime_interval(100);
+    soldier->setTime_remainingTime(100);
+
+    archer->setPixmap(QPixmap(":/images/images/Military/archer/archer_stand_1.png"));
+    archer->setParty(party);
+    archer->setType("archer");
+    archer->setAtack(70);
+    archer->setHp(1000);
+    archer->setDef(0);
+    archer->setImg_Pref(":/images/images/Military/archer/archer_");
+    archer->setTime_interval(100);
+    archer->setTime_remainingTime(100);
+
+    rider->setPixmap(QPixmap(":/images/images/Military/rider/cavalier_stand_1.png"));
+    rider->setParty(party);
+    rider->setType("rider");
+    rider->setAtack(140);
+    rider->setHp(1500);
+    rider->setDef(0);
+    rider->setImg_Pref(":/images/images/Military/rider/cavalier_");
+    rider->setTime_interval(100);
+    rider->setTime_remainingTime(100);
+
+    mage->setPixmap(QPixmap(":/images/images/Military/mag/mag_stand_1.png"));
+    mage->setParty(party);
+    mage->setType("mage");
+    mage->setAtack(50);
+    mage->setHp(500);
+    mage->setDef(0);
+    mage->setImg_Pref(":/images/images/Military/mag/mag_");
+    mage->setTime_interval(100);
+    mage->setTime_remainingTime(100);
+
+    for(int i=0;i<arm.size();i++)
+        delete arm[i];
+    arm.clear();
+}
+
+void Army::startAllTimers()
+{
+    for(int i=0;i<arm.size();i++)
+        arm[i]->startAllTimers();
+}
+
+void Army::stopAllTimers()
+{
+    for(int i=0;i<arm.size();i++)
+        arm[i]->startAllTimers();
 }
 
 void Army::improveHauberk()
