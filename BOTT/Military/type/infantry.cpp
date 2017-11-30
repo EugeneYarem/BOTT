@@ -20,6 +20,9 @@ Infantry::Infantry(Troop & i)
     else
         this->setPos(2110, 230);
      InitialText();
+
+
+
     sts = run;
     amt_cnt = 1;
     this->img_pref = i.getImg_pref();
@@ -64,12 +67,12 @@ void Infantry::Run()
     if(this->party == Left)
     {
         this->setPos(this->x() + 5, this->y());
-        this->Hp_Text->setPos(this->x()+this->pixmap().width()/2,this->y()-20);
+        this->Hp_Text->setPos(this->x()+this->pixmap().width()/2,this->y()-30);
 
     }
     else
     {
         this->setPos(this->x() - 5, this->y());
-        this->Hp_Text->setPos(this->x()+this->pixmap().width()/3,this->y()-20);
+        this->Hp_Text->setPos(this->x()+this->pixmap().width()/3,this->y()-30);
     }
 }

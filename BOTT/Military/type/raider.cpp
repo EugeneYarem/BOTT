@@ -65,12 +65,12 @@ void Rider::Run()
     if(this->party == Left)
     {
         this->setPos(this->x() + 5, this->y());
-        this->Hp_Text->setPos(this->x()+this->pixmap().width()/4,this->y()-20);
+        this->Hp_Text->setPos(this->x()+this->pixmap().width()/4,this->y()-30);
 
     }
     else
     {
         this->setPos(this->x() - 5, this->y());
-        this->Hp_Text->setPos(this->x()+this->pixmap().width()/2,this->y()-20);
+        this->Hp_Text->setPos(this->x()+this->pixmap().width()/2,this->y()-30);
     }
 }

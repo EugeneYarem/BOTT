@@ -17,16 +17,6 @@ Battlefield::Battlefield()
     timerB_interval = 2000;
     timerB_remainingTime = 2000;
 
-    Text_Damage1=new QGraphicsTextItem();
-    Text_Damage2=new QGraphicsTextItem();
-
-    Text_Damage1->setPlainText("");
-    Text_Damage1->setFont(QFont("Old English Text MT", 20));
-    Text_Damage1->setDefaultTextColor(Qt::red);
-
-    Text_Damage2->setPlainText("");
-    Text_Damage2->setFont(QFont("Old English Text MT", 20));
-    Text_Damage2->setDefaultTextColor(Qt::yellow);
 }
 
 Battlefield::~Battlefield()
@@ -34,15 +24,11 @@ Battlefield::~Battlefield()
     // армии удалять не нужно, т.к. каждый view сам удалит свою армию
     delete timer;
     delete timer_B;
-    delete Text_Damage1;
-    delete Text_Damage2;
 }
 
 void Battlefield::setScene(QGraphicsScene * scene)
 {
     this->scene = scene;
-    scene->addItem(Text_Damage1);
-    scene->addItem(Text_Damage2);
 }
 
 void Battlefield::setArmies(Army * army1, Army * army2)
@@ -79,9 +65,6 @@ void Battlefield::Battle()
 {  
     this->timer_B->start(timerB_interval);
 
-    Text_Damage1->setPlainText("");
-    Text_Damage2->setPlainText("");
-
     if(arm1->size() != 0 && arm2->size() != 0)
     {
         if(arm2->getTroop(0)->x() - arm1->getTroop(0)->x() <= 150)//если они достаточно близко, то расчитываем показатели атаки
@@ -112,21 +95,6 @@ void Battlefield::Battle()
                     dmg2 += arm2->getTroop(i)->getAtack() * std::pow(0.5, i);
              }
 
-            /*Text_Damage1->setPlainText(QString::number((int)dmg1));
-            //Text_Damage2->setPlainText(QString::number((int)dmg2));
-
-
-            //int posX1,posX2;
-
-            if(arm1->getTroop(0)->x()>=1235&&arm1->getTroop(0)->x()<=1280) posX1=1185;
-            else posX1=arm1->getTroop(0)->x()-20;
-
-            if(arm2->getTroop(0)->x()>=1170&&arm2->getTroop(0)->x()<=1235) posX2=1255;
-            else posX2=arm2->getTroop(0)->x()+20;
-
-            Text_Damage1->setPos(posX1,190);
-            Text_Damage2->setPos(posX2,190);*/
-
              double buf = dmg2;
              dmg2 -= arm1->getTroop(0)->getHp();
              arm1->getTroop(0)->setHp(arm1->getTroop(0)->getHp() - buf);
@@ -137,7 +105,6 @@ void Battlefield::Battle()
                  if(arm1->size() >= 1)
                  {
                       arm1->getTroop(0)->setHp(arm1->getTroop(0)->getHp() - dmg2);
-                     // arm1->getTroop(0)->setSts(run);
                  }
              }
              buf = dmg1;
@@ -150,18 +117,8 @@ void Battlefield::Battle()
                  if(arm2->size() >= 1)
                  {
                       arm2->getTroop(0)->setHp(arm2->getTroop(0)->getHp() - dmg1);
-                     // arm2->getTroop(0)->setSts(run);
                  }
              }
-
-         /*    if(arm1->size()==0&&arm2->size()!=0)
-             {
-                 arm2->getTroop(0)->setSts(run);
-             }
-             else if(arm2->size()==0&&arm1->size()!=0)
-             {
-                  arm1->getTroop(0)->setSts(run);
-             }*/
         }
     }
     else
@@ -189,7 +146,7 @@ void Battlefield::Battle()
             }
         }
     }
-   //
+
 }
 
 void Battlefield::ArmyControl()

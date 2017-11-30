@@ -19,8 +19,6 @@ class Battlefield : public QObject
     int timerB_interval;
     int timerB_remainingTime;
     Army * arm1, * arm2;
-    QGraphicsTextItem * Text_Damage1;
-    QGraphicsTextItem * Text_Damage2;
 
 public:
     Battlefield();
