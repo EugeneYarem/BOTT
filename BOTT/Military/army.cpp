@@ -47,6 +47,7 @@ void Army::addTroop(QString type, QGraphicsScene * scene)
                 arm[arm.size() - 1] = new Infantry(* soldier);
                 arm[arm.size() - 1]->startAllTimers();
                 scene->addItem(arm[arm.size() - 1]);
+                 scene->addItem(arm[arm.size() - 1]->getTextItem());
                 parent->getTown()->setMoney(parent->getTown()->getMoney() - 1000);
                 emit this->moneyWasted(1000);
                 emit this->uniteCreated();
@@ -60,6 +61,7 @@ void Army::addTroop(QString type, QGraphicsScene * scene)
                 arm[arm.size() - 1] = new Archer(* archer);
                 arm[arm.size() - 1]->startAllTimers();
                 scene->addItem(arm[arm.size() - 1]);
+                scene->addItem(arm[arm.size() - 1]->getTextItem());
                 parent->getTown()->setMoney(parent->getTown()->getMoney() - 1000);
                 emit this->moneyWasted(1000);
                 emit this->uniteCreated();
@@ -73,6 +75,7 @@ void Army::addTroop(QString type, QGraphicsScene * scene)
                 arm[arm.size() - 1] = new Rider(* rider);
                 arm[arm.size() - 1]->startAllTimers();
                 scene->addItem(arm[arm.size() - 1]);
+                scene->addItem(arm[arm.size() - 1]->getTextItem());
                 parent->getTown()->setMoney(parent->getTown()->getMoney() - 3000);
                 emit this->moneyWasted(3000);
                 emit this->uniteCreated();
@@ -86,6 +89,7 @@ void Army::addTroop(QString type, QGraphicsScene * scene)
                 arm[arm.size() - 1] = new Mage(* mage);
                 arm[arm.size() - 1]->startAllTimers();
                 scene->addItem(arm[arm.size() - 1]);
+                scene->addItem(arm[arm.size() - 1]->getTextItem());
                 parent->getTown()->setMoney(parent->getTown()->getMoney() - 2000);
                 emit this->moneyWasted(2000);
                 emit this->uniteCreated();
@@ -144,41 +148,49 @@ void Army::ClearStart()
     soldier->setParty(party);
     soldier->setType("soldier");
     soldier->setAtack(100);
+    soldier->InitialText();
     soldier->setHp(1000);
     soldier->setDef(0);
     soldier->setImg_Pref(":/images/images/Military/infantry/farmer_");
     soldier->setTime_interval(100);
     soldier->setTime_remainingTime(100);
 
+
     archer->setPixmap(QPixmap(":/images/images/Military/archer/archer_stand_1.png"));
     archer->setParty(party);
     archer->setType("archer");
     archer->setAtack(70);
+    archer->InitialText();
     archer->setHp(1000);
     archer->setDef(0);
     archer->setImg_Pref(":/images/images/Military/archer/archer_");
     archer->setTime_interval(100);
     archer->setTime_remainingTime(100);
 
+
     rider->setPixmap(QPixmap(":/images/images/Military/rider/cavalier_stand_1.png"));
     rider->setParty(party);
     rider->setType("rider");
     rider->setAtack(140);
+    rider->InitialText();
     rider->setHp(1500);
     rider->setDef(0);
     rider->setImg_Pref(":/images/images/Military/rider/cavalier_");
     rider->setTime_interval(100);
     rider->setTime_remainingTime(100);
 
+
     mage->setPixmap(QPixmap(":/images/images/Military/mag/mag_stand_1.png"));
     mage->setParty(party);
     mage->setType("mage");
     mage->setAtack(50);
+    mage->InitialText();
     mage->setHp(500);
     mage->setDef(0);
     mage->setImg_Pref(":/images/images/Military/mag/mag_");
     mage->setTime_interval(100);
     mage->setTime_remainingTime(100);
+
 
     for(int i = 0; i < arm.size(); i++)
         delete arm[i];
@@ -210,7 +222,7 @@ void Army::improveHauberk()
             soldier->setImg_Pref(str);
             soldier->setAtack(soldier->getAtack() + 30);
             soldier->setHp(soldier->getHp() + 250);
-            soldier->setPixmap(QPixmap(soldier->getImg_pref() + "stand_1"));
+            soldier->setPixmap(QPixmap(soldier->getImg_pref() + "stand_1.png"));
 
             for(int i = 0; i < arm.size(); i++)
             {
@@ -249,7 +261,7 @@ void Army::improveArmor()
             soldier->setImg_Pref(str);
             soldier->setAtack(soldier->getAtack() + 20);
             soldier->setHp(soldier->getHp() + 300);
-            soldier->setPixmap(QPixmap(soldier->getImg_pref() + "stand_1"));
+            soldier->setPixmap(QPixmap(soldier->getImg_pref() + "stand_1.png"));
 
             for(int i = 0; i < arm.size(); i++)
             {
@@ -288,7 +300,7 @@ void Army::improveWeapon()
             rider->setImg_Pref(str);
             rider->setAtack(rider->getAtack() + 60);
             rider->setHp(rider->getHp() + 600);
-            rider->setPixmap(QPixmap(rider->getImg_pref() + "stand_1"));
+            rider->setPixmap(QPixmap(rider->getImg_pref() + "stand_1.png"));
             soldier->setAtack(soldier->getAtack() + 40);
 
             for(int i = 0; i < arm.size(); i++)
@@ -393,7 +405,7 @@ void Army::improveArquebus()
 
             archer->setAtack(archer->getAtack() + 100);
             archer->setHp(archer->getHp() + 400);
-            archer->setPixmap(QPixmap(rider->getImg_pref() + "stand_1"));
+            archer->setPixmap(QPixmap(archer->getImg_pref() + "stand_1.png"));
 
             for(int i = 0; i < arm.size(); i++)
             {

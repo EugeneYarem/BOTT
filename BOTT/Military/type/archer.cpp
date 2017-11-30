@@ -20,6 +20,8 @@ Archer::Archer(Troop & i)
     else
         this->setPos(2110, 230);
 
+    this->InitialText();
+
     sts = run;
 
     amt_cnt = 1;
@@ -65,7 +67,15 @@ void Archer::Run()
     if(sts != run)
         return;
     if(this->party == Left)
+    {
         this->setPos(this->x() + 5, this->y());
+        this->Hp_Text->setPos(this->x()+this->pixmap().width()/2,this->y()-20);
+
+    }
     else
+    {
         this->setPos(this->x() - 5, this->y());
+        this->Hp_Text->setPos(this->x()+this->pixmap().width()/3,this->y()-20);
+    }
+
 }

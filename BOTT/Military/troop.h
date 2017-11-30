@@ -2,8 +2,11 @@
 #define TROOP_H
 
 #include <QGraphicsPixmapItem>
+#include <QGraphicsTextItem>
+#include <QFont>
 #include <QString>
 #include "Military/transform.h"
+
 
 class QTimer;
 
@@ -26,6 +29,7 @@ protected:
     Status sts;//is run, stay,attack...
     PoC party;
     QString type;
+    QGraphicsTextItem *Hp_Text;
 
 public:
     Troop();
@@ -49,6 +53,8 @@ public:
     void setDef(int def);
     void setImg_Pref(QString);
     QString getImg_pref();
+    QGraphicsTextItem *getTextItem();
+    void InitialText();
 
 public slots:
     virtual void Animation() = 0;

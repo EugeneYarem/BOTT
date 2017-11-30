@@ -8,6 +8,7 @@ Troop::Troop()
 Troop::~Troop()
 {
     delete timer;
+    delete Hp_Text;
 }
 
 double Troop::getHp()
@@ -23,6 +24,7 @@ double Troop::getAtack()
 void Troop::setHp(float hp)
 {
     this->hp = hp;
+    Hp_Text->setPlainText(QString::number((int)this->hp));
 }
 
 void Troop::startAllTimers()
@@ -97,6 +99,29 @@ void Troop::setImg_Pref(QString ip)
 QString Troop::getImg_pref()
 {
     return this->img_pref;
+}
+
+QGraphicsTextItem *Troop::getTextItem()
+{
+    return this->Hp_Text;
+}
+
+void Troop::InitialText()
+{
+    Hp_Text=new QGraphicsTextItem();
+
+    if(this->party == Left)
+    {
+        Hp_Text->setPos(this->x()-20,190);
+    }
+    else
+    {
+        Hp_Text->setPos(this->x()+20,190);
+    }
+
+    Hp_Text->setPlainText(QString::number((int)this->hp));
+    Hp_Text->setFont(QFont("Old English Text MT", 10));
+    Hp_Text->setDefaultTextColor(Qt::red);
 }
 
 void Troop::setAtack(int atack)

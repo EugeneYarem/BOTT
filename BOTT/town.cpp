@@ -11,7 +11,7 @@ Town::Town(View * parent) : QObject()
     this->parent = parent;
 
     health = 100;
-    money = 100000;
+    money = 0;
     income = 1000;
     incomeTimer = new QTimer;
     incomeTimer_interval = 5000;
