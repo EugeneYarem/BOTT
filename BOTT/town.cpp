@@ -71,6 +71,7 @@ void Town::addHealthMoneyToScene()
 
     healthItem->setPos(x + 30, pos().y() - 2);
     moneyItem->setPos(x + 150, pos().y() - 2);
+
     scene()->addItem(healthItem);
     scene()->addItem(moneyItem);
 }
@@ -79,7 +80,10 @@ void Town::setHealth(int hp)
 {
     this->health = hp;
     if(health < 0)
+    {
         health = 0;
+        emit loose();
+    }
     this->healthItem->setPlainText(QString::number(health) + " hp");
 }
 
@@ -87,6 +91,18 @@ void Town::setMoney(int mn)
 {
     this->money = mn;
     this->moneyItem->setPlainText(QString::number(money));
+}
+
+void Town::ClearStart()
+{
+    health = 100;
+    money = 100000;
+    income = 1000;
+    incomeTimer_interval = 5000;
+    incomeTimer_remainingTime = 5000;
+    this->healthItem->setPlainText(QString::number(health) + " hp");
+    this->moneyItem->setPlainText(QString::number(money));
+    startAllTimers();
 }
 
 void Town::damage(int damage)

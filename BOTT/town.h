@@ -26,6 +26,7 @@ signals:
     void moneyEarned(int); // Сигнал, указывающий на то, что шахта принесла прибыль
     void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги на улучшение шахты
     void modificate(); // Сигнал, уведомляющий о том, что игрок купил улучшение.
+    void loose();
 
 public:
     Town(View * );
@@ -37,6 +38,7 @@ public:
     void addHealthMoneyToScene();
     void setHealth(int);
     void setMoney(int);
+    void ClearStart();
 
 public slots:
     void damage(int );

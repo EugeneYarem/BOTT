@@ -63,6 +63,7 @@ void Battlefield::ClearStart()
 void Battlefield::Battle()
 {  
     this->timer_B->start(timerB_interval);
+
     if(arm1->size() != 0 && arm2->size() != 0)
     {
         if(arm2->getTroop(0)->x() - arm1->getTroop(0)->x() <= 150)//если они достаточно близко, то расчитываем показатели атаки
@@ -202,8 +203,11 @@ void Battlefield::ArmyControl()
         for(int i = 1; i < arm2->size(); i++)
         {
             int dist;
-            if(arm2->getTroop(i-1)->getType()=="rider"&&arm2->getTroop(i)->getType()!="rider") dist =130;
-            else dist=100;
+
+            if(arm2->getTroop(i - 1)->getType() == "rider" && arm2->getTroop(i)->getType() != "rider")
+                dist = 130;
+            else dist = 100;
+
             if(arm2->getTroop(i)->x() <= (arm2->getTroop(i - 1)->x() + dist))
                 arm2->getTroop(i)->setSts(stand);
             else arm2->getTroop(i)->setSts(run);

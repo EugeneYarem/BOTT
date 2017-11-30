@@ -106,10 +106,10 @@ void Troop::setAtack(int atack)
 
 void Troop::setTime_interval(int time)
 {
-    this->timer_interval=time;
+    this->timer_interval = time;
 }
 
 void Troop::setTime_remainingTime(int time)
 {
-    this->timer_remainingTime=time;
+    this->timer_remainingTime = time;
 }

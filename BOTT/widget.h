@@ -25,9 +25,12 @@ class Widget : public QWidget
     int lastVisitedPage;
     bool eventEvoke; // Переменная нужна для того, чтобы определить было ли обработано событие нажатие клавиши Esc одним из view.
     bool settingsChanged; // Переменная, указывающая на то, что настройки управления были изменены. При возвращении в гавное меню в случае, если она true, то настройки сохранятся в файл
+    bool isFirstGame; // Указывает, что это первая игра в текущей сессии
+    bool exit;
 
     // Переменные, которые хранят данные для сохранения статистики
     // P1 - player 1, P2 - player 2
+    QString * winner;
     QString gamerNameP1;
     QString gamerNameP2;
     QTime gameDuration;
@@ -50,7 +53,7 @@ class Widget : public QWidget
     void startAllTimers();
     void writeStatistics();
     void writeSettings();
-    void readSettings();
+    void gameOver();
 
 public:
     explicit Widget(QWidget *parent = 0);
@@ -58,6 +61,10 @@ public:
     void setGamerNameP1(QString );
     void setGamerNameP2(QString );
     void startNewGame();
+    void save();
+    void exitFromGame();
+    void readSettings();
+    void showStartDialog();
 
 private slots:
     void on_buttonSettings_pressed();
@@ -67,6 +74,8 @@ private slots:
     void on_buttonStatistics_pressed();
 
     // Слоты для сбора статистики
+    void winP1();
+    void winP2();
     void earnedMoneyP1Plus(int);
     void earnedMoneyP2Plus(int);
     void wastedMoneyP1Plus(int);

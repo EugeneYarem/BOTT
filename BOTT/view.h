@@ -52,6 +52,7 @@ public:
     void startAllTimers();
     void deleteCurrentMenuItem();
     QMap<QString, int> * getPriceUpgradeMap();
+    void ClearStart();
 
 private slots:
     void hideMenu(); // Закрывает окно меню

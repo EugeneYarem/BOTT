@@ -14,6 +14,8 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QLabel>
+#include <QFont>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -67,10 +69,13 @@ Widget::Widget(QWidget *parent) :
     lastVisitedPage = 1;
     eventEvoke = false;
     settingsChanged = false;
+    isFirstGame = true;
+    exit = false;
 
     // Эти две функции обязательно вызывать только после того, как добавлены другие элементы на сцену, чтобы меню всегда были на первом плане
     view->setConfiguration();
     view_2->setConfiguration();
+    winner = NULL;
     earnedMoneyP1 = view->getTown()->getMoney();
     earnedMoneyP2 = view_2->getTown()->getMoney();
 
@@ -81,6 +86,8 @@ Widget::Widget(QWidget *parent) :
     connect(view_2->getArmy(), SIGNAL(uniteCreated()), this, SLOT(countOfUnitsP2Plus()));
     connect(view->getArmy(), SIGNAL(modificate()), this, SLOT(countOfModificationP1Plus()));
     connect(view_2->getArmy(), SIGNAL(modificate()), this, SLOT(countOfModificationP2Plus()));
+    connect(view->getTown(), SIGNAL(loose()), this, SLOT(winP2()));
+    connect(view_2->getTown(), SIGNAL(loose()), this, SLOT(winP1()));
     connect(view->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP1Plus(int)));
     connect(view_2->getTown(), SIGNAL(moneyEarned(int)), this, SLOT(earnedMoneyP2Plus(int)));
     connect(view->getTown(), SIGNAL(moneyWasted(int)), this, SLOT(wastedMoneyP1Plus(int)));
@@ -104,6 +111,7 @@ Widget::Widget(QWidget *parent) :
     createStatisticsPage();
 
     ui->stackedWidget->setCurrentIndex(1);
+    ui->buttonContinue->hide();
 }
 
 Widget::~Widget()
@@ -125,9 +133,45 @@ void Widget::setGamerNameP2(QString name)
 
 void Widget::startNewGame()
 {
+    isFirstGame = false;
+
+    winner = NULL;
+    gameDuration = QTime::currentTime();
+    wastedMoneyP1 = 0;
+    wastedMoneyP2 = 0;
+    countOfUnitsP1 = 0;
+    countOfUnitsP2 = 0;
+    countOfModificationP1 = 0;
+    countOfModificationP2 = 0;
+    viewWithOpenMenu = NULL;
+
     startAllTimers();
     ui->stackedWidget->setCurrentIndex(0);
+    ui->buttonContinue->show();
     setMaximumWidth(16777215);
+    lastVisitedPage = 1;
+    clearFocusOfMainMenu();
+    view->ClearStart();
+    view_2->ClearStart();
+    btf->ClearStart();
+    readSettings();
+}
+
+void Widget::save()
+{
+    if(settingsChanged)
+        writeSettings();
+
+    if(!isFirstGame)
+        writeStatistics();
+
+    if(exit)
+        close();
+}
+
+void Widget::exitFromGame()
+{
+    exit = true;
 }
 
 void Widget::updateViewWithOpenMenu(View * sender)
@@ -261,20 +305,31 @@ void Widget::createStatisticsPage()
     file.close();
 
     ui->tableWidget->setRowCount(jsonDoc.array().size() * 2);
-    ui->tableWidget->setColumnCount(6);
+    ui->tableWidget->setColumnCount(7);
     ui->tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->tableWidget->setStyleSheet("QTableWidget{background: rgba(101, 5, 4, 120); color: white}");
-    ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Длительность игры" << "Имя" << "Заработано денег" << "Потрачено денег" << "Создано солдат" << "Куплено улучшений");
-    if(jsonDoc.isEmpty() || jsonDoc.isNull() || jsonDoc.array().size() < 10)
+    ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Длительность игры" << "Имя" << "Результат" << "Заработано денег" << "Потрачено денег" << "Создано солдат" << "Куплено улучшений");
+    if(jsonDoc.isEmpty() || jsonDoc.isNull() || jsonDoc.array().size() == 0)
     {
-        ui->tableWidget->setColumnWidth(0, 213);
-        ui->tableWidget->setColumnWidth(1, 213);
-        ui->tableWidget->setColumnWidth(2, 213);
-        ui->tableWidget->setColumnWidth(3, 213);
-        ui->tableWidget->setColumnWidth(4, 213);
-        ui->tableWidget->setColumnWidth(5, 213);
+        ui->tableWidget->setColumnWidth(0, 183);
+        ui->tableWidget->setColumnWidth(1, 183);
+        ui->tableWidget->setColumnWidth(2, 183);
+        ui->tableWidget->setColumnWidth(3, 183);
+        ui->tableWidget->setColumnWidth(4, 183);
+        ui->tableWidget->setColumnWidth(5, 183);
+        ui->tableWidget->setColumnWidth(6, 183);
     }
-    for(int i = 0; i < 6; i++)
+    if(jsonDoc.array().size() < 10 && jsonDoc.array().size() != 0)
+    {
+        ui->tableWidget->setColumnWidth(0, 182);
+        ui->tableWidget->setColumnWidth(1, 182);
+        ui->tableWidget->setColumnWidth(2, 182);
+        ui->tableWidget->setColumnWidth(3, 182);
+        ui->tableWidget->setColumnWidth(4, 180);
+        ui->tableWidget->setColumnWidth(5, 180);
+        ui->tableWidget->setColumnWidth(6, 182);
+    }
+    for(int i = 0; i < 7; i++)
     {
         ui->tableWidget->horizontalHeaderItem(i)->setFont(QFont("Century Gothic", 12));
         ui->tableWidget->horizontalHeader()->setSectionResizeMode(i, QHeaderView::Fixed);
@@ -295,14 +350,18 @@ void Widget::createStatisticsPage()
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(0).toInt())));
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(1).toObject()["name"].toString()));
         ui->tableWidget->setItem(i + 1, 1, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(2).toObject()["name"].toString()));
-        ui->tableWidget->setItem(i, 2, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["earned money"].toInt())));
-        ui->tableWidget->setItem(i + 1, 2, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["earned money"].toInt())));
-        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["wasted money"].toInt())));
-        ui->tableWidget->setItem(i + 1, 3, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["wasted money"].toInt())));
-        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["count of units"].toInt())));
-        ui->tableWidget->setItem(i + 1, 4, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["count of units"].toInt())));
-        ui->tableWidget->setItem(i, 5, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["count of modification"].toInt())));
-        ui->tableWidget->setItem(i + 1, 5, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["count of modification"].toInt())));
+
+        ui->tableWidget->setItem(i, 2, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(1).toObject()["result"].toString()));
+        ui->tableWidget->setItem(i + 1, 2, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(2).toObject()["result"].toString()));
+
+        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["earned money"].toInt())));
+        ui->tableWidget->setItem(i + 1, 3, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["earned money"].toInt())));
+        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["wasted money"].toInt())));
+        ui->tableWidget->setItem(i + 1, 4, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["wasted money"].toInt())));
+        ui->tableWidget->setItem(i, 5, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["count of units"].toInt())));
+        ui->tableWidget->setItem(i + 1, 5, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["count of units"].toInt())));
+        ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["count of modification"].toInt())));
+        ui->tableWidget->setItem(i + 1, 6, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["count of modification"].toInt())));
         i++;
     }
 }
@@ -398,11 +457,17 @@ void Widget::startAllTimers()
 void Widget::writeStatistics()
 {
     QJsonObject player1, player2;
+    if(*winner == gamerNameP1)
+        player1.insert("result", "Выиграл");
+    else player1.insert("result", "Проиграл");
     player1.insert("name", gamerNameP1);
     player1.insert("earned money", earnedMoneyP1);
     player1.insert("wasted money", wastedMoneyP1);
     player1.insert("count of units", countOfUnitsP1);
     player1.insert("count of modification", countOfModificationP1);
+    if(*winner == gamerNameP2)
+        player2.insert("result", "Выиграл");
+    else player2.insert("result", "Проиграл");
     player2.insert("name", gamerNameP2);
     player2.insert("earned money", earnedMoneyP2);
     player2.insert("wasted money", wastedMoneyP2);
@@ -474,6 +539,29 @@ void Widget::writeSettings()
     file.open(QIODevice::WriteOnly | QIODevice::Truncate);
     file.write(jsonDoc.toJson());
     file.close();
+}
+
+void Widget::gameOver()
+{
+    stopAllTimers();
+    view->hide();
+    view_2->hide();
+    QLabel * gameOverLabel = new QLabel(this);
+    ui->verticalLayout->addWidget(gameOverLabel);
+    gameOverLabel->move(0, 0);
+    gameOverLabel->setFixedSize(this->width() - 22, this->height() - 22);
+    gameOverLabel->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); color: red;}");
+    gameOverLabel->setFont(QFont("Century Gothic", 22));
+    gameOverLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    gameOverLabel->setText("Сражение окончено!\nПобедил в сражении " + *winner + ".");
+    gameOverLabel->show();
+}
+
+void Widget::showStartDialog()
+{
+    Dialog * dialog = new Dialog(this);
+    dialog->show();
+    dialog->exec();
 }
 
 void Widget::readSettings()
@@ -821,9 +909,21 @@ bool Widget::eventFilter(QObject *watched, QEvent *event)
 
 void Widget::closeEvent(QCloseEvent *event)
 {
-    if(settingsChanged)
-        writeSettings();
-    writeStatistics();
+    if(isFirstGame)
+    {
+        if(settingsChanged)
+            writeSettings();
+        close();
+        return;
+    }
+
+    Message mess(this);
+    mess.setExitStatus();
+    mess.setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
+    mess.exec();
+
+    if(!exit)
+        event->ignore();
 }
 
 void Widget::on_buttonSettings_pressed()
@@ -848,6 +948,7 @@ bool Widget::event(QEvent *event)
     {
         if(ui->stackedWidget->currentIndex() == 0)
             stopAllTimers();
+
         if(ui->stackedWidget->currentIndex() == 2 && settingsChanged)
         {
             writeSettings();
@@ -873,15 +974,28 @@ bool Widget::event(QEvent *event)
 
 void Widget::on_buttonNew_pressed()
 {
-    lastVisitedPage = 1;
-    Dialog * dialog = new Dialog(this);
-    dialog->show();
+    if(isFirstGame)
+    {
+        clearFocusOfMainMenu();
+        showStartDialog();
+        return;
+    }
+
     clearFocusOfMainMenu();
+    save();
+    Message mess(this);
+    mess.setNewGameStatus();
+    mess.setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
+    mess.exec();
 }
 
 void Widget::on_buttonExit_pressed()
 {
-    close();
+    clearFocusOfMainMenu();
+    Message mess(this);
+    mess.setExitStatus();
+    mess.setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
+    mess.exec();
 }
 
 void Widget::on_buttonStatistics_pressed()
@@ -890,4 +1004,16 @@ void Widget::on_buttonStatistics_pressed()
     ui->stackedWidget->setCurrentIndex(3);
     clearFocusOfMainMenu();
     ui->tableWidget->clearFocus();
+}
+
+void Widget::winP1()
+{
+    winner = &gamerNameP1;
+    gameOver();
+}
+
+void Widget::winP2()
+{
+    winner = &gamerNameP2;
+    gameOver();
 }

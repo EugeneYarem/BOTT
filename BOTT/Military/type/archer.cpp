@@ -39,6 +39,7 @@ Archer::Archer(Troop & i)
 void Archer::Animation()
 {
     timer->start(timer_interval);
+
     if(sts == stand)
         this->setPixmap(QPixmap(img_pref + "stand_1.png"));
     else if(sts == run)
@@ -60,6 +61,7 @@ void Archer::Animation()
 void Archer::Run()
 {
     timer->start(timer_interval);
+
     if(sts != run)
         return;
     if(this->party == Left)

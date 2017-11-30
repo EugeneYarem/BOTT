@@ -20,7 +20,6 @@ Army::Army(View * parent, PoC party)
     mage = new Mage();
 
     ClearStart();
-
 }
 
 Army::~Army()
@@ -30,8 +29,9 @@ Army::~Army()
     delete rider;
     delete mage;
 
-    for(int i=0;i<arm.size();i++)
+    for(int i = 0; i < arm.size(); i++)
         delete arm[i];
+
     arm.clear();
 }
 
@@ -180,21 +180,22 @@ void Army::ClearStart()
     mage->setTime_interval(100);
     mage->setTime_remainingTime(100);
 
-    for(int i=0;i<arm.size();i++)
+    for(int i = 0; i < arm.size(); i++)
         delete arm[i];
+
     arm.clear();
 }
 
 void Army::startAllTimers()
 {
-    for(int i=0;i<arm.size();i++)
+    for(int i = 0; i < arm.size(); i++)
         arm[i]->startAllTimers();
 }
 
 void Army::stopAllTimers()
 {
-    for(int i=0;i<arm.size();i++)
-        arm[i]->startAllTimers();
+    for(int i = 0; i < arm.size(); i++)
+        arm[i]->stopAllTimers();
 }
 
 void Army::improveHauberk()

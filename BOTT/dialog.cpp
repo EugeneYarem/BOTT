@@ -25,6 +25,8 @@ Dialog::~Dialog()
 
 void Dialog::on_pushButton_pressed()
 {
+    if(ui->lineEdit->text().length() == 0 || ui->lineEdit_2->text().length() == 0)
+        return;
     ((Widget *)this->parent())->setGamerNameP1(ui->lineEdit->text());
     ((Widget *)this->parent())->setGamerNameP2(ui->lineEdit_2->text());
     ((Widget *)this->parent())->startNewGame();

@@ -1,4 +1,5 @@
 #include "view.h"
+#include "widget.h"
 #include "gamemenuhandler.h"
 #include "town.h"
 #include "Military/army.h"
@@ -92,8 +93,13 @@ void View::setConfiguration()
 
     gameMenu->setFlags(QGraphicsItem::ItemIsFocusable);
     gameMenu->setVisible(false);
-    scene()->addItem(town);
-    town->addHealthMoneyToScene();
+
+    if(this->scene() != town->scene())
+    {
+        scene()->addItem(town);
+        town->addHealthMoneyToScene();
+    }
+
     scene()->addItem(gameMenu);
     gameMenu->addMenusToScene();
 
@@ -336,4 +342,29 @@ void View::deleteCurrentMenuItem()
 QMap<QString, int> * View::getPriceUpgradeMap()
 {
     return &priceUpgrade;
+}
+
+void View::ClearStart()
+{
+    inMenuTimer_remainingTime = -1;
+    pauseMenuTimer_remainingTime = -1;
+    inMenuTimer->stop();
+    pauseMenuTimer->stop();
+    town->ClearStart();
+
+    delete gameMenu;
+    gameMenu = new GameMenuHandler(this);
+    connect(gameMenu, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
+    gameMenu->connectToMenus(town);
+    gameMenu->connectToMenus(army);
+    if(bottomView)
+        gameMenu->setPriceSid(true);
+    else gameMenu->setPriceSid(false);
+
+    priceUpgrade.clear();
+    controlKeys.clear();
+    setConfiguration();
+
+    canMenuOpen = true;
+    menuOpen = false;
 }

@@ -10,6 +10,9 @@ GameMenu::~GameMenu()
 {
     if(nameOfMenu != NULL)
         delete nameOfMenu;
+
+    for(int i = 0; i < menuItems.size(); i++)
+        delete menuItems[i];
 }
 
 void GameMenu::addMenuToScene(GameMenuHandler * parent)

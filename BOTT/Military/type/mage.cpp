@@ -34,6 +34,8 @@ Mage::Mage(Troop & i)
 
 void Mage::Animation()
 {
+    timer->start(timer_interval);
+
     if(sts == stand)
         this->setPixmap(QPixmap(img_pref + "stand_1.png"));
     else if(sts == run)
@@ -54,6 +56,8 @@ void Mage::Animation()
 
 void Mage::Run()
 {
+    timer->start(timer_interval);
+
     if(sts != run)
         return;
     if(this->party == Left)
