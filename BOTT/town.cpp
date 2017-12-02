@@ -10,11 +10,11 @@ Town::Town(View * parent) : QObject()
     this->parent = parent;
 
     health = 100;
-    money = 15000;
+    money = 10000;
     income = 1000;
     incomeTimer = new QTimer;
-    incomeTimer_interval = 4000;
-    incomeTimer_remainingTime = 4000;
+    incomeTimer_interval = 4500;
+    incomeTimer_remainingTime = 4500;
 
     healthItem = new QGraphicsTextItem();
     moneyItem = new QGraphicsTextItem();
@@ -95,10 +95,10 @@ void Town::setMoney(int mn)
 void Town::ClearStart()
 {
     health = 100;
-    money = 15000;
+    money = 10000;
     income = 1000;
-    incomeTimer_interval = 4000;
-    incomeTimer_remainingTime = 4000;
+    incomeTimer_interval = 4500;
+    incomeTimer_remainingTime = 4500;
     this->healthItem->setPlainText(QString::number(health) + " hp");
     this->moneyItem->setPlainText(QString::number(money));
     startAllTimers();
