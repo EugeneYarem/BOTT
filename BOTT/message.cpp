@@ -47,9 +47,9 @@ void Message::on_pushButton_released()
 
     if(isExitMes)
     {
-        close();
-        ((Widget *)parent())->exitFromGame();
         ((Widget *)parent())->save();
+        ((Widget *)parent())->setExit();
+        close();
         return;
     }
 

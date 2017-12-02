@@ -2,7 +2,6 @@
 #include "gamemenuhandler.h"
 #include "Military/army.h"
 #include <QMap>
-#include <QDebug>
 
 HospitalMenu::HospitalMenu()
 {

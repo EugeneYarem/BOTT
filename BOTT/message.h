@@ -26,6 +26,7 @@ private slots:
 
 private:
     Ui::Message *ui;
+
 };
 
 #endif // MESSAGE_H

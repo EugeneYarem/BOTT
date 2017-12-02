@@ -7,7 +7,6 @@
 #include "Military/type/mage.h"
 #include "message.h"
 #include <QGraphicsScene>
-#include <QDebug>
 
 Army::Army(View * parent, PoC party)
 {
@@ -47,7 +46,7 @@ void Army::addTroop(QString type, QGraphicsScene * scene)
                 arm[arm.size() - 1] = new Infantry(* soldier);
                 arm[arm.size() - 1]->startAllTimers();
                 scene->addItem(arm[arm.size() - 1]);
-                 scene->addItem(arm[arm.size() - 1]->getTextItem());
+                scene->addItem(arm[arm.size() - 1]->getTextItem());
                 parent->getTown()->setMoney(parent->getTown()->getMoney() - 1000);
                 emit this->moneyWasted(1000);
                 emit this->uniteCreated();
@@ -155,7 +154,6 @@ void Army::ClearStart()
     soldier->setTime_interval(100);
     soldier->setTime_remainingTime(100);
 
-
     archer->setPixmap(QPixmap(":/images/images/Military/archer/archer_stand_1.png"));
     archer->setParty(party);
     archer->setType("archer");
@@ -166,7 +164,6 @@ void Army::ClearStart()
     archer->setImg_Pref(":/images/images/Military/archer/archer_");
     archer->setTime_interval(100);
     archer->setTime_remainingTime(100);
-
 
     rider->setPixmap(QPixmap(":/images/images/Military/rider/cavalier_stand_1.png"));
     rider->setParty(party);
@@ -179,7 +176,6 @@ void Army::ClearStart()
     rider->setTime_interval(100);
     rider->setTime_remainingTime(100);
 
-
     mage->setPixmap(QPixmap(":/images/images/Military/mag/mag_stand_1.png"));
     mage->setParty(party);
     mage->setType("mage");
@@ -190,7 +186,6 @@ void Army::ClearStart()
     mage->setImg_Pref(":/images/images/Military/mag/mag_");
     mage->setTime_interval(100);
     mage->setTime_remainingTime(100);
-
 
     for(int i = 0; i < arm.size(); i++)
         delete arm[i];
@@ -349,7 +344,7 @@ void Army::improveQuarantine()
         parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
         emit moneyWasted(parent->getPriceUpgrade("Quarantine"));
         emit modificate();
-        parent->setPriceUpgrade("Quarantine", price * 1.5);
+        parent->setPriceUpgrade("Quarantine", price * 1.6);
     }
     else
     {
@@ -447,7 +442,7 @@ void Army::increaseMageHitPoint()
         parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
         emit moneyWasted(parent->getPriceUpgrade("Mage_Hp"));
         emit modificate();
-        parent->setPriceUpgrade("Mage_Hp", price * 1.5);
+        parent->setPriceUpgrade("Mage_Hp", price * 1.3);
     }
     else
     {
@@ -462,18 +457,18 @@ void Army::increaseMageAttack()
 {
     if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Mage_Attack"))
     {
-        mage->setHp(mage->getAtack() + 30);
+        mage->setAtack(mage->getAtack() + 30);
 
         for(int i = 0; i < arm.size(); i++)
         {
             if(arm[i]->getType() == "mage")
-                arm[i]->setHp(arm[i]->getAtack() + 30);
+                arm[i]->setAtack(arm[i]->getAtack() + 30);
         }
         int price = parent->getPriceUpgrade("Mage_Attack");
         parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
         emit moneyWasted(parent->getPriceUpgrade("Mage_Attack"));
         emit modificate();
-        parent->setPriceUpgrade("Mage_Attack", price * 1.5);
+        parent->setPriceUpgrade("Mage_Attack", price * 1.3);
     }
     else
     {
@@ -483,5 +478,3 @@ void Army::increaseMageAttack()
         message.exec();
     }
 }
-
-

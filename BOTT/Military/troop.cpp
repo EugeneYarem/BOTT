@@ -123,9 +123,9 @@ void Troop::InitialText()
     Hp_Text->setFont(QFont("Old English Text MT", 14));
     Hp_Text->setDefaultTextColor(Qt::white);
 
-    if(this->party == Left)this->Hp_Text->setPos(this->x()+this->pixmap().width()/2,this->y()-30);
-    else this->Hp_Text->setPos(this->x()+this->pixmap().width()/3,this->y()-30);
-
+    if(this->party == Left)
+        this->Hp_Text->setPos(this->x() + this->pixmap().width() / 2, this->y() - 30);
+    else this->Hp_Text->setPos(this->x() + this->pixmap().width() / 3, this->y() - 30);
 }
 
 void Troop::setAtack(int atack)

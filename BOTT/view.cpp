@@ -4,7 +4,6 @@
 #include "town.h"
 #include "Military/army.h"
 #include <QResizeEvent>
-#include <QDebug>
 #include <QTimer>
 
 View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
@@ -132,7 +131,7 @@ void View::hideMenu()
     emit menuVisibleStatusChanged(this);
 
     inMenuTimer->stop();
-    pauseMenuTimer->start(5000);
+    pauseMenuTimer->start(15000);
 }
 
 void View::setCanMenuOpenInTrue()
@@ -172,7 +171,7 @@ void View::keyPressEvent(QKeyEvent *event)
         gameMenu->setFocus();
         gameMenu->showMainMenu();
 
-        inMenuTimer->start(10000);
+        inMenuTimer->start(20000);
         menuOpen = true;
         return;
     }

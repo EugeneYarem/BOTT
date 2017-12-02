@@ -3,7 +3,6 @@
 #include <QTimer>
 #include <cmath>
 #include <QGraphicsScene>
-#include <QDebug>
 
 Battlefield::Battlefield()
 {
@@ -70,7 +69,7 @@ void Battlefield::Battle()
         if(arm2->getTroop(0)->x() - arm1->getTroop(0)->x() <= 150)//если они достаточно близко, то расчитываем показатели атаки
         {
             double dmg1 = 0, dmg2 = 0;
-             qDebug()<<"-------------------------------";
+
             for(int i = 0; i < arm1->size(); i++)
             {
                 if(arm1->getTroop(i)->getType() == "rider" && arm2->getTroop(0)->getType() == "archer")//Двойной урон от "противоположного" типа войск

@@ -2,7 +2,6 @@
 #include "gamemenuhandler.h"
 #include "Military/army.h"
 #include "town.h"
-#include <QDebug>
 
 MineMenu::MineMenu()
 {

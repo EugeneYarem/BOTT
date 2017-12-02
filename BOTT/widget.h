@@ -11,6 +11,7 @@ namespace Ui {
 
 class View;
 class Battlefield;
+class QLabel;
 
 class Widget : public QWidget
 {
@@ -26,7 +27,9 @@ class Widget : public QWidget
     bool eventEvoke; // Переменная нужна для того, чтобы определить было ли обработано событие нажатие клавиши Esc одним из view.
     bool settingsChanged; // Переменная, указывающая на то, что настройки управления были изменены. При возвращении в гавное меню в случае, если она true, то настройки сохранятся в файл
     bool isFirstGame; // Указывает, что это первая игра в текущей сессии
-    bool exit;
+    bool isGameOver; // Переменная нужна, чтобы при каждой победе показать только один белый фон с победной записью
+    bool isSaved; // Указывает, что статистика была сохранена
+    bool isExit; // Если false, то перед выходом будет показано сообщение, том, что игра не окончена, если true - просто закроется
 
     // Переменные, которые хранят данные для сохранения статистики
     // P1 - player 1, P2 - player 2
@@ -55,6 +58,8 @@ class Widget : public QWidget
     void writeSettings();
     void gameOver();
 
+    QLabel * gameOverLabel;
+
 public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
@@ -62,9 +67,9 @@ public:
     void setGamerNameP2(QString );
     void startNewGame();
     void save();
-    void exitFromGame();
     void readSettings();
     void showStartDialog();
+    void setExit();
 
 private slots:
     void on_buttonSettings_pressed();
@@ -72,6 +77,7 @@ private slots:
     void on_buttonNew_pressed();
     void on_buttonExit_pressed();
     void on_buttonStatistics_pressed();
+    void on_buttonForPlayers_pressed();
 
     // Слоты для сбора статистики
     void winP1();

@@ -1,7 +1,6 @@
 #include "workshopmenu.h"
 #include "gamemenuhandler.h"
 #include "Military/army.h"
-#include <QDebug>
 
 WorkshopMenu::WorkshopMenu()
 {

@@ -1,7 +1,6 @@
 #include "gamemenu.h"
 #include "gamemenuhandler.h"
 #include <QGraphicsScene>
-#include <QDebug>
 
 GameMenu::GameMenu() : QObject()
 {}

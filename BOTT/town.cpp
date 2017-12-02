@@ -4,18 +4,17 @@
 #include <QTimer>
 #include <QGraphicsTextItem>
 #include <QGraphicsScene>
-#include <QDebug>
 
 Town::Town(View * parent) : QObject()
 {
     this->parent = parent;
 
     health = 100;
-    money = 0;
+    money = 15000;
     income = 1000;
     incomeTimer = new QTimer;
-    incomeTimer_interval = 5000;
-    incomeTimer_remainingTime = 5000;
+    incomeTimer_interval = 4000;
+    incomeTimer_remainingTime = 4000;
 
     healthItem = new QGraphicsTextItem();
     moneyItem = new QGraphicsTextItem();
@@ -96,10 +95,10 @@ void Town::setMoney(int mn)
 void Town::ClearStart()
 {
     health = 100;
-    money = 100000;
+    money = 15000;
     income = 1000;
-    incomeTimer_interval = 5000;
-    incomeTimer_remainingTime = 5000;
+    incomeTimer_interval = 4000;
+    incomeTimer_remainingTime = 4000;
     this->healthItem->setPlainText(QString::number(health) + " hp");
     this->moneyItem->setPlainText(QString::number(money));
     startAllTimers();
@@ -125,8 +124,8 @@ void Town::setNewIncome()
     {
         emit moneyWasted(parent->getPriceUpgrade("Mine level up"));
         emit modificate();
-        parent->setPriceUpgrade("Mine level up", parent->getPriceUpgrade("Mine level up") * 1.5);
-        income += 3000;
+        parent->setPriceUpgrade("Mine level up", parent->getPriceUpgrade("Mine level up") * 1.7);
+        income += 500;
     }
     else
     {

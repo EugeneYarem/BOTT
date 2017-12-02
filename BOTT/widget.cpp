@@ -7,7 +7,7 @@
 #include "dialog.h"
 #include "town.h"
 #include <QGraphicsScene>
-#include <qDebug>
+#include <QDebug>
 #include <QBrush>
 #include <QKeyEvent>
 #include <QKeySequence>
@@ -16,6 +16,7 @@
 #include <QJsonObject>
 #include <QLabel>
 #include <QFont>
+#include <QCloseEvent>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -70,7 +71,9 @@ Widget::Widget(QWidget *parent) :
     eventEvoke = false;
     settingsChanged = false;
     isFirstGame = true;
-    exit = false;
+    isGameOver = false;
+    isSaved = false;
+    isExit = false;
 
     // Эти две функции обязательно вызывать только после того, как добавлены другие элементы на сцену, чтобы меню всегда были на первом плане
     view->setConfiguration();
@@ -101,6 +104,7 @@ Widget::Widget(QWidget *parent) :
     connect(musicPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(restartMusic(QMediaPlayer::State)));
 
     viewWithOpenMenu = NULL;
+    gameOverLabel = NULL;
 
     // Коннэктим таймеры view's к слоту, чтобы по таймеру закрывалось меню игрока, у которого оно открыто
     connect(view, SIGNAL(menuVisibleStatusChanged(View*)), this, SLOT(updateViewWithOpenMenu(View*)));
@@ -119,6 +123,8 @@ Widget::~Widget()
     delete ui;
     delete btf;
     delete musicPlayer;
+    if(gameOverLabel != NULL)
+        delete gameOverLabel;
 }
 
 void Widget::setGamerNameP1(QString name)
@@ -134,6 +140,9 @@ void Widget::setGamerNameP2(QString name)
 void Widget::startNewGame()
 {
     isFirstGame = false;
+    isSaved = false;
+    isExit = false;
+    isGameOver = false;
 
     winner = NULL;
     gameDuration = QTime::currentTime();
@@ -165,13 +174,7 @@ void Widget::save()
     if(!isFirstGame)
         writeStatistics();
 
-    if(exit)
-        close();
-}
-
-void Widget::exitFromGame()
-{
-    exit = true;
+    isSaved = true;
 }
 
 void Widget::updateViewWithOpenMenu(View * sender)
@@ -292,6 +295,10 @@ void Widget::createSettingsPage()
     ui->lineEditWizard->setStyleSheet("QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}");
     ui->lineEditWizard_2->setStyleSheet("QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}");
 
+    // Стиль для страницы "Для игроков"
+    ui->labelForPlayers->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}");
+    ui->labelScheme->setStyleSheet("QLabel{background: rgba(255, 255, 255, 0);}");
+
     connect(ui->spinBox, SIGNAL(valueChanged(int)), ui->horizontalSlider, SLOT(setValue(int)));
     connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), ui->spinBox, SLOT(setValue(int)));
 }
@@ -321,14 +328,25 @@ void Widget::createStatisticsPage()
     }
     if(jsonDoc.array().size() < 10 && jsonDoc.array().size() != 0)
     {
-        ui->tableWidget->setColumnWidth(0, 182);
+        ui->tableWidget->setColumnWidth(0, 180);
         ui->tableWidget->setColumnWidth(1, 182);
-        ui->tableWidget->setColumnWidth(2, 182);
-        ui->tableWidget->setColumnWidth(3, 182);
+        ui->tableWidget->setColumnWidth(2, 180);
+        ui->tableWidget->setColumnWidth(3, 180);
         ui->tableWidget->setColumnWidth(4, 180);
         ui->tableWidget->setColumnWidth(5, 180);
-        ui->tableWidget->setColumnWidth(6, 182);
+        ui->tableWidget->setColumnWidth(6, 180);
     }
+    if(jsonDoc.array().size() > 10)
+    {
+        ui->tableWidget->setColumnWidth(0, 176);
+        ui->tableWidget->setColumnWidth(1, 179);
+        ui->tableWidget->setColumnWidth(2, 176);
+        ui->tableWidget->setColumnWidth(3, 176);
+        ui->tableWidget->setColumnWidth(4, 176);
+        ui->tableWidget->setColumnWidth(5, 176);
+        ui->tableWidget->setColumnWidth(6, 176);
+    }
+
     for(int i = 0; i < 7; i++)
     {
         ui->tableWidget->horizontalHeaderItem(i)->setFont(QFont("Century Gothic", 12));
@@ -347,13 +365,32 @@ void Widget::createStatisticsPage()
     }
     for(int i = 0, num = 0; i < ui->tableWidget->rowCount(); i++, num++)
     {
-        ui->tableWidget->setItem(i, 0, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(0).toInt())));
+        //------ Перевод милисекунд в часы, минуты и секунды
+        int msec = jsonDoc.array().at(num).toArray().at(0).toInt();
+        int hours = msec / 60 / 60 / 1000;
+        msec %= (60 * 60 * 1000);
+        int minutes = msec / 60 / 1000;
+        msec %= (60 * 1000);
+        int seconds = msec / 1000;
+        QString hoursStr, minutesStr, secondsStr;
+        if(hours < 10)
+            hoursStr = "0" + QString::number(hours);
+        else hoursStr = QString::number(hours);
+
+        if(minutes < 10)
+            minutesStr = "0" + QString::number(minutes);
+        else minutesStr = QString::number(minutes);
+
+        if(seconds < 10)
+            secondsStr = "0" + QString::number(seconds);
+        else secondsStr = QString::number(seconds);
+        //------
+
+        ui->tableWidget->setItem(i, 0, new QTableWidgetItem(hoursStr + ":" + minutesStr + ":" + secondsStr));
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(1).toObject()["name"].toString()));
         ui->tableWidget->setItem(i + 1, 1, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(2).toObject()["name"].toString()));
-
         ui->tableWidget->setItem(i, 2, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(1).toObject()["result"].toString()));
         ui->tableWidget->setItem(i + 1, 2, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(2).toObject()["result"].toString()));
-
         ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["earned money"].toInt())));
         ui->tableWidget->setItem(i + 1, 3, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["earned money"].toInt())));
         ui->tableWidget->setItem(i, 4, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["wasted money"].toInt())));
@@ -408,7 +445,7 @@ void Widget::installEventFilters()
     ui->buttonNew->installEventFilter(this);
     ui->buttonSettings->installEventFilter(this);
     ui->buttonExit->installEventFilter(this);
-    ui->buttonEnd->installEventFilter(this);
+    ui->buttonForPlayers->installEventFilter(this);
     ui->buttonStatistics->installEventFilter(this);
 }
 
@@ -429,7 +466,7 @@ void Widget::clearFocusOfMainMenu()
     ui->buttonNew->clearFocus();
     ui->buttonSettings->clearFocus();
     ui->buttonStatistics->clearFocus();
-    ui->buttonEnd->clearFocus();
+    ui->buttonForPlayers->clearFocus();
     ui->buttonExit->clearFocus();
 }
 
@@ -457,17 +494,31 @@ void Widget::startAllTimers()
 void Widget::writeStatistics()
 {
     QJsonObject player1, player2;
-    if(*winner == gamerNameP1)
-        player1.insert("result", "Выиграл");
-    else player1.insert("result", "Проиграл");
+
+    if(winner != NULL)
+    {
+        if(*winner == gamerNameP1)
+        {
+            player1.insert("result", "Выиграл");
+            player2.insert("result", "Проиграл");
+        }
+        else
+        {
+            player2.insert("result", "Выиграл");
+            player1.insert("result", "Проиграл");
+        }
+    }
+    else
+    {
+        player1.insert("result", "Ничья");
+        player2.insert("result", "Ничья");
+    }
+
     player1.insert("name", gamerNameP1);
     player1.insert("earned money", earnedMoneyP1);
     player1.insert("wasted money", wastedMoneyP1);
     player1.insert("count of units", countOfUnitsP1);
     player1.insert("count of modification", countOfModificationP1);
-    if(*winner == gamerNameP2)
-        player2.insert("result", "Выиграл");
-    else player2.insert("result", "Проиграл");
     player2.insert("name", gamerNameP2);
     player2.insert("earned money", earnedMoneyP2);
     player2.insert("wasted money", wastedMoneyP2);
@@ -546,22 +597,43 @@ void Widget::gameOver()
     stopAllTimers();
     view->hide();
     view_2->hide();
-    QLabel * gameOverLabel = new QLabel(this);
-    ui->verticalLayout->addWidget(gameOverLabel);
-    gameOverLabel->move(0, 0);
-    gameOverLabel->setFixedSize(this->width() - 22, this->height() - 22);
-    gameOverLabel->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); color: red;}");
-    gameOverLabel->setFont(QFont("Century Gothic", 22));
-    gameOverLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    gameOverLabel->setText("Сражение окончено!\nПобедил в сражении " + *winner + ".");
-    gameOverLabel->show();
+
+    if(!isGameOver)
+    {
+        gameOverLabel = new QLabel(this);
+        ui->verticalLayout->addWidget(gameOverLabel);
+        gameOverLabel->move(0, 0);
+        gameOverLabel->setFixedSize(this->width() - 22, this->height() - 22);
+        gameOverLabel->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); color: red;}");
+        gameOverLabel->setFont(QFont("Century Gothic", 22));
+        gameOverLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        gameOverLabel->setText("Сражение окончено!\nПобедил в сражении " + *winner + ".");
+        gameOverLabel->show();
+        isGameOver = true;
+        setMaximumWidth(1280);
+        save();
+        createStatisticsPage();
+        isExit = true;
+    }
 }
 
 void Widget::showStartDialog()
 {
+    if(!isFirstGame)
+    {
+        if(!isSaved)
+            save();
+        createStatisticsPage();
+    }
+
     Dialog * dialog = new Dialog(this);
     dialog->show();
     dialog->exec();
+}
+
+void Widget::setExit()
+{
+    isExit = true;
 }
 
 void Widget::readSettings()
@@ -657,17 +729,17 @@ bool Widget::eventFilter(QObject *watched, QEvent *event)
         return false;
     }
 
-    if(watched == ui->buttonEnd)
+    if(watched == ui->buttonForPlayers)
     {
         if(event->type() == QEvent::FocusIn)
-            ui->buttonEnd->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/finishFocused.png);");
+            ui->buttonForPlayers->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/forPlayerFocused.png);");
         if(event->type() == QEvent::FocusOut)
-            ui->buttonEnd->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/finish.png);");
+            ui->buttonForPlayers->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/forPlayer.png);");
         if(event->type() == QEvent::HoverEnter)
-            ui->buttonEnd->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/finishFocused.png);");
+            ui->buttonForPlayers->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/forPlayerFocused.png);");
         if(event->type() == QEvent::HoverLeave)
-            if(!ui->buttonEnd->hasFocus())
-                ui->buttonEnd->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/finish.png);");
+            if(!ui->buttonForPlayers->hasFocus())
+                ui->buttonForPlayers->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/forPlayer.png);");
         return false;
     }
 
@@ -878,8 +950,6 @@ bool Widget::eventFilter(QObject *watched, QEvent *event)
         }
     }
 
-
-
     if (watched == view || watched == view_2)
     {
         if (event->type() == QEvent::KeyPress)
@@ -917,12 +987,15 @@ void Widget::closeEvent(QCloseEvent *event)
         return;
     }
 
-    Message mess(this);
-    mess.setExitStatus();
-    mess.setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
-    mess.exec();
+    if(!isSaved)
+    {
+        Message mess(this);
+        mess.setExitStatus();
+        mess.setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
+        mess.exec();
+    }
 
-    if(!exit)
+    if(!isExit)
         event->ignore();
 }
 
@@ -939,6 +1012,13 @@ void Widget::on_buttonContinue_pressed()
     startAllTimers();
     ui->stackedWidget->setCurrentIndex(0);
     clearFocusOfMainMenu();
+
+    if(isGameOver)
+    {
+        setMaximumWidth(1280);
+        return;
+    }
+
     setMaximumWidth(16777215);
 }
 
@@ -962,6 +1042,12 @@ bool Widget::event(QEvent *event)
 
         if(temp == 0)
         {
+            if(isGameOver)
+            {
+                setMaximumWidth(1280);
+                return true;
+            }
+
             setMaximumWidth(16777215);
             startAllTimers();
         }
@@ -981,21 +1067,34 @@ void Widget::on_buttonNew_pressed()
         return;
     }
 
-    clearFocusOfMainMenu();
-    save();
-    Message mess(this);
-    mess.setNewGameStatus();
-    mess.setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
-    mess.exec();
+    if(!isSaved)
+    {
+        clearFocusOfMainMenu();
+        Message mess(this);
+        mess.setNewGameStatus();
+        mess.setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
+        mess.exec();
+    }
+    else
+    {
+        if(isGameOver)
+        {
+            view->show();
+            view_2->show();
+            delete gameOverLabel;
+            gameOverLabel = NULL;
+        }
+
+        clearFocusOfMainMenu();
+        showStartDialog();
+        return;
+    }
 }
 
 void Widget::on_buttonExit_pressed()
 {
     clearFocusOfMainMenu();
-    Message mess(this);
-    mess.setExitStatus();
-    mess.setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
-    mess.exec();
+    close();
 }
 
 void Widget::on_buttonStatistics_pressed()
@@ -1016,4 +1115,11 @@ void Widget::winP2()
 {
     winner = &gamerNameP2;
     gameOver();
+}
+
+void Widget::on_buttonForPlayers_pressed()
+{
+    lastVisitedPage = 1;
+    ui->stackedWidget->setCurrentIndex(4);
+    clearFocusOfMainMenu();
 }

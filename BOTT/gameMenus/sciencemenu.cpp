@@ -1,7 +1,6 @@
 #include "sciencemenu.h"
 #include "gamemenuhandler.h"
 #include "Military/army.h"
-#include <QDebug>
 
 ScienceMenu::ScienceMenu()
 {
@@ -22,9 +21,9 @@ void ScienceMenu::processSelectAction(int currentItem)
     if(currentItem == -1)
         return;
     if(currentItem == 0)
-        emit SC_MageHealth();
-    if(currentItem == 1)
         emit SC_MageAttack();
+    if(currentItem == 1)
+        emit SC_MageHealth();
 }
 
 void ScienceMenu::connectWithObject(QObject * objectForConnect)
@@ -41,7 +40,7 @@ int ScienceMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem
     if(currentItem == -1)
         return 0;
     if(currentItem == 0)
-        return map->value("Mage_Hp");
-    if(currentItem == 1)
         return map->value("Mage_Attack");
+    if(currentItem == 1)
+        return map->value("Mage_Hp");
 }

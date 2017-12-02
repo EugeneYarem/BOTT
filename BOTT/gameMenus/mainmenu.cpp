@@ -2,7 +2,6 @@
 #include "gamemenuhandler.h"
 #include "Military/army.h"
 #include <QGraphicsScene>
-#include <QDebug>
 
 MainMenu::MainMenu()
 {

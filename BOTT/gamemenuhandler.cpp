@@ -11,7 +11,6 @@
 #include "QException"
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
-#include <QDebug>
 
 GameMenuHandler::GameMenuHandler(View * parent) : QObject()
 {

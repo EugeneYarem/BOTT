@@ -147,7 +147,7 @@
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QPushButton" name="buttonEnd">
+      <widget class="QPushButton" name="buttonForPlayers">
        <property name="geometry">
         <rect>
          <x>866</x>
@@ -169,7 +169,7 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/finish.png);</string>
+        <string notr="true">background-image: url(:/images/images/Main_Menu_Of_BOTT/forPlayer.png);</string>
        </property>
        <property name="text">
         <string/>
@@ -370,7 +370,7 @@
       <zorder>label_3</zorder>
       <zorder>label_2</zorder>
       <zorder>buttonContinue</zorder>
-      <zorder>buttonEnd</zorder>
+      <zorder>buttonForPlayers</zorder>
       <zorder>buttonExit</zorder>
       <zorder>buttonNew</zorder>
       <zorder>buttonSettings</zorder>
@@ -2352,13 +2352,142 @@ padding-right: 5px</string>
          <property name="styleSheet">
           <string notr="true"/>
          </property>
+         <property name="sortingEnabled">
+          <bool>false</bool>
+         </property>
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>175</number>
+          <number>176</number>
          </attribute>
          <attribute name="verticalHeaderDefaultSectionSize">
           <number>30</number>
          </attribute>
         </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="improvementScheme">
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_24">
+           <item>
+            <spacer name="horizontalSpacer_53">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelForPlayers">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Century Gothic</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Для игроков</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_54">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>18</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_27">
+           <item>
+            <spacer name="horizontalSpacer_55">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelScheme">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="resources.qrc">:/images/images/improvementScheme.png</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_56">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -2373,7 +2502,7 @@ padding-right: 5px</string>
   <tabstop>buttonNew</tabstop>
   <tabstop>buttonSettings</tabstop>
   <tabstop>buttonStatistics</tabstop>
-  <tabstop>buttonEnd</tabstop>
+  <tabstop>buttonForPlayers</tabstop>
   <tabstop>buttonExit</tabstop>
   <tabstop>pushButton_2</tabstop>
   <tabstop>lineEditMenu</tabstop>
