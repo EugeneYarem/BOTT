@@ -124,7 +124,7 @@ void Troop::InitialText()
     Hp_Text->setDefaultTextColor(Qt::white);
 
     if(this->party == Left)
-        this->Hp_Text->setPos(this->x() + this->pixmap().width() / 2, this->y() - 30);
+        this->Hp_Text->setPos(this->x() + this->pixmap().width() / 2, this->y() - 35);
     else this->Hp_Text->setPos(this->x() + this->pixmap().width() / 3, this->y() - 30);
 }
 

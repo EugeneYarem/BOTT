@@ -11,8 +11,8 @@ Battlefield::Battlefield()
 
     connect(timer, SIGNAL(timeout()), this, SLOT(ArmyControl()));//каждую секунду проверяем есть ли войска рядом
     connect(timer_B, SIGNAL(timeout()), this, SLOT(Battle()));
-    timer_interval = 50;
-    timer_remainingTime = 50;
+    timer_interval = 200;
+    timer_remainingTime = 200;
     timerB_interval = 2000;
     timerB_remainingTime = 2000;
 
