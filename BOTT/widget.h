@@ -30,6 +30,7 @@ class Widget : public QWidget
     bool isGameOver; // Переменная нужна, чтобы при каждой победе показать только один белый фон с победной записью
     bool isSaved; // Указывает, что статистика была сохранена
     bool isExit; // Если false, то перед выходом будет показано сообщение, том, что игра не окончена, если true - просто закроется
+    bool isStartDialogOpen; // Нужна, чтобы диалоговое окно старта новой игры не показывалось несколько раз
 
     // Переменные, которые хранят данные для сохранения статистики
     // P1 - player 1, P2 - player 2
@@ -70,6 +71,7 @@ public:
     void readSettings();
     void showStartDialog();
     void setExit();
+    void setIsStartDialogOpen();
 
 private slots:
     void on_buttonSettings_pressed();

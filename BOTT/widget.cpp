@@ -74,6 +74,7 @@ Widget::Widget(QWidget *parent) :
     isGameOver = false;
     isSaved = false;
     isExit = false;
+    isStartDialogOpen = false;
 
     // Эти две функции обязательно вызывать только после того, как добавлены другие элементы на сцену, чтобы меню всегда были на первом плане
     view->setConfiguration();
@@ -336,15 +337,15 @@ void Widget::createStatisticsPage()
         ui->tableWidget->setColumnWidth(5, 180);
         ui->tableWidget->setColumnWidth(6, 180);
     }
-    if(jsonDoc.array().size() > 10)
+    if(jsonDoc.array().size() >= 10)
     {
-        ui->tableWidget->setColumnWidth(0, 176);
-        ui->tableWidget->setColumnWidth(1, 179);
-        ui->tableWidget->setColumnWidth(2, 176);
-        ui->tableWidget->setColumnWidth(3, 176);
-        ui->tableWidget->setColumnWidth(4, 176);
-        ui->tableWidget->setColumnWidth(5, 176);
-        ui->tableWidget->setColumnWidth(6, 176);
+        ui->tableWidget->setColumnWidth(0, 180);
+        ui->tableWidget->setColumnWidth(1, 180);
+        ui->tableWidget->setColumnWidth(2, 180);
+        ui->tableWidget->setColumnWidth(3, 180);
+        ui->tableWidget->setColumnWidth(4, 180);
+        ui->tableWidget->setColumnWidth(5, 173);
+        ui->tableWidget->setColumnWidth(6, 180);
     }
 
     for(int i = 0; i < 7; i++)
@@ -634,6 +635,11 @@ void Widget::showStartDialog()
 void Widget::setExit()
 {
     isExit = true;
+}
+
+void Widget::setIsStartDialogOpen()
+{
+    isStartDialogOpen = true;
 }
 
 void Widget::readSettings()
@@ -1063,7 +1069,11 @@ void Widget::on_buttonNew_pressed()
     if(isFirstGame)
     {
         clearFocusOfMainMenu();
-        showStartDialog();
+
+        if(!isStartDialogOpen)
+            showStartDialog();
+
+        isStartDialogOpen = true;
         return;
     }
 
@@ -1086,7 +1096,11 @@ void Widget::on_buttonNew_pressed()
         }
 
         clearFocusOfMainMenu();
-        showStartDialog();
+
+        if(!isStartDialogOpen)
+            showStartDialog();
+
+        isStartDialogOpen = true;
         return;
     }
 }

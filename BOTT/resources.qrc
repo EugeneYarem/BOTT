@@ -2,7 +2,6 @@
     <qresource prefix="/images">
         <file>images/gameMenuBackground.png</file>
         <file>images/background.png</file>
-        <file>images/Barracks_Menu/mBarracks.png</file>
         <file>images/Hospital_Menu/h1.png</file>
         <file>images/Hospital_Menu/h2.png</file>
         <file>images/Hospital_Menu/mHospital.png</file>
@@ -162,9 +161,9 @@
         <file>images/Main_Menu/mSc.png</file>
         <file>images/priceLeft.png</file>
         <file>images/priceRight.png</file>
-        <file>images/improvementScheme.png</file>
         <file>images/Main_Menu_Of_BOTT/forPlayer.png</file>
         <file>images/Main_Menu_Of_BOTT/forPlayerFocused.png</file>
+        <file>images/improvementScheme.png</file>
     </qresource>
     <qresource prefix="/sounds">
         <file>musicBackground.mp3</file>

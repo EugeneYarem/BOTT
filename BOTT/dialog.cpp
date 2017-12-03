@@ -16,6 +16,8 @@ Dialog::Dialog(QWidget *parent) :
     ui->pushButton->setStyleSheet("QPushButton{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}");
 
     ui->pushButton->setDefault(true);
+
+    ((Widget *)this->parent())->setIsStartDialogOpen();
 }
 
 Dialog::~Dialog()
