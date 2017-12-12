@@ -17,7 +17,7 @@ Dialog::Dialog(QWidget *parent) :
 
     ui->pushButton->setDefault(true);
 
-    ((Widget *)this->parent())->setIsStartDialogOpen();
+    ((Widget *)this->parent())->setIsStartDialogOpen(true);
 }
 
 Dialog::~Dialog()
@@ -33,4 +33,9 @@ void Dialog::on_pushButton_pressed()
     ((Widget *)this->parent())->setGamerNameP1(ui->lineEdit->text());
     ((Widget *)this->parent())->setGamerNameP2(ui->lineEdit_2->text());
     ((Widget *)this->parent())->startNewGame();
+}
+
+void Dialog::closeEvent(QCloseEvent *event)
+{
+    ((Widget *)this->parent())->setIsStartDialogOpen(false);
 }

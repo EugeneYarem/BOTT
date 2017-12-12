@@ -21,6 +21,10 @@ private slots:
 private:
     Ui::Dialog *ui;
 
+
+    // QWidget interface
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // DIALOG_H

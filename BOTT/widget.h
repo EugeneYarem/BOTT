@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QTime>
 #include <QMediaPlayer>
+#include <QtSql/QSqlDatabase>
 
 namespace Ui {
     class Widget;
@@ -23,6 +24,7 @@ class Widget : public QWidget
     View * viewWithOpenMenu; // view, у которого активно меню
     Battlefield * btf;
     QMediaPlayer * musicPlayer;
+    QSqlDatabase db;
     int lastVisitedPage;
     bool eventEvoke; // Переменная нужна для того, чтобы определить было ли обработано событие нажатие клавиши Esc одним из view.
     bool settingsChanged; // Переменная, указывающая на то, что настройки управления были изменены. При возвращении в гавное меню в случае, если она true, то настройки сохранятся в файл
@@ -47,6 +49,7 @@ class Widget : public QWidget
     int countOfModificationP1;
     int countOfModificationP2;
 
+    void connectDB();
     void createSettingsPage();
     void createStatisticsPage();
     bool isSettingLineEdit(QObject *);
@@ -71,7 +74,7 @@ public:
     void readSettings();
     void showStartDialog();
     void setExit();
-    void setIsStartDialogOpen();
+    void setIsStartDialogOpen(bool );
 
 private slots:
     void on_buttonSettings_pressed();

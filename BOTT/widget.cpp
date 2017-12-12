@@ -17,6 +17,11 @@
 #include <QLabel>
 #include <QFont>
 #include <QCloseEvent>
+#include <QSqlQuery>
+#include <QSqlResult>
+#include <QSqlError>
+
+int countOfRecordsDB;
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -67,6 +72,8 @@ Widget::Widget(QWidget *parent) :
     musicPlayer->setVolume(50);
     musicPlayer->play();
 
+    db = QSqlDatabase::addDatabase("QSQLITE");
+
     lastVisitedPage = 1;
     eventEvoke = false;
     settingsChanged = false;
@@ -111,6 +118,8 @@ Widget::Widget(QWidget *parent) :
     connect(view, SIGNAL(menuVisibleStatusChanged(View*)), this, SLOT(updateViewWithOpenMenu(View*)));
     connect(view_2, SIGNAL(menuVisibleStatusChanged(View*)), this, SLOT(updateViewWithOpenMenu(View*)));
 
+    connectDB();
+
     readSettings();
     createSettingsPage();
     createStatisticsPage();
@@ -126,6 +135,7 @@ Widget::~Widget()
     delete musicPlayer;
     if(gameOverLabel != NULL)
         delete gameOverLabel;
+    db.close();
 }
 
 void Widget::setGamerNameP1(QString name)
@@ -237,6 +247,36 @@ void Widget::volumeChange(int volume)
     musicPlayer->setVolume(volume);
 }
 
+void Widget::connectDB()
+{
+    db.setDatabaseName(qApp->applicationDirPath() + "/statistics.sqlite");
+
+    try
+    {
+        if(!db.open())
+            throw 1;
+    }
+    catch(int key)
+    {
+        return;
+    }
+
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM games");
+
+    try
+    {
+        if(!query.exec())
+            throw 1;
+    }
+    catch(int key)
+    {
+        query.exec("CREATE TABLE games (id INTEGER PRIMARY KEY UNIQUE, time INT, gamer1_id INT, gamer2_id INT)");
+        query.exec("CREATE TABLE gamers (id INTEGER PRIMARY KEY UNIQUE, name STRING, result STRING, earnedMoney INT, wastedMoney INT, countOfUnits INT, countOdMods INT)");
+    }
+
+}
+
 void Widget::createSettingsPage()
 {
     ui->lineEditMenu->setText(QKeySequence(view->getControlKey("menu")).toString());
@@ -306,47 +346,53 @@ void Widget::createSettingsPage()
 
 void Widget::createStatisticsPage()
 {
-    QFile file;
-    file.setFileName("statistics.json");
-    file.open(QIODevice::ReadOnly);
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(file.readAll());
-    file.close();
+    QSqlQuery query;
 
-    ui->tableWidget->setRowCount(jsonDoc.array().size() * 2);
+    try
+    {
+        if(!query.exec("SELECT time, gamer1_id, gamer2_id FROM games"))
+            throw 1;
+    }
+    catch(int key)
+    {
+        Message mess(this);
+        mess.setNewGameStatus();
+        mess.setMessage("Не удалось получить статистику. Потеряно соединение с БД.");
+        mess.exec();
+        countOfRecordsDB = 0;
+        return;
+    }
+
+    int res = 0;
+    while (query.next())
+        res++;
+
+    countOfRecordsDB = res;
+
+    ui->tableWidget->setRowCount(res * 2);
     ui->tableWidget->setColumnCount(7);
     ui->tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->tableWidget->setStyleSheet("QTableWidget{background: rgba(101, 5, 4, 120); color: white}");
     ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Длительность игры" << "Имя" << "Результат" << "Заработано денег" << "Потрачено денег" << "Создано солдат" << "Куплено улучшений");
-    if(jsonDoc.isEmpty() || jsonDoc.isNull() || jsonDoc.array().size() == 0)
+    ui->tableWidget->verticalHeader()->setMaximumWidth(78);
+    ui->tableWidget->verticalHeader()->setMinimumWidth(78);
+    ui->tableWidget->verticalHeader()->setDefaultAlignment(Qt::AlignCenter);
+
+    ui->tableWidget->setColumnWidth(0, 170);
+    ui->tableWidget->setColumnWidth(1, 190);
+    ui->tableWidget->setColumnWidth(2, 170);
+    ui->tableWidget->setColumnWidth(3, 170);
+    if(res >= 12)
     {
-        ui->tableWidget->setColumnWidth(0, 183);
-        ui->tableWidget->setColumnWidth(1, 183);
-        ui->tableWidget->setColumnWidth(2, 183);
-        ui->tableWidget->setColumnWidth(3, 183);
-        ui->tableWidget->setColumnWidth(4, 183);
-        ui->tableWidget->setColumnWidth(5, 183);
-        ui->tableWidget->setColumnWidth(6, 183);
+        ui->tableWidget->setColumnWidth(4, 161);
+        ui->tableWidget->setColumnWidth(5, 151);
     }
-    if(jsonDoc.array().size() < 10 && jsonDoc.array().size() != 0)
+    else
     {
-        ui->tableWidget->setColumnWidth(0, 180);
-        ui->tableWidget->setColumnWidth(1, 182);
-        ui->tableWidget->setColumnWidth(2, 180);
-        ui->tableWidget->setColumnWidth(3, 180);
-        ui->tableWidget->setColumnWidth(4, 180);
-        ui->tableWidget->setColumnWidth(5, 180);
-        ui->tableWidget->setColumnWidth(6, 180);
+        ui->tableWidget->setColumnWidth(4, 170);
+        ui->tableWidget->setColumnWidth(5, 160);
     }
-    if(jsonDoc.array().size() >= 10)
-    {
-        ui->tableWidget->setColumnWidth(0, 180);
-        ui->tableWidget->setColumnWidth(1, 180);
-        ui->tableWidget->setColumnWidth(2, 180);
-        ui->tableWidget->setColumnWidth(3, 180);
-        ui->tableWidget->setColumnWidth(4, 180);
-        ui->tableWidget->setColumnWidth(5, 173);
-        ui->tableWidget->setColumnWidth(6, 180);
-    }
+    ui->tableWidget->setColumnWidth(6, 170);
 
     for(int i = 0; i < 7; i++)
     {
@@ -354,20 +400,23 @@ void Widget::createStatisticsPage()
         ui->tableWidget->horizontalHeader()->setSectionResizeMode(i, QHeaderView::Fixed);
     }
 
-    for(int i = 0, num = 0; i < jsonDoc.array().size() * 2; i++, num++)
+    for(int i = 0, num = 0; i < res * 2; i++, num++)
     {
-        ui->tableWidget->setVerticalHeaderItem(i, new QTableWidgetItem(QString::number(jsonDoc.array().size() - num)));
-        ui->tableWidget->setVerticalHeaderItem(i + 1, new QTableWidgetItem(QString::number(jsonDoc.array().size() - num)));
+        ui->tableWidget->setVerticalHeaderItem(i, new QTableWidgetItem(QString::number(res - num)));
+        ui->tableWidget->setVerticalHeaderItem(i + 1, new QTableWidgetItem(QString::number(res - num)));
         ui->tableWidget->verticalHeaderItem(i)->setFont(QFont("Century Gothic", 12));
         ui->tableWidget->verticalHeaderItem(i + 1)->setFont(QFont("Century Gothic", 12));
         ui->tableWidget->verticalHeader()->setSectionResizeMode(i, QHeaderView::Fixed);
         ui->tableWidget->verticalHeader()->setSectionResizeMode(i + 1, QHeaderView::Fixed);
         i++;
     }
+
     for(int i = 0, num = 0; i < ui->tableWidget->rowCount(); i++, num++)
     {
+        query.previous();
+
         //------ Перевод милисекунд в часы, минуты и секунды
-        int msec = jsonDoc.array().at(num).toArray().at(0).toInt();
+        int msec = query.value(0).toInt();
         int hours = msec / 60 / 60 / 1000;
         msec %= (60 * 60 * 1000);
         int minutes = msec / 60 / 1000;
@@ -387,19 +436,43 @@ void Widget::createStatisticsPage()
         else secondsStr = QString::number(seconds);
         //------
 
+        QSqlQuery player1;
+        player1.prepare("SELECT name, result, earnedMoney, wastedMoney, countOfUnits, countOdMods FROM gamers WHERE id = :id");
+        player1.bindValue(":id", query.value(1).toInt());
+        QSqlQuery player2;
+        player2.prepare("SELECT name, result, earnedMoney, wastedMoney, countOfUnits, countOdMods FROM gamers WHERE id = :id");
+        player2.bindValue(":id", query.value(2).toInt());
+
+        try
+        {
+            if(!player1.exec() || !player2.exec())
+                throw 1;
+        }
+        catch(int key)
+        {
+            Message mess(this);
+            mess.setNewGameStatus();
+            mess.setMessage("Не удалось получить статистику. Потеряно соединение с БД.");
+            mess.exec();
+            return;
+        }
+
+        player1.next();
+        player2.next();
+
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(hoursStr + ":" + minutesStr + ":" + secondsStr));
-        ui->tableWidget->setItem(i, 1, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(1).toObject()["name"].toString()));
-        ui->tableWidget->setItem(i + 1, 1, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(2).toObject()["name"].toString()));
-        ui->tableWidget->setItem(i, 2, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(1).toObject()["result"].toString()));
-        ui->tableWidget->setItem(i + 1, 2, new QTableWidgetItem(jsonDoc.array().at(num).toArray().at(2).toObject()["result"].toString()));
-        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["earned money"].toInt())));
-        ui->tableWidget->setItem(i + 1, 3, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["earned money"].toInt())));
-        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["wasted money"].toInt())));
-        ui->tableWidget->setItem(i + 1, 4, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["wasted money"].toInt())));
-        ui->tableWidget->setItem(i, 5, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["count of units"].toInt())));
-        ui->tableWidget->setItem(i + 1, 5, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["count of units"].toInt())));
-        ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(1).toObject()["count of modification"].toInt())));
-        ui->tableWidget->setItem(i + 1, 6, new QTableWidgetItem(QString::number(jsonDoc.array().at(num).toArray().at(2).toObject()["count of modification"].toInt())));
+        ui->tableWidget->setItem(i, 1, new QTableWidgetItem(player1.value(0).toString()));
+        ui->tableWidget->setItem(i + 1, 1, new QTableWidgetItem(player2.value(0).toString()));
+        ui->tableWidget->setItem(i, 2, new QTableWidgetItem(player1.value(1).toString()));
+        ui->tableWidget->setItem(i + 1, 2, new QTableWidgetItem(player2.value(1).toString()));
+        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString::number(player1.value(2).toInt())));
+        ui->tableWidget->setItem(i + 1, 3, new QTableWidgetItem(QString::number(player2.value(2).toInt())));
+        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(QString::number(player1.value(3).toInt())));
+        ui->tableWidget->setItem(i + 1, 4, new QTableWidgetItem(QString::number(player2.value(3).toInt())));
+        ui->tableWidget->setItem(i, 5, new QTableWidgetItem(QString::number(player1.value(4).toInt())));
+        ui->tableWidget->setItem(i + 1, 5, new QTableWidgetItem(QString::number(player2.value(4).toInt())));
+        ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(player1.value(5).toInt())));
+        ui->tableWidget->setItem(i + 1, 6, new QTableWidgetItem(QString::number(player2.value(5).toInt())));
         i++;
     }
 }
@@ -494,66 +567,82 @@ void Widget::startAllTimers()
 
 void Widget::writeStatistics()
 {
-    QJsonObject player1, player2;
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO games (time, gamer1_id, gamer2_id) VALUES (:time, :gamer1_id, :gamer2_id)");
+    query.bindValue(":time", gameDuration.msecsTo(QTime::currentTime()));
+    if(countOfRecordsDB == 0)
+    {
+        query.bindValue(":gamer1_id", 1);
+        query.bindValue(":gamer2_id", 2);
+    }
+    else
+    {
+        query.bindValue(":gamer1_id", countOfRecordsDB * 2 + 1);
+        query.bindValue(":gamer2_id", countOfRecordsDB * 2 + 2);
+    }
+
+    try
+    {
+        if(!query.exec())
+            throw 1;
+    }
+    catch(int key)
+    {
+        Message mess(this);
+        mess.setNewGameStatus();
+        mess.setMessage("Не удалось сохранить результат игры. Потеряно соединение с БД.");
+        mess.exec();
+        return;
+    }
+
+    QSqlQuery player1(db);
+    player1.prepare("INSERT INTO gamers (name, result, earnedMoney, wastedMoney, countOfUnits, countOdMods) VALUES (:name, :result, :earnedMoney, :wastedMoney, :countOfUnits, :countOdMods)");
+    QSqlQuery player2(db);
+    player2.prepare("INSERT INTO gamers (name, result, earnedMoney, wastedMoney, countOfUnits, countOdMods) VALUES (:name, :result, :earnedMoney, :wastedMoney, :countOfUnits, :countOdMods)");
 
     if(winner != NULL)
     {
         if(*winner == gamerNameP1)
         {
-            player1.insert("result", "Выиграл");
-            player2.insert("result", "Проиграл");
+            player1.bindValue(":result", QString("Выиграл"));
+            player2.bindValue(":result", QString("Проиграл"));
         }
         else
         {
-            player2.insert("result", "Выиграл");
-            player1.insert("result", "Проиграл");
+            player2.bindValue(":result", QString("Выиграл"));
+            player1.bindValue(":result", QString("Проиграл"));
         }
     }
     else
     {
-        player1.insert("result", "Ничья");
-        player2.insert("result", "Ничья");
+        player1.bindValue(":result", QString("Ничья"));
+        player2.bindValue(":result", QString("Ничья"));
     }
 
-    player1.insert("name", gamerNameP1);
-    player1.insert("earned money", earnedMoneyP1);
-    player1.insert("wasted money", wastedMoneyP1);
-    player1.insert("count of units", countOfUnitsP1);
-    player1.insert("count of modification", countOfModificationP1);
-    player2.insert("name", gamerNameP2);
-    player2.insert("earned money", earnedMoneyP2);
-    player2.insert("wasted money", wastedMoneyP2);
-    player2.insert("count of units", countOfUnitsP2);
-    player2.insert("count of modification", countOfModificationP2);
+    player1.bindValue(":name", gamerNameP1);
+    player1.bindValue(":earnedMoney", earnedMoneyP1);
+    player1.bindValue(":wastedMoney", wastedMoneyP1);
+    player1.bindValue(":countOfUnits", countOfUnitsP1);
+    player1.bindValue(":countOdMods", countOfModificationP1);
+    player2.bindValue(":name", gamerNameP2);
+    player2.bindValue(":earnedMoney", earnedMoneyP2);
+    player2.bindValue(":wastedMoney", wastedMoneyP2);
+    player2.bindValue(":countOfUnits", countOfUnitsP2);
+    player2.bindValue(":countOdMods", countOfModificationP2);
 
-    QJsonArray array;
-    array.insert(0, gameDuration.msecsTo(QTime::currentTime()));
-    array.insert(1, player1);
-    array.insert(2, player2);
-
-    QFile file;
-    file.setFileName("statistics.json");
-    file.open(QIODevice::ReadWrite);
-
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(file.readAll());
-
-    file.seek(0);
-
-    if(jsonDoc.isNull())
+    try
     {
-        QJsonArray newArray;
-        newArray.insert(0, array);
-        jsonDoc.setArray(newArray);
+        if(!player1.exec() || !player2.exec())
+            throw 1;
     }
-    else
+    catch(int key)
     {
-        QJsonArray temp = jsonDoc.array();
-        temp.push_front(array);
-        jsonDoc.setArray(temp);
+        Message mess(this);
+        mess.setNewGameStatus();
+        mess.setMessage("Не удалось сохранить результат игры. Потеряно соединение с БД.");
+        mess.exec();
+        return;
     }
-
-    file.write(jsonDoc.toJson());
-    file.close();
 }
 
 void Widget::writeSettings()
@@ -627,6 +716,7 @@ void Widget::showStartDialog()
         createStatisticsPage();
     }
 
+    isExit = true;
     Dialog * dialog = new Dialog(this);
     dialog->show();
     dialog->exec();
@@ -637,9 +727,9 @@ void Widget::setExit()
     isExit = true;
 }
 
-void Widget::setIsStartDialogOpen()
+void Widget::setIsStartDialogOpen(bool status)
 {
-    isStartDialogOpen = true;
+    isStartDialogOpen = status;
 }
 
 void Widget::readSettings()
@@ -647,8 +737,16 @@ void Widget::readSettings()
     QFile file;
     file.setFileName("settings.json");
 
-    if(!file.open(QIODevice::ReadOnly))
+    try
+    {
+        if(!file.open(QIODevice::ReadOnly))
+            throw 1;
+    }
+    catch(int key)
+    {
         return;
+    }
+
 
     QJsonDocument jsonDoc = QJsonDocument::fromJson(file.readAll());
     file.close();
@@ -1069,11 +1167,9 @@ void Widget::on_buttonNew_pressed()
     if(isFirstGame)
     {
         clearFocusOfMainMenu();
-
         if(!isStartDialogOpen)
             showStartDialog();
 
-        isStartDialogOpen = true;
         return;
     }
 
@@ -1100,7 +1196,6 @@ void Widget::on_buttonNew_pressed()
         if(!isStartDialogOpen)
             showStartDialog();
 
-        isStartDialogOpen = true;
         return;
     }
 }
