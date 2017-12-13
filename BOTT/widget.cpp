@@ -684,6 +684,7 @@ void Widget::writeSettings()
 
 void Widget::gameOver()
 {
+    viewWithOpenMenu = NULL;
     stopAllTimers();
     view->hide();
     view_2->hide();

@@ -85,6 +85,11 @@ void GameMenuHandler::setPriceSid(bool side) // right - true, false - left
     else mPrice->setPixmap(QPixmap(":images/images/priceLeft.png"));
 }
 
+View *GameMenuHandler::getParentView()
+{
+    return parent;
+}
+
 void GameMenuHandler::showMainMenu()
 {
     mFocus->setVisible(false);

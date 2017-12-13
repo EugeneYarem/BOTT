@@ -49,6 +49,7 @@ public:
     ~GameMenuHandler();
     void addMenusToScene(); // Вызывает метод добавления меню на сцену
     void setPriceSid(bool); // Устанавливает сторону для вывода цены улучшения
+    View * getParentView();
 
     // Методы, в которых соответствующее меню отображается на сцене (оно уже добавлено на сцену через метод addMenusToScene)
     void showMainMenu();

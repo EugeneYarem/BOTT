@@ -164,6 +164,7 @@
         <file>images/Main_Menu_Of_BOTT/forPlayer.png</file>
         <file>images/Main_Menu_Of_BOTT/forPlayerFocused.png</file>
         <file>images/improvementScheme.png</file>
+        <file>images/Main_Menu/mC.png</file>
     </qresource>
     <qresource prefix="/sounds">
         <file>musicBackground.mp3</file>
