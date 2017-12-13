@@ -168,7 +168,7 @@ void Army::ClearStart()
     rider->setPixmap(QPixmap(":/images/images/Military/rider/cavalier_stand_1.png"));
     rider->setParty(party);
     rider->setType("rider");
-    rider->setAtack(140);
+    rider->setAtack(180);
     rider->InitialText();
     rider->setHp(1500);
     rider->setDef(0);
@@ -293,7 +293,7 @@ void Army::improveWeapon()
             str.resize(str.size() - 9);
             str += "rider_";
             rider->setImg_Pref(str);
-            rider->setAtack(rider->getAtack() + 60);
+            rider->setAtack(rider->getAtack() + 70);
             rider->setHp(rider->getHp() + 600);
             rider->setPixmap(QPixmap(rider->getImg_pref() + "stand_1.png"));
             soldier->setAtack(soldier->getAtack() + 40);

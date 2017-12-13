@@ -690,17 +690,17 @@ void Widget::gameOver()
 
     if(!isGameOver)
     {
+        setMaximumWidth(1280);
         gameOverLabel = new QLabel(this);
         ui->verticalLayout->addWidget(gameOverLabel);
         gameOverLabel->move(0, 0);
         gameOverLabel->setFixedSize(this->width() - 22, this->height() - 22);
         gameOverLabel->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); color: red;}");
         gameOverLabel->setFont(QFont("Century Gothic", 22));
-        gameOverLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        gameOverLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);        
         gameOverLabel->setText("Сражение окончено!\nПобедил в сражении " + *winner + ".");
         gameOverLabel->show();
-        isGameOver = true;
-        setMaximumWidth(1280);
+        isGameOver = true;        
         save();
         createStatisticsPage();
         isExit = true;

@@ -78,7 +78,7 @@ void Town::addHealthMoneyToScene()
 void Town::setHealth(int hp)
 {
     this->health = hp;
-    if(health < 0)
+    if(health <= 0)
     {
         health = 0;
         emit loose();
