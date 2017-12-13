@@ -8,7 +8,6 @@
 #include "gameMenus/hospitalmenu.h"
 #include "gameMenus/minemenu.h"
 #include "town.h"
-#include "QException"
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 

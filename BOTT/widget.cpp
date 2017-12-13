@@ -18,8 +18,6 @@
 #include <QFont>
 #include <QCloseEvent>
 #include <QSqlQuery>
-#include <QSqlResult>
-#include <QSqlError>
 
 int countOfRecordsDB;
 
