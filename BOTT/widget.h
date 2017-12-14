@@ -33,6 +33,7 @@ class Widget : public QWidget
     bool isSaved; // Указывает, что статистика была сохранена
     bool isExit; // Если false, то перед выходом будет показано сообщение, том, что игра не окончена, если true - просто закроется
     bool isStartDialogOpen; // Нужна, чтобы диалоговое окно старта новой игры не показывалось несколько раз
+    QLabel * gameOverLabel;
 
     // Переменные, которые хранят данные для сохранения статистики
     // P1 - player 1, P2 - player 2
@@ -61,8 +62,6 @@ class Widget : public QWidget
     void writeStatistics();
     void writeSettings();
     void gameOver();
-
-    QLabel * gameOverLabel;
 
 public:
     explicit Widget(QWidget *parent = 0);
