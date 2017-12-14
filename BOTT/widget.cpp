@@ -336,6 +336,7 @@ void Widget::createSettingsPage()
 
     // Стиль для страницы "Для игроков"
     ui->labelForPlayers->setStyleSheet("QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}");
+    ui->labelSLogo_2->setStyleSheet("QLabel{background: rgba(255, 255, 255, 0);}");
     ui->labelScheme->setStyleSheet("QLabel{background: rgba(255, 255, 255, 0);}");
 
     connect(ui->spinBox, SIGNAL(valueChanged(int)), ui->horizontalSlider, SLOT(setValue(int)));
