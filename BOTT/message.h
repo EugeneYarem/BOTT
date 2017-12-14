@@ -24,6 +24,9 @@ public:
 private slots:
     void on_pushButton_released();
 
+signals:
+    void okButtonPress();
+
 private:
     Ui::Message *ui;
 

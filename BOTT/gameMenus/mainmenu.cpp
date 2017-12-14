@@ -2,6 +2,7 @@
 #include "gamemenuhandler.h"
 #include "view.h"
 #include "town.h"
+#include "message.h"
 #include "Military/army.h"
 #include <QGraphicsScene>
 
@@ -46,7 +47,11 @@ void MainMenu::processSelectAction(int currentItem)
     if(currentItem == 4)
     {
         parent->showMainMenu();
-        emit parent->getParentView()->getTown()->loose();
+        Message message(parent->getParentView());
+        connect(&message, SIGNAL(okButtonPress()), parent->getParentView()->getTown(), SIGNAL(loose()));
+        message.setMessage("Вы точно желаете сдаться?");
+        message.show();
+        message.exec();
     }
 }
 

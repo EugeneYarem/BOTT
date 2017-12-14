@@ -53,5 +53,7 @@ void Message::on_pushButton_released()
         return;
     }
 
+    emit okButtonPress();
+
     close();
 }
