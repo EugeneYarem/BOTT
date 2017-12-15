@@ -155,16 +155,16 @@
         <file>images/Military/rider/rider_run_8.png</file>
         <file>images/Military/rider/rider_stand_1.png</file>
         <file>images/HP_Money.png</file>
-        <file>images/Science_Menu/sc1.png</file>
-        <file>images/Science_Menu/sc2.png</file>
-        <file>images/Science_Menu/mScienceCentre.png</file>
-        <file>images/Main_Menu/mSc.png</file>
         <file>images/priceLeft.png</file>
         <file>images/priceRight.png</file>
         <file>images/Main_Menu_Of_BOTT/forPlayer.png</file>
         <file>images/Main_Menu_Of_BOTT/forPlayerFocused.png</file>
         <file>images/improvementScheme.png</file>
         <file>images/Main_Menu/mC.png</file>
+        <file>images/Magic_Menu/m1.png</file>
+        <file>images/Magic_Menu/m2.png</file>
+        <file>images/Magic_Menu/mMagic.png</file>
+        <file>images/Main_Menu/mMag.png</file>
     </qresource>
     <qresource prefix="/sounds">
         <file>musicBackground.mp3</file>

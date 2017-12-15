@@ -17,7 +17,7 @@ MainMenu::MainMenu()
                         * m4 = new QGraphicsPixmapItem(),
                         * m5 = new QGraphicsPixmapItem();
 
-    m1->setPixmap(QPixmap(":images/images/Main_Menu/mSc.png"));
+    m1->setPixmap(QPixmap(":images/images/Main_Menu/mMag.png"));
     m2->setPixmap(QPixmap(":images/images/Main_Menu/mW.png"));
     m3->setPixmap(QPixmap(":images/images/Main_Menu/mH.png"));
     m4->setPixmap(QPixmap(":images/images/Main_Menu/mM.png"));

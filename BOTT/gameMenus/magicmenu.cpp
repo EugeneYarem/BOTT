@@ -5,13 +5,13 @@
 MagicMenu::MagicMenu()
 {
     nameOfMenu = new QGraphicsPixmapItem();
-    nameOfMenu->setPixmap(QPixmap(":images/images/Science_Menu/mScienceCentre.png"));
+    nameOfMenu->setPixmap(QPixmap(":images/images/Magic_Menu/mMagic.png"));
 
     QGraphicsPixmapItem * m1 = new QGraphicsPixmapItem(),
                         * m2 = new QGraphicsPixmapItem();
 
-    m1->setPixmap(QPixmap(":images/images/Science_Menu/sc1.png"));
-    m2->setPixmap(QPixmap(":images/images/Science_Menu/sc2.png"));
+    m1->setPixmap(QPixmap(":images/images/Magic_Menu/m1.png"));
+    m2->setPixmap(QPixmap(":images/images/Magic_Menu/m2.png"));
     menuItems.push_back(m1);
     menuItems.push_back(m2);
 }
