@@ -37,7 +37,7 @@ void MainMenu::processSelectAction(int currentItem)
     parent->hideCurrentOpenMenu();
 
     if(currentItem == 0)
-        parent->showScienceMenu();
+        parent->showMagicMenu();
     if(currentItem == 1)
         parent->showWorkshopMenu();
     if(currentItem == 2)

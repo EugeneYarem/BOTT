@@ -96,7 +96,7 @@ void GameMenuHandler::showMainMenu()
     currentOpenMenu->setMenuVisible(true);
 }
 
-void GameMenuHandler::showScienceMenu()
+void GameMenuHandler::showMagicMenu()
 {
     mFocus->setVisible(false);
     currentOpenMenu = magicMenu;

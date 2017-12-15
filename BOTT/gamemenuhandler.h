@@ -53,7 +53,7 @@ public:
 
     // Методы, в которых соответствующее меню отображается на сцене (оно уже добавлено на сцену через метод addMenusToScene)
     void showMainMenu();
-    void showScienceMenu();
+    void showMagicMenu();
     void showWorkshopMenu();
     void showHospitalMenu();
     void showMineMenu();
