@@ -14,7 +14,7 @@
 class View;
 class GameMenu;
 class MainMenu;
-class ScienceMenu;
+class MagicMenu;
 class WorkshopMenu;
 class HospitalMenu;
 class MineMenu;
@@ -30,7 +30,7 @@ class GameMenuHandler : public QObject, public QGraphicsPixmapItem
 
     // Игровые меню
     MainMenu * mainMenu;
-    ScienceMenu * scienceMenu;
+    MagicMenu * magicMenu;
     WorkshopMenu * workshopMenu;
     HospitalMenu * hospitalMenu;
     MineMenu * mineMenu;

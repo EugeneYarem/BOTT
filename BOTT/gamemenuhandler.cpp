@@ -3,7 +3,7 @@
 #include "gamemenu.h"
 #include "Military/army.h"
 #include "gameMenus/mainmenu.h"
-#include "gameMenus/sciencemenu.h"
+#include "gameMenus/magicmenu.h"
 #include "gameMenus/workshopmenu.h"
 #include "gameMenus/hospitalmenu.h"
 #include "gameMenus/minemenu.h"
@@ -28,7 +28,7 @@ GameMenuHandler::GameMenuHandler(View * parent) : QObject()
     currentItem = -1;
 
     mainMenu = new MainMenu();
-    scienceMenu = new ScienceMenu();
+    magicMenu = new MagicMenu();
     workshopMenu = new WorkshopMenu();
     hospitalMenu = new HospitalMenu();
     mineMenu = new MineMenu();
@@ -37,7 +37,7 @@ GameMenuHandler::GameMenuHandler(View * parent) : QObject()
 GameMenuHandler::~GameMenuHandler()
 {
     delete mainMenu;
-    delete scienceMenu;
+    delete magicMenu;
     delete workshopMenu;
     delete hospitalMenu;
     delete mineMenu;
@@ -49,7 +49,7 @@ GameMenuHandler::~GameMenuHandler()
 void GameMenuHandler::addMenusToScene()
 {
     mainMenu->addMenuToScene(this);
-    scienceMenu->addMenuToScene(this);
+    magicMenu->addMenuToScene(this);
     workshopMenu->addMenuToScene(this);
     hospitalMenu->addMenuToScene(this);
     mineMenu->addMenuToScene(this);
@@ -99,7 +99,7 @@ void GameMenuHandler::showMainMenu()
 void GameMenuHandler::showScienceMenu()
 {
     mFocus->setVisible(false);
-    currentOpenMenu = scienceMenu;
+    currentOpenMenu = magicMenu;
     currentOpenMenu->setMenuVisible(true);
 }
 
@@ -286,7 +286,7 @@ void GameMenuHandler::deleteCurrentMenuItem()
             delete currentOpenMenu->getMenuItems()->at(i);
         }
 
-        if(currentOpenMenu == scienceMenu)
+        if(currentOpenMenu == magicMenu)
             currentItem = 0;
         if(currentOpenMenu == workshopMenu)
             currentItem = 1;
@@ -302,7 +302,7 @@ void GameMenuHandler::deleteCurrentMenuItem()
 
 void GameMenuHandler::connectToMenus(QObject * objectForConnect)
 {
-    scienceMenu->connectWithObject(objectForConnect);
+    magicMenu->connectWithObject(objectForConnect);
     workshopMenu->connectWithObject(objectForConnect);
     hospitalMenu->connectWithObject(objectForConnect);
     mineMenu->connectWithObject(objectForConnect);

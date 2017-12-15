@@ -33,7 +33,6 @@ SOURCES += \
     gameMenus/hospitalmenu.cpp \
     gameMenus/mainmenu.cpp \
     gameMenus/minemenu.cpp \
-    gameMenus/sciencemenu.cpp \
     gameMenus/workshopmenu.cpp \
     Military/troop.cpp \
     Military/army.cpp \
@@ -45,7 +44,8 @@ SOURCES += \
     Military/type/infantry.cpp \
     Military/type/mage.cpp \
     Military/type/raider.cpp \
-    Military/transform.cpp
+    Military/transform.cpp \
+    gameMenus/magicmenu.cpp
 
 HEADERS += \
         widget.h \
@@ -55,7 +55,6 @@ HEADERS += \
     gameMenus/hospitalmenu.h \
     gameMenus/mainmenu.h \
     gameMenus/minemenu.h \
-    gameMenus/sciencemenu.h \
     gameMenus/workshopmenu.h \
     Military/troop.h \
     Military/army.h \
@@ -67,7 +66,8 @@ HEADERS += \
     Military/type/infantry.h \
     Military/type/mage.h \
     Military/type/raider.h \
-    Military/transform.h
+    Military/transform.h \
+    gameMenus/magicmenu.h
 
 FORMS += \
     widget.ui \

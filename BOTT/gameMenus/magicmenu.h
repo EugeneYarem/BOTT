@@ -1,21 +1,21 @@
-#ifndef SCIENCEMENU_H
-#define SCIENCEMENU_H
+#ifndef MAGICMENU_H
+#define MAGICMENU_H
 
 #include "gamemenu.h"
 
 class GameMenuHandler;
 
-class ScienceMenu : public GameMenu
+class MagicMenu : public GameMenu
 {
     Q_OBJECT
 
 public:
-    ScienceMenu();
+    MagicMenu();
 
 signals:
-    // SC - Science Center
-    void SC_MageHealth();
-    void SC_MageAttack();
+    // M - Magic
+    void M_MageHealth();
+    void M_MageAttack();
 
     // GameMenu interface
 public:
@@ -24,4 +24,4 @@ public:
     int getPriceOfCurrentItem(QMap<QString, int> *, int);
 };
 
-#endif // SCIENCEMENU_H
+#endif // MAGICMENU_H

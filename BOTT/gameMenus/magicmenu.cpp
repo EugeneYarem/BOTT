@@ -1,8 +1,8 @@
-#include "sciencemenu.h"
+#include "magicmenu.h"
 #include "gamemenuhandler.h"
 #include "Military/army.h"
 
-ScienceMenu::ScienceMenu()
+MagicMenu::MagicMenu()
 {
     nameOfMenu = new QGraphicsPixmapItem();
     nameOfMenu->setPixmap(QPixmap(":images/images/Science_Menu/mScienceCentre.png"));
@@ -16,26 +16,26 @@ ScienceMenu::ScienceMenu()
     menuItems.push_back(m2);
 }
 
-void ScienceMenu::processSelectAction(int currentItem)
+void MagicMenu::processSelectAction(int currentItem)
 {
     if(currentItem == -1)
         return;
     if(currentItem == 0)
-        emit SC_MageAttack();
+        emit M_MageAttack();
     if(currentItem == 1)
-        emit SC_MageHealth();
+        emit M_MageHealth();
 }
 
-void ScienceMenu::connectWithObject(QObject * objectForConnect)
+void MagicMenu::connectWithObject(QObject * objectForConnect)
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        connect(this, SIGNAL(SC_MageHealth()), (Army *)(objectForConnect), SLOT(increaseMageHitPoint()));
-        connect(this, SIGNAL(SC_MageAttack()), (Army *)(objectForConnect), SLOT(increaseMageAttack()));
+        connect(this, SIGNAL(M_MageHealth()), (Army *)(objectForConnect), SLOT(increaseMageHitPoint()));
+        connect(this, SIGNAL(M_MageAttack()), (Army *)(objectForConnect), SLOT(increaseMageAttack()));
     }
 }
 
-int ScienceMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+int MagicMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
 {
     if(currentItem == -1)
         return 0;
