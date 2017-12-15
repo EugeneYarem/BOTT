@@ -14,7 +14,6 @@ public:
 
 signals:
     // W - workshop
-    void W_MakeGun();
     void W_MakeArquebus();
     void W_HauberkExplored(); // hauberk - кольчуга
     void W_ArmorExplored();
