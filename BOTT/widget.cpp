@@ -18,6 +18,7 @@
 #include <QFont>
 #include <QCloseEvent>
 #include <QSqlQuery>
+#include <QDebug>
 
 int countOfRecordsDB;
 
@@ -865,6 +866,10 @@ bool Widget::eventFilter(QObject *watched, QEvent *event)
     {
         if (event->type() == QEvent::KeyPress)
         {
+            Qt::Key key = (Qt::Key)(((QKeyEvent *)event)->key());
+            Qt::Key nativeKey = (Qt::Key)(((QKeyEvent *)event)->nativeVirtualKey());
+            QString text = ((QKeyEvent *)event)->text();
+
             /*
              * QEvent::nativeKey() умеет принять код английской клавиши даже при другой раскладке клавиатуры, но неправильно реагирует на некоторые кнопки
              * QEvent::key() правильно реагирует на все кнопки, но считывает код клавиши с буквами на том языке, в котором сейчас установлена раскладка клавиатуры
@@ -874,9 +879,6 @@ bool Widget::eventFilter(QObject *watched, QEvent *event)
             //qDebug() << QKeySequence(nativeKey).toString();
             //qDebug() << ((QKeyEvent *)event)->text();
 
-            Qt::Key key = (Qt::Key)(((QKeyEvent *)event)->key());
-            Qt::Key nativeKey = (Qt::Key)(((QKeyEvent *)event)->nativeVirtualKey());
-            QString text = ((QKeyEvent *)event)->text();
             if(text.length() == 1)
                 text = text.toLower();
 
@@ -1156,6 +1158,8 @@ bool Widget::event(QEvent *event)
             startAllTimers();
         }
         else setMaximumWidth(1280);
+
+        isStartDialogOpen = false;
 
         return true;
     }
