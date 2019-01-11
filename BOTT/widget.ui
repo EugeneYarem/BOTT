@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>720</height>
+    <height>767</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,7 +47,7 @@
    <item row="0" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="battlefield">
       <layout class="QGridLayout" name="gridLayout_2">
@@ -436,7 +436,7 @@
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
              </property>
              <property name="text">
               <string>Настройки</string>
@@ -504,7 +504,7 @@
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QLabel{background: rgba(255, 255, 255, 0);}</string>
              </property>
              <property name="text">
               <string/>
@@ -579,7 +579,7 @@
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Громкость музыки</string>
@@ -598,7 +598,7 @@
                 <bool>false</bool>
                </property>
                <property name="styleSheet">
-                <string notr="true">color: rgba(255, 255, 255, 0);</string>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 0);}</string>
                </property>
                <property name="text">
                 <string/>
@@ -622,7 +622,7 @@
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Вызов меню</string>
@@ -646,7 +646,7 @@
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Выбор пункта меню</string>
@@ -670,7 +670,7 @@
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Выход из меню</string>
@@ -694,7 +694,7 @@
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Вверх по меню</string>
@@ -718,9 +718,7 @@
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgba(255, 255, 255, 100);
-padding-left: 5px;
-padding-right: 5px</string>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Вниз по меню</string>
@@ -744,7 +742,7 @@ padding-right: 5px</string>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Создать пехотинца</string>
@@ -768,7 +766,7 @@ padding-right: 5px</string>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Создать лучника</string>
@@ -792,7 +790,7 @@ padding-right: 5px</string>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Создать наездника</string>
@@ -816,7 +814,7 @@ padding-right: 5px</string>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                </property>
                <property name="text">
                 <string>Создать мага</string>
@@ -857,6 +855,12 @@ padding-right: 5px</string>
                </item>
                <item>
                 <widget class="QSpinBox" name="spinBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>120</width>
@@ -868,6 +872,9 @@ padding-right: 5px</string>
                    <family>Century Gothic</family>
                    <pointsize>16</pointsize>
                   </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSpinBox{background: rgba(255, 255, 255, 220)}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -930,7 +937,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                  </property>
                  <property name="text">
                   <string>Игрок 1</string>
@@ -1000,7 +1007,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1070,7 +1077,7 @@ padding-right: 5px</string>
                   <bool>false</bool>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1137,7 +1144,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1204,7 +1211,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1271,7 +1278,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1338,7 +1345,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1405,7 +1412,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1472,7 +1479,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1539,7 +1546,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1601,6 +1608,9 @@ padding-right: 5px</string>
                    <height>30</height>
                   </size>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
+                 </property>
                  <property name="maximum">
                   <number>100</number>
                  </property>
@@ -1659,7 +1669,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
                  </property>
                  <property name="text">
                   <string>Игрок 2</string>
@@ -1729,7 +1739,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1796,7 +1806,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1863,7 +1873,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1930,7 +1940,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1997,7 +2007,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -2064,7 +2074,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -2131,7 +2141,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -2198,7 +2208,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -2265,7 +2275,7 @@ padding-right: 5px</string>
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QLineEdit{background: rgba(255, 255, 255, 220); color: rgb(66, 66, 66);}</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -2350,10 +2360,16 @@ padding-right: 5px</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">QTableWidget{background: rgba(101, 5, 4, 120); color: white}</string>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
          </property>
          <property name="sortingEnabled">
           <bool>false</bool>
+         </property>
+         <property name="columnCount">
+          <number>14</number>
          </property>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>176</number>
@@ -2361,6 +2377,90 @@ padding-right: 5px</string>
          <attribute name="verticalHeaderDefaultSectionSize">
           <number>30</number>
          </attribute>
+         <column>
+          <property name="text">
+           <string>Длительность игры</string>
+          </property>
+          <property name="font">
+           <font>
+            <family>Century Gothic</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Имя</string>
+          </property>
+          <property name="font">
+           <font>
+            <family>Century Gothic</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Результат</string>
+          </property>
+          <property name="font">
+           <font>
+            <family>Century Gothic</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Заработано денег</string>
+          </property>
+          <property name="font">
+           <font>
+            <family>Century Gothic</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Потрачено денег</string>
+          </property>
+          <property name="font">
+           <font>
+            <family>Century Gothic</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Создано солдат</string>
+          </property>
+          <property name="font">
+           <font>
+            <family>Century Gothic</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Куплено улучшений</string>
+          </property>
+          <property name="font">
+           <font>
+            <family>Century Gothic</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </column>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
+         <column/>
         </widget>
        </item>
       </layout>
@@ -2397,6 +2497,9 @@ padding-right: 5px</string>
                <family>Century Gothic</family>
                <pointsize>16</pointsize>
               </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{background: rgba(255, 255, 255, 220); padding-left: 5px; padding-right: 5px}</string>
              </property>
              <property name="text">
               <string>Для игроков</string>
@@ -2464,7 +2567,7 @@ padding-right: 5px</string>
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QLabel{background: rgba(255, 255, 255, 0);}</string>
              </property>
              <property name="text">
               <string/>
@@ -2509,6 +2612,9 @@ padding-right: 5px</string>
            </item>
            <item>
             <widget class="QLabel" name="labelScheme">
+             <property name="styleSheet">
+              <string notr="true">QLabel{background: rgba(255, 255, 255, 0);}</string>
+             </property>
              <property name="text">
               <string/>
              </property>

@@ -1,6 +1,7 @@
-#include "magicmenu.h"
 #include "gamemenuhandler.h"
+#include "magicmenu.h"
 #include "Military/army.h"
+
 
 MagicMenu::MagicMenu()
 {
@@ -30,8 +31,8 @@ void MagicMenu::connectWithObject(QObject * objectForConnect)
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        connect(this, SIGNAL(M_MageHealth()), (Army *)(objectForConnect), SLOT(increaseMageHitPoint()));
-        connect(this, SIGNAL(M_MageAttack()), (Army *)(objectForConnect), SLOT(increaseMageAttack()));
+        connect(this, &MagicMenu::M_MageHealth, dynamic_cast<Army *>(objectForConnect), &Army::increaseMageHitPoint);
+        connect(this, &MagicMenu::M_MageAttack, dynamic_cast<Army *>(objectForConnect), &Army::increaseMageAttack);
     }
 }
 

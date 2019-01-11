@@ -1,6 +1,7 @@
 #include "archer.h"
-#include "Military/army.h"
+#include "enums.h"
 #include <QTimer>
+
 
 Archer::Archer()
 {
@@ -11,69 +12,68 @@ Archer::Archer(Troop & i)
 {
     this->setPixmap(i.pixmap());
     this->setTransform(i.transform());
-    this->atack = i.getAtack();
+    this->attack = i.getAttack();
     this->hp = i.getHp();
-    this->def = 0;
-    this->party = i.getParty();
-    if(this->party == Left)
+    this->side = i.getSide();
+    if(this->side == ConflictSide::Left)
         this->setPos(300, 230);
     else
         this->setPos(2110, 230);
 
-    this->InitialText();
-    sts = run;
-    amt_cnt = 1;
-    this->img_pref = i.getImg_pref();
+    this->initialText();
+    this->status = Status::Run;
+    this->animationCounter = 1;
+    this->imgPrefix = i.getImgPrefix();
 
-    this->timer_interval = i.getTime_interval();
-    this->timer_remainingTime = i.getTime_remainingTime();
+    this->timer_interval = i.getTimerInterval();
+    this->timer_remainingTime = i.getTimerRemainingTime();
 
     this->type = i.getType();
 
     timer = new QTimer();
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(Animation()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(Run()));
+    connect(timer, &QTimer::timeout, this, &Archer::animation);
+    connect(timer, &QTimer::timeout, this, &Archer::run);
 }
 
-void Archer::Animation()
+void Archer::animation()
 {
     timer->start(timer_interval);
 
-    if(sts == stand)
-        this->setPixmap(QPixmap(img_pref + "stand_1.png"));
-    else if(sts == run)
+    if(this->status == Status::Stand)
+        this->setPixmap(QPixmap(imgPrefix + "stand_1.png"));
+    else if(this->status == Status::Run)
     {
-        this->setPixmap(QPixmap(img_pref + "run_" + getNum(amt_cnt) + ".png"));
-        amt_cnt++;
-        if(amt_cnt > 7)
-            amt_cnt = 1;
+        this->setPixmap(QPixmap(imgPrefix + "run_" + getNum(this->animationCounter) + ".png"));
+        this->animationCounter++;
+        if(this->animationCounter > 7)
+            this->animationCounter = 1;
     }
-    else if(sts == attack)
+    else if(this->status == Status::Attack)
     {
-        this->setPixmap(QPixmap(img_pref + "attack_" + getNum(amt_cnt) + ".png"));
-        amt_cnt++;
-        if(amt_cnt > 7)
-            amt_cnt = 1;
+        this->setPixmap(QPixmap(imgPrefix + "attack_" + getNum(this->animationCounter) + ".png"));
+        this->animationCounter++;
+        if(this->animationCounter > 7)
+            this->animationCounter = 1;
     }
 }
 
-void Archer::Run()
+void Archer::run()
 {
     timer->start(timer_interval);
 
-    if(sts != run)
+    if(this->status != Status::Run)
         return;
-    if(this->party == Left)
+    if(this->side == ConflictSide::Left)
     {
         this->setPos(this->x() + 5, this->y());
-        this->Hp_Text->setPos(this->x() + this->pixmap().width() / 2, this->y() - 30);
+        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - 30);
 
     }
     else
     {
         this->setPos(this->x() - 5, this->y());
-        this->Hp_Text->setPos(this->x() + this->pixmap().width() / 3, this->y() - 30);
+        this->hpText->setPos(this->x() + this->pixmap().width() / 3, this->y() - 30);
     }
 
 }

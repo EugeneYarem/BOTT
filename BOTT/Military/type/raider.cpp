@@ -1,6 +1,6 @@
 #include "raider.h"
-#include "Military/army.h"
 #include <QTimer>
+
 
 Rider::Rider()
 {
@@ -11,66 +11,65 @@ Rider::Rider(Troop & i)
 {
     this->setPixmap(i.pixmap());
     this->setTransform(i.transform());
-    this->atack = i.getAtack();
+    this->attack = i.getAttack();
     this->hp = i.getHp();
-    this->def = 0;
-    this->party = i.getParty();
-    if(this->party == Left)
+    this->side = i.getSide();
+    if(this->side == ConflictSide::Left)
         this->setPos(300, 230);
     else
         this->setPos(2060, 230);
 
-    InitialText();
-    sts = run;
-    amt_cnt = 1;
-    this->img_pref = i.getImg_pref();
+    initialText();
+    this->status = Status::Run;
+    this->animationCounter = 1;
+    this->imgPrefix = i.getImgPrefix();
     this->type = i.getType();
-    this->timer_interval = i.getTime_interval();
-    this->timer_remainingTime = i.getTime_remainingTime();
+    this->timer_interval = i.getTimerInterval();
+    this->timer_remainingTime = i.getTimerRemainingTime();
 
     timer = new QTimer();
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(Animation()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(Run()));
+    connect(timer, &QTimer::timeout, this, &Rider::animation);
+    connect(timer, &QTimer::timeout, this, &Rider::run);
 }
 
-void Rider::Animation()
+void Rider::animation()
 {
     timer->start(timer_interval);
 
-    if(sts == stand)
-        this->setPixmap(QPixmap(img_pref + "stand_1.png"));
-    else if(sts == run)
+    if(this->status == Status::Stand)
+        this->setPixmap(QPixmap(imgPrefix + "stand_1.png"));
+    else if(this->status == Status::Run)
     {
-        this->setPixmap(QPixmap(img_pref + "run_" + getNum(amt_cnt) + ".png"));
-        amt_cnt++;
-        if(amt_cnt > 8)
-            amt_cnt = 1;
+        this->setPixmap(QPixmap(imgPrefix + "run_" + getNum(this->animationCounter) + ".png"));
+        this->animationCounter++;
+        if(this->animationCounter > 8)
+            this->animationCounter = 1;
     }
-    else if(sts == attack)
+    else if(this->status == Status::Attack)
     {
-        this->setPixmap(QPixmap(img_pref + "attack_" + getNum(amt_cnt) + ".png"));
-        amt_cnt++;
-        if(amt_cnt > 4)
-            amt_cnt = 1;
+        this->setPixmap(QPixmap(imgPrefix + "attack_" + getNum(this->animationCounter) + ".png"));
+        this->animationCounter++;
+        if(this->animationCounter > 4)
+            this->animationCounter = 1;
     }
 }
 
-void Rider::Run()
+void Rider::run()
 {
     timer->start(timer_interval);
 
-    if(sts != run)
+    if(this->status != Status::Run)
         return;
-    if(this->party == Left)
+    if(this->side == ConflictSide::Left)
     {
         this->setPos(this->x() + 5, this->y());
-        this->Hp_Text->setPos(this->x() + this->pixmap().width() / 4, this->y() - 30);
+        this->hpText->setPos(this->x() + this->pixmap().width() / 4, this->y() - 30);
 
     }
     else
     {
         this->setPos(this->x() - 5, this->y());
-        this->Hp_Text->setPos(this->x() + this->pixmap().width() / 2, this->y() - 30);
+        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - 30);
     }
 }

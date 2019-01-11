@@ -8,11 +8,12 @@ class Mage : public Troop
 
 public:
     Mage();
-    Mage(Troop &);
+    Mage(Troop & troop);
 
 public slots:
-    void Animation();
-    void Run();
+    void animation() override;
+    void run() override;
+
 };
 
 #endif // MAGE_H

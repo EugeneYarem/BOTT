@@ -3,8 +3,6 @@
 
 #include "gamemenu.h"
 
-class GameMenuHandler;
-
 class MineMenu : public GameMenu
 {
     Q_OBJECT
@@ -12,15 +10,15 @@ class MineMenu : public GameMenu
 public:
     MineMenu();
 
+    // GameMenu interface
+    int getPriceOfCurrentItem(QMap<QString, int> * priceMap, int currentItem) override;
+    void connectWithObject(QObject * objectForConnect) override;
+    void processSelectAction(int currentItem) override;
+
 signals:
     // M - Mine
     void M_LevelUp();
 
-    // GameMenu interface
-public:
-    void processSelectAction(int );
-    void connectWithObject(QObject * );
-    int getPriceOfCurrentItem(QMap<QString, int> *, int);
 };
 
 #endif // MINEMENU_H

@@ -4,31 +4,26 @@
 #include <QDialog>
 
 namespace Ui {
-class Message;
+    class Message;
 }
 
 class Message : public QDialog
 {
     Q_OBJECT
 
-    bool isNewGameMes;
-    bool isExitMes;
+    Ui::Message *ui;
 
 public:
-    explicit Message(QWidget *parent = 0);
+    explicit Message(QWidget *parent = nullptr);
     ~Message();
-    void setMessage(QString);
-    void setNewGameStatus();
-    void setExitStatus();
+
+    void setMessage(QString text);
 
 private slots:
     void on_pushButton_released();
 
 signals:
     void okButtonPress();
-
-private:
-    Ui::Message *ui;
 
 };
 

@@ -1,6 +1,7 @@
-#include "workshopmenu.h"
 #include "gamemenuhandler.h"
 #include "Military/army.h"
+#include "workshopmenu.h"
+
 
 WorkshopMenu::WorkshopMenu()
 {
@@ -40,10 +41,10 @@ void WorkshopMenu::connectWithObject(QObject * objectForConnect)
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        connect(this, SIGNAL(W_MakeArquebus()), (Army *)objectForConnect, SLOT(improveArquebus()));
-        connect(this, SIGNAL(W_HauberkExplored()), (Army *)objectForConnect, SLOT(improveHauberk()));
-        connect(this, SIGNAL(W_ArmorExplored()), (Army *)objectForConnect, SLOT(improveArmor()));
-        connect(this, SIGNAL(W_WeaponLevelUp()), (Army *)objectForConnect, SLOT(improveWeapon()));
+        connect(this, &WorkshopMenu::W_MakeArquebus, dynamic_cast<Army *>(objectForConnect), &Army::improveArquebus);
+        connect(this, &WorkshopMenu::W_HauberkExplored, dynamic_cast<Army *>(objectForConnect), &Army::improveHauberk);
+        connect(this, &WorkshopMenu::W_ArmorExplored, dynamic_cast<Army *>(objectForConnect), &Army::improveArmor);
+        connect(this, &WorkshopMenu::W_WeaponLevelUp, dynamic_cast<Army *>(objectForConnect), &Army::improveWeapon);
     }
 }
 

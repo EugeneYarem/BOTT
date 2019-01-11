@@ -2,36 +2,37 @@
 #define BATTLEFIELD_H
 
 #include <QObject>
-#include <QGraphicsTextItem>
 
-class QTimer;
 class Army;
 class QGraphicsScene;
+class QTimer;
 
 class Battlefield : public QObject
 {
     Q_OBJECT
 
-    QGraphicsScene * scene;
-    QTimer * timer, * timer_B;
+    Army * arm1, * arm2;
     int timer_interval;
     int timer_remainingTime;
     int timerB_interval;
     int timerB_remainingTime;
-    Army * arm1, * arm2;
+    QGraphicsScene * scene;
+    QTimer * timer, * timer_B;
 
 public:
     Battlefield();
     ~Battlefield();
-    void setScene(QGraphicsScene *);
-    void setArmies(Army * , Army * );
-    void stopAllTimers();
+
+    void clearStart();
+    void setArmies(Army * army1, Army * army2);
+    void setScene(QGraphicsScene * scene);
     void startAllTimers();
-    void ClearStart();
+    void stopAllTimers();
 
 public slots:
-    void Battle();
-    void ArmyControl();
+    void armyControl();
+    void battle();
+
 };
 
 #endif // BATTLEFIELD_H

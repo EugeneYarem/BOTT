@@ -8,11 +8,12 @@ class Infantry : public Troop
 
 public:
     Infantry();
-    Infantry(Troop &);
+    Infantry(Troop & troop);
 
 public slots:
-    void Animation();
-    void Run();
+    void animation() override;
+    void run() override;
+
 };
 
 #endif // INFANTRY_H

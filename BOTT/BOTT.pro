@@ -45,7 +45,8 @@ SOURCES += \
     Military/type/mage.cpp \
     Military/type/raider.cpp \
     Military/transform.cpp \
-    gameMenus/magicmenu.cpp
+    gameMenus/magicmenu.cpp \
+    keeper.cpp
 
 HEADERS += \
         widget.h \
@@ -67,7 +68,9 @@ HEADERS += \
     Military/type/mage.h \
     Military/type/raider.h \
     Military/transform.h \
-    gameMenus/magicmenu.h
+    gameMenus/magicmenu.h \
+    keeper.h \
+    enums.h
 
 FORMS += \
     widget.ui \

@@ -1,7 +1,7 @@
-#include "hospitalmenu.h"
 #include "gamemenuhandler.h"
+#include "hospitalmenu.h"
 #include "Military/army.h"
-#include <QMap>
+
 
 HospitalMenu::HospitalMenu()
 {
@@ -31,8 +31,8 @@ void HospitalMenu::connectWithObject(QObject * objectForConnect)
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        connect(this, SIGNAL(H_EnterQuarantine()), (Army *)objectForConnect, SLOT(improveQuarantine()));
-        connect(this, SIGNAL(H_DoctorsCountUp()), (Army *)objectForConnect, SLOT(improveDoctors()));
+        connect(this, &HospitalMenu::H_EnterQuarantine, dynamic_cast<Army *>(objectForConnect), &Army::improveQuarantine);
+        connect(this, &HospitalMenu::H_DoctorsCountUp, dynamic_cast<Army *>(objectForConnect), &Army::improveDoctors);
     }
 }
 

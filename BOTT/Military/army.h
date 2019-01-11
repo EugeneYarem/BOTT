@@ -1,56 +1,60 @@
 #ifndef ARMY_H
 #define ARMY_H
 
-#include <QObject>
-#include <QVector>
+#include "enums.h"
 #include "Military/troop.h"
+#include <QObject>
 
-class View;
 class Troop;
-class QGraphicsScene;
+class View;
 
 class Army : public QObject
 {
     Q_OBJECT
 
-    View * parent; // Указатель на view. Нужен, чтобы из армии получить доступ к данным из класса Town
-    QVector<Troop *> arm;
-    Troop * mage , * soldier, * archer, * rider;//for upgrade
-    PoC party;
     bool isArmorImprove;
+    bool isArquebusImprove;
+    bool isDoctorsImprove;
     bool isHauberkImprove;
     bool isWeaponImprove;
-    bool isDoctorsImprove;
-    bool isArquebusImprove;
+    ConflictSide side;
+    QVector<Troop *> army;
+    Troop * archer, * mage, * rider, * soldier; // for upgrade
+    View * parent; // Указатель на view. Нужен, чтобы из армии получить доступ к данным из класса Town
 
 public:
-    Army(View * , PoC party);
+    Army(View * parentView, ConflictSide side);
     ~Army();
-    void addTroop(QString type, QGraphicsScene * scene);
-    Troop * getTroop(int n);
-    int size();
-    void setParty(PoC);
-    void deleteTroop();
+
     int getTownHp();
+    int size();
+    Troop * getTroop(int i);
+    void addTroop(QString type, QGraphicsScene * scene);
+    void clearStart();
+    void deleteTroop();
     void setTownHp(int hp);
-    void ClearStart();
     void startAllTimers();
     void stopAllTimers();
 
+private:
+    void configureTroop(Troop * troop, QString pixmapFileName, QString type, int attack, int hp, QString imgPref, int interval, int remainingTime);
+
 public slots:
-    void improveHauberk();
     void improveArmor();
-    void improveWeapon();
-    void improveQuarantine();
-    void improveDoctors();
     void improveArquebus();
-    void increaseMageHitPoint();
+    void improveDoctors();
+    void improveHauberk();
     void increaseMageAttack();
+    void increaseMageHitPoint();
+    void improveQuarantine();
+    void improveWeapon();
 
 signals:
-    void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги. Кидать этот сигнал, при покупке улучшений
-    void uniteCreated(); // Сигнал, уведомляющий о создании юнита
     void modificate(); // Сигнал, уведомляющий о том, что игрок купил улучшение.
+    void moneyWasted(int sum); // Сигнал, указывающий на то, что были потрачены деньги. Кидать этот сигнал, при покупке улучшений
+    void requiredShowMes(QString message);
+    void uniteCreated(); // Сигнал, уведомляющий о создании юнита
+
 };
 
 #endif // ARMY_H

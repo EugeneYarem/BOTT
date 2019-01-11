@@ -8,11 +8,12 @@ class Archer : public Troop
 
 public:
     Archer();
-    Archer(Troop &);
+    Archer(Troop & troop);
 
 public slots:
-    void Animation();
-    void Run();
+    void animation() override;
+    void run() override;
+
 };
 
 #endif // ARCHER_H

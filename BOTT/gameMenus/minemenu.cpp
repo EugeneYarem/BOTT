@@ -1,7 +1,7 @@
-#include "minemenu.h"
 #include "gamemenuhandler.h"
-#include "Military/army.h"
+#include "minemenu.h"
 #include "town.h"
+
 
 MineMenu::MineMenu()
 {
@@ -25,7 +25,7 @@ void MineMenu::connectWithObject(QObject * objectForConnect)
 {
     if(typeid(*objectForConnect) == typeid(Town))
     {
-        connect(this, SIGNAL(M_LevelUp()), (Town *)objectForConnect, SLOT(setNewIncome()));
+        connect(this, &MineMenu::M_LevelUp, dynamic_cast<Town *>(objectForConnect), &Town::setNewIncome);
     }
 }
 

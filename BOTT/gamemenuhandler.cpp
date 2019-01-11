@@ -1,15 +1,12 @@
-#include "gamemenuhandler.h"
-#include "view.h"
 #include "gamemenu.h"
-#include "Military/army.h"
-#include "gameMenus/mainmenu.h"
-#include "gameMenus/magicmenu.h"
-#include "gameMenus/workshopmenu.h"
+#include "gamemenuhandler.h"
 #include "gameMenus/hospitalmenu.h"
+#include "gameMenus/magicmenu.h"
+#include "gameMenus/mainmenu.h"
 #include "gameMenus/minemenu.h"
-#include "town.h"
-#include <QGraphicsScene>
-#include <QGraphicsTextItem>
+#include "gameMenus/workshopmenu.h"
+#include "view.h"
+
 
 GameMenuHandler::GameMenuHandler(View * parent) : QObject()
 {
@@ -24,7 +21,7 @@ GameMenuHandler::GameMenuHandler(View * parent) : QObject()
     priceItem->setFont(QFont("Old English Text MT", 19));
     priceItem->setDefaultTextColor(QColor(255, 246, 0));
 
-    currentOpenMenu = NULL;
+    currentOpenMenu = nullptr;
     currentItem = -1;
 
     mainMenu = new MainMenu();
@@ -58,7 +55,7 @@ void GameMenuHandler::addMenusToScene()
     mFocus->setPos((this->pos().x() + this->pixmap().width() / 2) - mFocus->pixmap().width() / 2, 0);
     scene()->addItem(mFocus);
 
-    if(side)
+    if(this->side == ConflictSide::Right)
     {
         mPrice->setPos(this->pos().x() - mPrice->pixmap().width(), 0);
         priceItem->setPos(this->pos().x() - mPrice->pixmap().width() + 5, 0);
@@ -75,11 +72,11 @@ void GameMenuHandler::addMenusToScene()
     scene()->addItem(priceItem);
 }
 
-void GameMenuHandler::setPriceSid(bool side) // right - true, false - left
+void GameMenuHandler::setPriceSide(ConflictSide side)
 {
     this->side = side;
 
-    if(side)
+    if(this->side == ConflictSide::Right)
         mPrice->setPixmap(QPixmap(":images/images/priceRight.png"));
     else mPrice->setPixmap(QPixmap(":images/images/priceLeft.png"));
 }
@@ -124,92 +121,59 @@ void GameMenuHandler::showMineMenu()
     currentOpenMenu->setMenuVisible(true);
 }
 
-void GameMenuHandler::setCurrentItem(bool upOrDown) // true - вверх, false - вниз
+void GameMenuHandler::setCurrentItem(DirectionInMenu upOrDown) // true - вверх, false - вниз
 {
     int i = 0;
     if(currentItem == -1)
     {
-        if(upOrDown)
-        {
-            for(i = currentOpenMenu->getMenuItems()->size() - 1; currentOpenMenu->getMenuItems()->at(i) == NULL; i--);
-
-            mFocus->setPos(mFocus->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-            mPrice->setPos(mPrice->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-            currentItem = i;
-        }
+        if(upOrDown == DirectionInMenu::Up)
+            for(i = currentOpenMenu->getMenuItems()->size() - 1; currentOpenMenu->getMenuItems()->at(i) == nullptr; i--);
         else
-        {
-            for(i = 0; currentOpenMenu->getMenuItems()->at(i) == NULL; i++);
-
-            mFocus->setPos(mFocus->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-            mPrice->setPos(mPrice->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-            currentItem = i;
-        }
+            for(i = 0; currentOpenMenu->getMenuItems()->at(i) == nullptr; i++);
     }
     else
     {
-        if(upOrDown)
+        if(upOrDown == DirectionInMenu::Up)
         {
             if(currentItem - 1 < 0)
-            {
-                for(i = currentOpenMenu->getMenuItems()->size() - 1; currentOpenMenu->getMenuItems()->at(i) == NULL; i--);
-
-                mFocus->setPos(mFocus->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                mPrice->setPos(mPrice->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                currentItem = i;
-            }
+                for(i = currentOpenMenu->getMenuItems()->size() - 1; currentOpenMenu->getMenuItems()->at(i) == nullptr; i--);
             else
             {
-                for(i = currentItem - 1; i >= 0 && currentOpenMenu->getMenuItems()->at(i) == NULL; i--);
-
+                for(i = currentItem - 1; i >= 0 && currentOpenMenu->getMenuItems()->at(i) == nullptr; i--);
                 if(i == -1)
-                    for(i = currentOpenMenu->getMenuItems()->size() - 1; currentOpenMenu->getMenuItems()->at(i) == NULL; i--);
-
-                mFocus->setPos(mFocus->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                mPrice->setPos(mPrice->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                currentItem = i;
+                    for(i = currentOpenMenu->getMenuItems()->size() - 1; currentOpenMenu->getMenuItems()->at(i) == nullptr; i--);
             }
         }
         else
         {
             if(currentItem + 1 > currentOpenMenu->getMenuItems()->size() - 1)
-            {
-                for(i = 0; i < currentOpenMenu->getMenuItems()->size() && currentOpenMenu->getMenuItems()->at(i) == NULL; i++);
-
-                mFocus->setPos(mFocus->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                mPrice->setPos(mPrice->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                currentItem = i;
-            }
+                for(i = 0; i < currentOpenMenu->getMenuItems()->size() && currentOpenMenu->getMenuItems()->at(i) == nullptr; i++);
             else
             {
                 try
                 {
-                    for(i = currentItem + 1; i < currentOpenMenu->getMenuItems()->size() && currentOpenMenu->getMenuItems()->at(i) == NULL; i++);
+                    for(i = currentItem + 1; i < currentOpenMenu->getMenuItems()->size() && currentOpenMenu->getMenuItems()->at(i) == nullptr; i++);
 
-                    if(currentOpenMenu->getMenuItems()->value(i) == NULL)
+                    if(currentOpenMenu->getMenuItems()->value(i) == nullptr)
                         throw new QString("itemIsNULL");
-
-                    mFocus->setPos(mFocus->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                    mPrice->setPos(mPrice->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                    currentItem = i;
                 }
                 catch(QString *)
                 {
-                    for(i = 0; i < currentOpenMenu->getMenuItems()->size() && currentOpenMenu->getMenuItems()->at(i) == NULL; i++);
-
-                    mFocus->setPos(mFocus->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                    mPrice->setPos(mPrice->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
-                    currentItem = i;
+                    for(i = 0; i < currentOpenMenu->getMenuItems()->size() && currentOpenMenu->getMenuItems()->at(i) == nullptr; i++);
                 }
             }
         }
     }
+
+    setFocusAndPricePos(mFocus->pos().x(), mPrice->pos().x(), currentOpenMenu->getMenuItems()->value(i)->pos().y());
+    currentItem = i;
+
     mFocus->setVisible(true);
     if(currentOpenMenu != mainMenu)
     {
         mPrice->setVisible(true);
         priceItem->setPlainText(QString::number(currentOpenMenu->getPriceOfCurrentItem(parent->getPriceUpgradeMap(), currentItem)));
-        if(side)
+        if(this->side == ConflictSide::Right)
             priceItem->setPos(mPrice->pos().x() + 5, mPrice->pos().y() - 2);
         else priceItem->setPos(mPrice->pos().x() + 10, mPrice->pos().y() - 2);
         priceItem->setVisible(true);
@@ -219,7 +183,7 @@ void GameMenuHandler::setCurrentItem(bool upOrDown) // true - вверх, false 
 void GameMenuHandler::hideCurrentOpenMenu()
 {
     currentOpenMenu->setMenuVisible(false);
-    currentOpenMenu = NULL;
+    currentOpenMenu = nullptr;
     currentItem = -1;
     mFocus->setVisible(false);
     mPrice->setVisible(false);
@@ -246,21 +210,21 @@ void GameMenuHandler::deleteCurrentMenuItem()
 
     if(currentItem != currentOpenMenu->getMenuItems()->size() - 1)
     {
-        int tempY = currentOpenMenu->getMenuItems()->at(currentItem)->pos().y();
+        long int tempY = static_cast<long int>(currentOpenMenu->getMenuItems()->at(currentItem)->pos().y());
 
-        for(i = currentItem + 1; i < currentOpenMenu->getMenuItems()->size() && currentOpenMenu->getMenuItems()->at(i) == NULL; i++);
+        for(i = currentItem + 1; i < currentOpenMenu->getMenuItems()->size() && currentOpenMenu->getMenuItems()->at(i) == nullptr; i++);
 
-        if(currentOpenMenu->getMenuItems()->value(i) != NULL)
+        if(currentOpenMenu->getMenuItems()->value(i) != nullptr)
         {
-            tempY = currentOpenMenu->getMenuItems()->at(i)->pos().y() - tempY;
-            for(i; i < currentOpenMenu->getMenuItems()->size(); i++)
+            tempY = static_cast<long int>(currentOpenMenu->getMenuItems()->at(i)->pos().y() - tempY);
+            for( ; i < currentOpenMenu->getMenuItems()->size(); i++)
                 currentOpenMenu->getMenuItems()->at(i)->setY(currentOpenMenu->getMenuItems()->at(i)->pos().y() - tempY);
         }
     }
 
     delete currentOpenMenu->getMenuItems()->at(currentItem);
 
-    currentOpenMenu->getMenuItems()->replace(currentItem, NULL);
+    currentOpenMenu->getMenuItems()->replace(currentItem, nullptr);
     currentItem = -1;
     mFocus->setVisible(false);
     mPrice->setVisible(false);
@@ -272,14 +236,14 @@ void GameMenuHandler::deleteCurrentMenuItem()
     i = 0;
 
     for(int j = 0; j < currentOpenMenu->getMenuItems()->size(); j++)
-        if(currentOpenMenu->getMenuItems()->at(j) == NULL)
+        if(currentOpenMenu->getMenuItems()->at(j) == nullptr)
             i++;
 
     if(i == currentOpenMenu->getMenuItems()->size())
     {
         scene()->removeItem(currentOpenMenu->getNameOfMenu());
         delete currentOpenMenu->getNameOfMenu();
-        currentOpenMenu->setNameOfMenu(NULL);
+        currentOpenMenu->setNameOfMenu(nullptr);
         for(int i = 0; i < currentOpenMenu->getMenuItems()->size(); i++)
         {
             //scene()->removeItem(currentOpenMenu->getMenuItems()->at(i));
@@ -306,4 +270,11 @@ void GameMenuHandler::connectToMenus(QObject * objectForConnect)
     workshopMenu->connectWithObject(objectForConnect);
     hospitalMenu->connectWithObject(objectForConnect);
     mineMenu->connectWithObject(objectForConnect);
+    mainMenu->connectWithObject(objectForConnect);
+}
+
+void GameMenuHandler::setFocusAndPricePos(qreal xF, qreal xP, qreal y)
+{
+    mFocus->setPos(xF, y);
+    mPrice->setPos(xP, y);
 }

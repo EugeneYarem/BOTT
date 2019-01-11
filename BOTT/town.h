@@ -1,49 +1,50 @@
 #ifndef TOWN_H
 #define TOWN_H
 
-#include <QObject>
 #include <QGraphicsPixmapItem>
+#include <QObject>
 
 class View;
-class QTimer;
-class QGraphicsTextItem;
 
 class Town : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
-    View * parent;
     int health;
-    int money;
     int income; // доход от шахты
-    QTimer * incomeTimer;
     int incomeTimer_interval;
     int incomeTimer_remainingTime;
+    int money;
     QGraphicsTextItem * healthItem;
     QGraphicsTextItem * moneyItem;
-
-signals:
-    void moneyEarned(int); // Сигнал, указывающий на то, что шахта принесла прибыль
-    void moneyWasted(int); // Сигнал, указывающий на то, что были потрачены деньги на улучшение шахты
-    void modificate(); // Сигнал, уведомляющий о том, что игрок купил улучшение.
-    void loose();
+    QTimer * incomeTimer;
+    View * parent;
 
 public:
-    Town(View * );
+    Town(View * parent);
     ~Town();
+
     int getHealth();
     int getMoney();
-    void stopAllTimers();
-    void startAllTimers();
     void addHealthMoneyToScene();
-    void setHealth(int);
-    void setMoney(int);
-    void ClearStart();
+    void clearStart();
+    void setHealth(int hp);
+    void setMoney(int money);
+    void startAllTimers();
+    void stopAllTimers();
 
 public slots:
-    void damage(int );
     void addMoney();
+    void damage(int damage);
     void setNewIncome();
+
+signals:
+    void loose();
+    void modificate(); // Сигнал, уведомляющий о том, что игрок купил улучшение.
+    void moneyEarned(int income); // Сигнал, указывающий на то, что шахта принесла прибыль
+    void moneyWasted(int wasted); // Сигнал, указывающий на то, что были потрачены деньги на улучшение шахты
+    void requiredShowMes(QString text);
+
 };
 
 #endif // TOWN_H

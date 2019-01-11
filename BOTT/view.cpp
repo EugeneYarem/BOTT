@@ -1,37 +1,40 @@
+#include "enums.h"
+#include "gamemenuhandler.h"
+#include "Military/army.h"
+#include "town.h"
 #include "view.h"
 #include "widget.h"
-#include "gamemenuhandler.h"
-#include "town.h"
-#include "Military/army.h"
 #include <QResizeEvent>
 #include <QTimer>
 
-View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
-{
-    this->bottomView = bottomView;
 
-    if(bottomView)
+View::View(ViewPosition viewPosition, Widget * parent) : QGraphicsView(parent)
+{
+    this->mainParent = parent;
+    this->viewPosition = viewPosition;
+
+    if(this->viewPosition == ViewPosition::BottomView)
         lastSceneX = 1255;
 
     gameMenu = new GameMenuHandler(this);
-    connect(gameMenu, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
+    connect(gameMenu, &GameMenuHandler::closeMenu, this, &View::hideMenu);
     town = new Town(this);
 
-    if(bottomView)
+    if(this->viewPosition == ViewPosition::BottomView)
         town->setPixmap(QPixmap(":images/images/towns/town_2.png"));
     else town->setPixmap(QPixmap(":images/images/towns/town.png"));
 
-    if(bottomView)
-        army = new Army(this, Right);
+    if(this->viewPosition == ViewPosition::BottomView)
+        army = new Army(this, ConflictSide::Right);
     else
-        army = new Army(this, Left);
+        army = new Army(this, ConflictSide::Left);
 
     gameMenu->connectToMenus(town);
     gameMenu->connectToMenus(army);
 
-    if(bottomView)
-        gameMenu->setPriceSid(true);
-    else gameMenu->setPriceSid(false);
+    if(this->viewPosition == ViewPosition::BottomView)
+        gameMenu->setPriceSide(ConflictSide::Right);
+    else gameMenu->setPriceSide(ConflictSide::Left);
 
     canMenuOpen = true;
     menuOpen = false;
@@ -41,11 +44,16 @@ View::View(bool bottomView, QWidget * parent) : QGraphicsView(parent)
 
     inMenuTimer = new QTimer();
     pauseMenuTimer = new QTimer();
+    inMenuTimer_interval = 20000;
+    pauseMenuTimer_interval = 15000;
     inMenuTimer_remainingTime = -1;
     pauseMenuTimer_remainingTime = -1;
 
-    connect(inMenuTimer, SIGNAL(timeout()), this, SLOT(hideMenu()));
-    connect(pauseMenuTimer, SIGNAL(timeout()), this, SLOT(setCanMenuOpenInTrue()));
+    connect(inMenuTimer, &QTimer::timeout, this, &View::hideMenu);
+    connect(pauseMenuTimer, &QTimer::timeout, [this] () {
+                    this->canMenuOpen = true;
+                    this->pauseMenuTimer->stop();
+    });
 }
 
 View::~View()
@@ -59,33 +67,13 @@ View::~View()
 
 void View::setConfiguration()
 {
-    if(bottomView)
+    if(this->viewPosition == ViewPosition::BottomView)
     {
-        controlKeys.insert("menu", Qt::Key_M);
-        controlKeys.insert("menu up", Qt::Key_Up);
-        controlKeys.insert("menu down", Qt::Key_Down);
-        controlKeys.insert("menu select", Qt::Key_Return);
-        controlKeys.insert("exit from menu", Qt::Key_Backspace);
-        controlKeys.insert("create soldier", Qt::Key_7);
-        controlKeys.insert("create archer", Qt::Key_8);
-        controlKeys.insert("create rider", Qt::Key_9);
-        controlKeys.insert("create wizard", Qt::Key_0);
-
         gameMenu->setPos(scene()->width() - gameMenu->pixmap().width(), 0);
         town->setPos(scene()->width() - town->pixmap().width(), 0);
     }
     else
     {
-        controlKeys.insert("menu", Qt::Key_Q);
-        controlKeys.insert("menu up", Qt::Key_W);
-        controlKeys.insert("menu down", Qt::Key_S);
-        controlKeys.insert("menu select", Qt::Key_F);
-        controlKeys.insert("exit from menu", Qt::Key_E);
-        controlKeys.insert("create soldier", Qt::Key_1);
-        controlKeys.insert("create archer", Qt::Key_2);
-        controlKeys.insert("create rider", Qt::Key_3);
-        controlKeys.insert("create wizard", Qt::Key_4);
-
         gameMenu->setPos(0, 0);
         town->setPos(0, 0);
     }
@@ -131,20 +119,14 @@ void View::hideMenu()
     emit menuVisibleStatusChanged(this);
 
     inMenuTimer->stop();
-    pauseMenuTimer->start(15000);
-}
-
-void View::setCanMenuOpenInTrue()
-{
-    canMenuOpen = true;
-    pauseMenuTimer->stop();
+    pauseMenuTimer->start( pauseMenuTimer_interval );
 }
 
 void View::resizeEvent(QResizeEvent *event)
 {
     // В этом if настраивается sceneRect нижнего view после события View::resizeEvent
 
-    if(bottomView)
+    if(this->viewPosition == ViewPosition::BottomView)
     {
         if(event->size().width() == 1256)
         {
@@ -171,16 +153,16 @@ void View::keyPressEvent(QKeyEvent *event)
         gameMenu->setFocus();
         gameMenu->showMainMenu();
 
-        inMenuTimer->start(20000);
+        inMenuTimer->start( inMenuTimer_interval );
         menuOpen = true;
         return;
     }
     if(menuOpen)
     {
         if(event->nativeVirtualKey() == getControlKey("menu up") || event->key() == getControlKey("menu up"))
-            gameMenu->setCurrentItem(true);
+            gameMenu->setCurrentItem( DirectionInMenu::Up );
         if(event->nativeVirtualKey() == getControlKey("menu down") || event->key() == getControlKey("menu down"))
-            gameMenu->setCurrentItem(false);
+            gameMenu->setCurrentItem( DirectionInMenu::Down );
         if(event->nativeVirtualKey() == getControlKey("menu select") || event->key() == getControlKey("menu select"))
             gameMenu->processSelectAction();
         if(event->nativeVirtualKey() == getControlKey("exit from menu") || event->key() == getControlKey("exit from menu"))
@@ -190,37 +172,83 @@ void View::keyPressEvent(QKeyEvent *event)
     // В следющих 4 ифах происходит создание юнита в зависимости от нажатой кнопки. В этих ифах нужно добавить и проверку на наличие нужной суммы
     // Если есть нужная сумма, то создвать юнита и обязательно кидать сигнал moneyWasted с ценой создания этого юнита
     if(event->nativeVirtualKey() == getControlKey("create soldier") || event->key() == getControlKey("create soldier"))
-    {
         army->addTroop("soldier", scene());
-    }
     if(event->nativeVirtualKey() == getControlKey("create archer") || event->key() == getControlKey("create archer"))
-    {
         army->addTroop("archer", scene());
-    }
     if(event->nativeVirtualKey() == getControlKey("create rider") || event->key() == getControlKey("create rider"))
-    {
         army->addTroop("rider", scene());
-    }
     if(event->nativeVirtualKey() == getControlKey("create wizard") || event->key() == getControlKey("create wizard"))
-    {
         army->addTroop("mage", scene());
-    }
 }
 
 bool View::event(QEvent *event)
 {
     if (event->type() == QEvent::KeyPress)
     {
-        if(((QKeyEvent *)event)->key() == Qt::Key_Escape)
+        if((dynamic_cast<QKeyEvent *>(event))->key() == Qt::Key_Escape)
             return false;
 
         // Проверка, что нажатая клавиша - клавиша управления игрока
 
-        if(isControlKey(((QKeyEvent *)event)->nativeVirtualKey()) || isControlKey(((QKeyEvent *)event)->key()))
-            keyPressEvent((QKeyEvent *)event);
+        if(isControlKey((dynamic_cast<QKeyEvent *>(event))->nativeVirtualKey()) || isControlKey((dynamic_cast<QKeyEvent *>(event))->key()))
+            keyPressEvent(dynamic_cast<QKeyEvent *>(event));
         return true;
     }
     return QGraphicsView::event(event);
+}
+
+void View::configureControlKeys(QVector<int> *errors)
+{
+    if(errors->isEmpty())
+    {
+        delete errors;
+        return;
+    }
+
+    if(this->viewPosition == ViewPosition::BottomView)
+    {
+        if(errors->contains(0))
+            controlKeys.insert("menu", Qt::Key_M);
+        if(errors->contains(1))
+            controlKeys.insert("menu up", Qt::Key_Up);
+        if(errors->contains(2))
+            controlKeys.insert("menu down", Qt::Key_Down);
+        if(errors->contains(3))
+            controlKeys.insert("menu select", Qt::Key_Return);
+        if(errors->contains(4))
+            controlKeys.insert("exit from menu", Qt::Key_Backspace);
+        if(errors->contains(5))
+            controlKeys.insert("create soldier", Qt::Key_7);
+        if(errors->contains(6))
+            controlKeys.insert("create archer", Qt::Key_8);
+        if(errors->contains(7))
+            controlKeys.insert("create rider", Qt::Key_9);
+        if(errors->contains(8))
+            controlKeys.insert("create wizard", Qt::Key_0);
+    }
+    else
+    {
+        if(errors->contains(0))
+            controlKeys.insert("menu", Qt::Key_Q);
+        if(errors->contains(1))
+            controlKeys.insert("menu up", Qt::Key_W);
+        if(errors->contains(2))
+            controlKeys.insert("menu down", Qt::Key_S);
+        if(errors->contains(3))
+            controlKeys.insert("menu select", Qt::Key_F);
+        if(errors->contains(4))
+            controlKeys.insert("exit from menu", Qt::Key_E);
+        if(errors->contains(5))
+            controlKeys.insert("create soldier", Qt::Key_1);
+        if(errors->contains(6))
+            controlKeys.insert("create archer", Qt::Key_2);
+        if(errors->contains(7))
+            controlKeys.insert("create rider", Qt::Key_3);
+        if(errors->contains(8))
+            controlKeys.insert("create wizard", Qt::Key_4);
+    }
+
+    delete errors;
 }
 
 bool View::isControlKey(quint32 key)
@@ -338,32 +366,40 @@ void View::deleteCurrentMenuItem()
     gameMenu->deleteCurrentMenuItem();
 }
 
+QMap<QString, Qt::Key> & View::getControlKeys()
+{
+    return controlKeys;
+}
+
 QMap<QString, int> * View::getPriceUpgradeMap()
 {
     return &priceUpgrade;
 }
 
-void View::ClearStart()
+void View::clearStart()
 {
     inMenuTimer_remainingTime = -1;
     pauseMenuTimer_remainingTime = -1;
     inMenuTimer->stop();
     pauseMenuTimer->stop();
-    town->ClearStart();
+    town->clearStart();
 
     delete gameMenu;
     gameMenu = new GameMenuHandler(this);
-    connect(gameMenu, SIGNAL(closeMenu()), this, SLOT(hideMenu()));
+    connect(gameMenu, &GameMenuHandler::closeMenu, this, &View::hideMenu);
     gameMenu->connectToMenus(town);
     gameMenu->connectToMenus(army);
-    if(bottomView)
-        gameMenu->setPriceSid(true);
-    else gameMenu->setPriceSid(false);
+    gameMenu->connectToMenus(this->mainParent);
+    if(this->viewPosition == ViewPosition::BottomView)
+        gameMenu->setPriceSide(ConflictSide::Right);
+    else gameMenu->setPriceSide(ConflictSide::Left);
 
-    priceUpgrade.clear();
-    controlKeys.clear();
     setConfiguration();
-
     canMenuOpen = true;
     menuOpen = false;
+}
+
+GameMenuHandler *View::getGameMenu()
+{
+    return gameMenu;
 }

@@ -7,32 +7,30 @@
  * Класс вызывает метод добавления меню на сцену, метод-обработчик выбора пункта меню, закрытия меню
 */
 
-#include <QObject>
+#include "enums.h"
 #include <QGraphicsPixmapItem>
-#include <typeinfo>
+#include <QObject>
 
-class View;
 class GameMenu;
-class MainMenu;
-class MagicMenu;
-class WorkshopMenu;
 class HospitalMenu;
+class MagicMenu;
+class MainMenu;
 class MineMenu;
-class Army;
-class QGraphicsTextItem;
+class WorkshopMenu;
+class View;
 
 class GameMenuHandler : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
-    View * parent; // Указатель на родительскую сцену
+    ConflictSide side; // Сторона меню (нужно для ценника)
+    int currentItem; // Текущий пункт меню
     GameMenu * currentOpenMenu; // указатель на базовый абстрактный класс всех меню
 
     // Игровые меню
-    MainMenu * mainMenu;
-    MagicMenu * magicMenu;
-    WorkshopMenu * workshopMenu;
     HospitalMenu * hospitalMenu;
+    MagicMenu * magicMenu;
+    MainMenu * mainMenu;
     MineMenu * mineMenu;
 
     // Элемент, который нужен для выделения текущего пункта меню (золотая рамка)
@@ -40,33 +38,36 @@ class GameMenuHandler : public QObject, public QGraphicsPixmapItem
     // Элемент, который нужен для вывода цены текущего пункта
     QGraphicsPixmapItem * mPrice;
     QGraphicsTextItem * priceItem;
-
-    int currentItem; // Текущий пункт меню
-    bool side; // Сторона меню (нужно для ценника)
+    View * parent; // Указатель на родительскую сцену
+    WorkshopMenu * workshopMenu; // Игровое меню
 
 public:
-    GameMenuHandler(View * );
+    GameMenuHandler(View * parent);
     ~GameMenuHandler();
-    void addMenusToScene(); // Вызывает метод добавления меню на сцену
-    void setPriceSid(bool); // Устанавливает сторону для вывода цены улучшения
+
     View * getParentView();
+    void addMenusToScene(); // Вызывает метод добавления меню на сцену
+    void connectToMenus(QObject * objectForConnect);
+    void deleteCurrentMenuItem();
+    void hideCurrentOpenMenu(); // Скрыть открытое меню
+    void processExitAction(); // Метод, который обрабатывает действие выхода из текущего меню
+    void processSelectAction(); // Метод, который вызывает обработчик выбора пункта соответствующего меню
+    void setCurrentItem(DirectionInMenu upOrDown); // Метод выделения пункта меню; true - вверх, false - вниз
+    void setPriceSide(ConflictSide side); // Устанавливает сторону для вывода цены улучшения
 
     // Методы, в которых соответствующее меню отображается на сцене (оно уже добавлено на сцену через метод addMenusToScene)
-    void showMainMenu();
-    void showMagicMenu();
-    void showWorkshopMenu();
     void showHospitalMenu();
+    void showMagicMenu();
+    void showMainMenu();
     void showMineMenu();
+    void showWorkshopMenu();
 
-    void setCurrentItem(bool); // Метод выделения пункта меню
-    void hideCurrentOpenMenu(); // Скрыть открытое меню
-    void processSelectAction(); // Метод, который вызывает обработчик выбора пункта соответствующего меню
-    void processExitAction(); // Метод, который обрабатывает действие выхода из текущего меню
-    void deleteCurrentMenuItem();
-    void connectToMenus(QObject *);
+private:
+    void setFocusAndPricePos(qreal xF, qreal xP, qreal y);
 
 signals:
     void closeMenu();
+
 };
 
 #endif // GAMEMENUHANDLER_H

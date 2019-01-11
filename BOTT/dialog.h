@@ -4,27 +4,30 @@
 #include <QDialog>
 
 namespace Ui {
-class Dialog;
+    class Dialog;
 }
 
 class Dialog : public QDialog
 {
     Q_OBJECT
 
+    Ui::Dialog * ui;
+
 public:
-    explicit Dialog(QWidget *parent = 0);
-    ~Dialog();
+    explicit Dialog(QWidget * parent = nullptr);
+    ~Dialog() override;
+
+    // QWidget interface
+protected:
+    void closeEvent(QCloseEvent * event) override;
 
 private slots:
     void on_pushButton_pressed();
 
-private:
-    Ui::Dialog *ui;
+signals:
+    void dialogIsOpen(bool isOpen);
+    void startNewGame(QString gamer1, QString gamer2);
 
-
-    // QWidget interface
-protected:
-    void closeEvent(QCloseEvent *event);
 };
 
 #endif // DIALOG_H

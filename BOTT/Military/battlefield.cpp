@@ -1,16 +1,15 @@
-#include "Military/battlefield.h"
 #include "Military/army.h"
+#include "Military/battlefield.h"
 #include <QTimer>
-#include <cmath>
-#include <QGraphicsScene>
+
 
 Battlefield::Battlefield()
 {
     timer = new QTimer();
     timer_B = new QTimer();
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(ArmyControl()));//каждую секунду проверяем есть ли войска рядом
-    connect(timer_B, SIGNAL(timeout()), this, SLOT(Battle()));
+    connect(timer, &QTimer::timeout, this, &Battlefield::armyControl);//каждую секунду проверяем есть ли войска рядом
+    connect(timer_B, &QTimer::timeout, this, &Battlefield::battle);
     timer_interval = 200;
     timer_remainingTime = 200;
     timerB_interval = 2000;
@@ -54,13 +53,13 @@ void Battlefield::startAllTimers()
     arm2->startAllTimers();
 }
 
-void Battlefield::ClearStart()
+void Battlefield::clearStart()
 {
-    arm1->ClearStart();
-    arm2->ClearStart();
+    arm1->clearStart();
+    arm2->clearStart();
 }
 
-void Battlefield::Battle()
+void Battlefield::battle()
 {  
     this->timer_B->start(timerB_interval);
 
@@ -73,25 +72,25 @@ void Battlefield::Battle()
             for(int i = 0; i < arm1->size(); i++)
             {
                 if(arm1->getTroop(i)->getType() == "rider" && arm2->getTroop(0)->getType() == "archer")//Двойной урон от "противоположного" типа войск
-                    dmg1 += arm1->getTroop(i)->getAtack() * 2 * std::pow(0.5, i);
+                    dmg1 += arm1->getTroop(i)->getAttack() * 2 * std::pow(0.5, i);
                 else if(arm1->getTroop(i)->getType() == "archer" && arm2->getTroop(0)->getType() == "soldier")
-                    dmg1 += arm1->getTroop(i)->getAtack() * 2 * std::pow(0.5, i);
+                    dmg1 += arm1->getTroop(i)->getAttack() * 2 * std::pow(0.5, i);
                 else if(arm1->getTroop(i)->getType() == "soldier" && arm2->getTroop(0)->getType() == "rider")
-                    dmg1 += arm1->getTroop(i)->getAtack() * 2 * std::pow(0.5, i);
+                    dmg1 += arm1->getTroop(i)->getAttack() * 2 * std::pow(0.5, i);
                 else
-                    dmg1 += arm1->getTroop(i)->getAtack() * std::pow(0.5, i);
+                    dmg1 += arm1->getTroop(i)->getAttack() * std::pow(0.5, i);
             }
 
             for(int i = 0; i < arm2->size(); i++)
             {
                 if(arm2->getTroop(i)->getType() == "rider" && arm1->getTroop(0)->getType() == "archer")
-                    dmg2 += arm2->getTroop(i)->getAtack() * std::pow(0.5, i) * 2;
+                    dmg2 += arm2->getTroop(i)->getAttack() * std::pow(0.5, i) * 2;
                 else if(arm2->getTroop(i)->getType() == "archer" && arm1->getTroop(0)->getType() == "soldier")
-                    dmg2 += arm2->getTroop(i)->getAtack() * std::pow(0.5, i) * 2;
+                    dmg2 += arm2->getTroop(i)->getAttack() * std::pow(0.5, i) * 2;
                 else if(arm2->getTroop(i)->getType() == "soldier" && arm1->getTroop(0)->getType() == "rider")
-                    dmg2 += arm2->getTroop(i)->getAtack() * std::pow(0.5, i) * 2;
+                    dmg2 += arm2->getTroop(i)->getAttack() * std::pow(0.5, i) * 2;
                 else
-                    dmg2 += arm2->getTroop(i)->getAtack() * std::pow(0.5, i);
+                    dmg2 += arm2->getTroop(i)->getAttack() * std::pow(0.5, i);
              }
 
              double buf = dmg2;
@@ -128,9 +127,9 @@ void Battlefield::Battle()
            {
                double dmg = 0;
                for(int i = 0; i < arm1->size(); i++)
-                   dmg += arm1->getTroop(i)->getAtack() * 0.01;
+                   dmg += arm1->getTroop(i)->getAttack() * 0.01;
 
-               arm2->setTownHp(arm2->getTownHp() - dmg);
+               arm2->setTownHp(static_cast<int>(arm2->getTownHp() - dmg));
            }
         }
         else if(arm2->size() != 0)
@@ -139,54 +138,54 @@ void Battlefield::Battle()
             {
                 double dmg = 0;
                 for(int i = 0; i < arm2->size(); i++)
-                    dmg += arm2->getTroop(i)->getAtack() * 0.01;
+                    dmg += arm2->getTroop(i)->getAttack() * 0.01;
 
-                arm1->setTownHp(arm1->getTownHp() - dmg);
+                arm1->setTownHp(static_cast<int>(arm1->getTownHp() - dmg));
             }
         }
     }
 
 }
 
-void Battlefield::ArmyControl()
+void Battlefield::armyControl()
 {
     timer->start(timer_interval);
     if(arm1->size() != 0)
     {
 
         if(arm1->getTroop(0)->x() >= 2090)
-            arm1->getTroop(0)->setSts(attack);
+            arm1->getTroop(0)->setStatus(Status::Attack);
         else if(arm2->size() != 0)
         {
            if(arm1->getTroop(0)->x() >= arm2->getTroop(0)->x() - 100)
-               arm1->getTroop(0)->setSts(attack);
-           else arm1->getTroop(0)->setSts(run);
+               arm1->getTroop(0)->setStatus(Status::Attack);
+           else arm1->getTroop(0)->setStatus(Status::Run);
         }
         else
         {
-            arm1->getTroop(0)->setSts(run);
+            arm1->getTroop(0)->setStatus(Status::Run);
             timer_B->start(timerB_interval);
         }
 
         for(int i = 1; i < arm1->size(); i++)
         {
            if(arm1->getTroop(i)->x() >= (arm1->getTroop(i - 1)->x() - 80))
-               arm1->getTroop(i)->setSts(stand);
-           else arm1->getTroop(i)->setSts(run);
+               arm1->getTroop(i)->setStatus(Status::Stand);
+           else arm1->getTroop(i)->setStatus(Status::Run);
         }
     }
 
     if(arm2->size() != 0)
     {
         if(arm2->getTroop(0)->x() <= 290)
-            arm2->getTroop(0)->setSts(attack);
+            arm2->getTroop(0)->setStatus(Status::Attack);
         else if(arm1->size() != 0)
         {
            if(arm2->getTroop(0)->x() <= arm1->getTroop(0)->x() + 100)
-               arm2->getTroop(0)->setSts(attack);
-           else arm2->getTroop(0)->setSts(run);
+               arm2->getTroop(0)->setStatus(Status::Attack);
+           else arm2->getTroop(0)->setStatus(Status::Run);
         }
-        else arm2->getTroop(0)->setSts(run);
+        else arm2->getTroop(0)->setStatus(Status::Run);
 
         for(int i = 1; i < arm2->size(); i++)
         {
@@ -197,8 +196,8 @@ void Battlefield::ArmyControl()
             else dist = 100;
 
             if(arm2->getTroop(i)->x() <= (arm2->getTroop(i - 1)->x() + dist))
-                arm2->getTroop(i)->setSts(stand);
-            else arm2->getTroop(i)->setSts(run);
+                arm2->getTroop(i)->setStatus(Status::Stand);
+            else arm2->getTroop(i)->setStatus(Status::Run);
         }
     }
 }

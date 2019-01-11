@@ -1,5 +1,7 @@
 #include "Military/troop.h"
+#include <QFont>
 #include <QTimer>
+
 
 Troop::Troop()
 {
@@ -8,23 +10,23 @@ Troop::Troop()
 Troop::~Troop()
 {
     delete timer;
-    delete Hp_Text;
+    delete hpText;
 }
 
 double Troop::getHp()
 {
-    return hp;
+    return this->hp;
 }
 
-double Troop::getAtack()
+double Troop::getAttack()
 {
-    return atack;
+    return this->attack;
 }
 
-void Troop::setHp(float hp)
+void Troop::setHp(double hp)
 {
-    this->hp = hp;
-    Hp_Text->setPlainText(QString::number((int)this->hp));
+    this->hp = static_cast<int>(hp);
+    hpText->setPlainText(QString::number(static_cast<int>(this->hp)));
 }
 
 void Troop::startAllTimers()
@@ -38,42 +40,42 @@ void Troop::stopAllTimers()
     timer->stop();
 }
 
-void Troop::setParty(PoC p)
+void Troop::setSide(ConflictSide side)
 {
-    party = p;
-    if(p == Right)
+    this->side = side;
+    if(side == ConflictSide::Right)
     {
         QTransform t = makeTransform(this->boundingRect().size());
         this->setTransform(t);
     }
 }
 
-int Troop::getTime_interval()
+int Troop::getTimerInterval()
 {
     return this->timer_interval;
 }
 
-int Troop::getTime_remainingTime()
+int Troop::getTimerRemainingTime()
 {
     return this->timer_remainingTime;
 }
 
-PoC Troop::getParty()
+ConflictSide Troop::getSide()
 {
-    return this->party;
+    return this->side;
 }
 
-Status Troop::getSts()
+Status Troop::getStatus()
 {
-    return this->sts;
+    return this->status;
 }
 
-void Troop::setSts(Status sts)
+void Troop::setStatus(Status status)
 {
-    if(this->sts == sts)
+    if(this->status == status)
         return;
-    this->sts = sts;
-    amt_cnt = 1;
+    this->status = status;
+    animationCounter = 1;
 }
 
 void Troop::setType(QString type)
@@ -86,59 +88,54 @@ QString Troop::getType()
     return this->type;
 }
 
-void Troop::setDef(int def)
+void Troop::setImgPrefix(QString imgPrefix)
 {
-    this->def = def;
+    this->imgPrefix = imgPrefix;
 }
 
-void Troop::setImg_Pref(QString ip)
+QString Troop::getImgPrefix()
 {
-    this->img_pref = ip;
+    return this->imgPrefix;
 }
 
-QString Troop::getImg_pref()
+QGraphicsTextItem * Troop::getTextItem()
 {
-    return this->img_pref;
+    return this->hpText;
 }
 
-QGraphicsTextItem *Troop::getTextItem()
+void Troop::initialText()
 {
-    return this->Hp_Text;
-}
+    hpText = new QGraphicsTextItem();
 
-void Troop::InitialText()
-{
-    Hp_Text=new QGraphicsTextItem();
-
-    if(this->party == Left)
+    if(this->side == ConflictSide::Left)
     {
-        Hp_Text->setPos(this->x()-20,190);
+        hpText->setPos(this->x() - 20, 190);
     }
     else
     {
-        Hp_Text->setPos(this->x()+20,190);
+        hpText->setPos(this->x() + 20, 190);
     }
 
-    Hp_Text->setPlainText(QString::number((int)this->hp));
-    Hp_Text->setFont(QFont("Old English Text MT", 14));
-    Hp_Text->setDefaultTextColor(Qt::white);
+    hpText->setPlainText(QString::number(static_cast<int>(this->hp)));
+    hpText->setFont(QFont("Old English Text MT", 14));
+    hpText->setDefaultTextColor(Qt::white);
 
-    if(this->party == Left)
-        this->Hp_Text->setPos(this->x() + this->pixmap().width() / 2, this->y() - 35);
-    else this->Hp_Text->setPos(this->x() + this->pixmap().width() / 3, this->y() - 30);
+    if(this->side == ConflictSide::Left)
+        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - 35);
+    else this->hpText->setPos(this->x() + this->pixmap().width() / 3, this->y() - 30);
 }
 
-void Troop::setAtack(int atack)
+void Troop::setAttack(int attack)
 {
-    this->atack = atack;
+    this->attack = attack;
 }
 
-void Troop::setTime_interval(int time)
+void Troop::setTimerInterval(int time)
 {
     this->timer_interval = time;
 }
 
-void Troop::setTime_remainingTime(int time)
+void Troop::setTimerRemainingTime(int time)
 {
     this->timer_remainingTime = time;
 }

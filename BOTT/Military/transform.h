@@ -3,7 +3,7 @@
 
 #include <QTransform>
 
-QTransform makeTransform(const QSizeF & objSize);
 char getNum(int a);
+QTransform makeTransform(const QSizeF & objSize);
 
 #endif // TRANSFORM_H

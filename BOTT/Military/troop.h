@@ -1,64 +1,56 @@
 #ifndef TROOP_H
 #define TROOP_H
 
-#include <QGraphicsPixmapItem>
-#include <QGraphicsTextItem>
-#include <QFont>
-#include <QString>
+#include "enums.h"
 #include "Military/transform.h"
-
-
-class QTimer;
-
-enum Status{stand, run, attack};
-enum PoC{Left, Right};//сторона конфликта
+#include <QGraphicsPixmapItem>
 
 class Troop : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
 protected:
-    double hp;//1-...
-    double atack;//1-...
-    double def;//0-100
-    QString img_pref;//begin in the file's names of the troop's sprite list
-    QTimer * timer;//timer for the animation
+    ConflictSide side;
+    double attack;
+    double hp;
+    int animationCounter; // counter for animation
     int timer_interval;
     int timer_remainingTime;
-    int amt_cnt;//counter for animation
-    Status sts;//is run, stay,attack...
-    PoC party;
+    QGraphicsTextItem * hpText;
+    QString imgPrefix;// begin in the file's names of the troop's sprite list
     QString type;
-    QGraphicsTextItem *Hp_Text;
+    QTimer * timer; // timer for the animation
+    Status status; // it run, stay, attack
 
 public:
     Troop();
     ~Troop();
+
+    ConflictSide getSide();
+    double getAttack();
     double getHp();
-    double getAtack();
-    void setHp(float);
+    int getTimerInterval();
+    int getTimerRemainingTime();
+    QGraphicsTextItem * getTextItem();
+    QString getImgPrefix();
+    QString getType();
+    Status getStatus();
+    void initialText();
+    void setAttack(int attack);
+    void setHp(double hp);
+    void setImgPrefix(QString imgPrefix);
+    void setTimerInterval(int time);
+    void setTimerRemainingTime(int time);
+    void setType(QString type);
+    void setSide(ConflictSide side);
+    void setStatus(Status status);
     void startAllTimers();
     void stopAllTimers();
-    void setParty(PoC);
-    int getTime_interval();
-    int getTime_remainingTime();
-    void setTime_interval(int time);
-    void setTime_remainingTime(int time);
-    PoC getParty();
-    Status getSts();
-    void setSts(Status);
-    void setType(QString);
-    QString getType();
-    void setAtack(int atack);
-    void setDef(int def);
-    void setImg_Pref(QString);
-    QString getImg_pref();
-    QGraphicsTextItem *getTextItem();
-    void InitialText();
 
 public slots:
-    virtual void Animation() = 0;
-    virtual void Run() = 0;
+    virtual void animation() = 0;
+    virtual void run() = 0;
+
 };
 
 #endif // TROOP_H

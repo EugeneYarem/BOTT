@@ -8,11 +8,12 @@ class Rider : public Troop
 
 public:
     Rider();
-    Rider(Troop &);
+    Rider(Troop & troop);
 
 public slots:
-    void Animation();
-    void Run();
+    void animation() override;
+    void run() override;
+
 };
 
 #endif // RAIDER_H

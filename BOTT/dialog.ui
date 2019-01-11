@@ -67,6 +67,9 @@
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}</string>
+         </property>
          <property name="text">
           <string>Добро пожаловать</string>
          </property>
@@ -143,6 +146,9 @@
                <pointsize>12</pointsize>
               </font>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}</string>
+             </property>
              <property name="text">
               <string>Игрок 1:</string>
              </property>
@@ -155,6 +161,9 @@
                <family>Century Gothic</family>
                <pointsize>12</pointsize>
               </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}</string>
              </property>
              <property name="text">
               <string>Игрок 2:</string>
@@ -186,6 +195,9 @@
                <pointsize>12</pointsize>
               </font>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -197,7 +209,7 @@
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QLineEdit{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}</string>
              </property>
             </widget>
            </item>
@@ -256,8 +268,14 @@
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}</string>
+         </property>
          <property name="text">
           <string>Начать</string>
+         </property>
+         <property name="default">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

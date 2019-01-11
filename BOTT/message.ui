@@ -49,8 +49,14 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}</string>
+   </property>
    <property name="text">
     <string>Ok</string>
+   </property>
+   <property name="default">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -85,6 +91,9 @@
      <family>Century Gothic</family>
      <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel{background: rgba(255, 255, 255, 190); padding-left: 5px; padding-right: 5px}</string>
    </property>
    <property name="text">
     <string>TextLabel</string>

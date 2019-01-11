@@ -1,10 +1,9 @@
-#include "mainmenu.h"
 #include "gamemenuhandler.h"
-#include "view.h"
+#include "mainmenu.h"
 #include "town.h"
-#include "message.h"
-#include "Military/army.h"
-#include <QGraphicsScene>
+#include "view.h"
+#include "widget.h"
+
 
 MainMenu::MainMenu()
 {
@@ -27,6 +26,8 @@ MainMenu::MainMenu()
     menuItems.push_back(m3);
     menuItems.push_back(m4);
     menuItems.push_back(m5);
+
+    eventTypeForDispMess = QEvent::registerEventType();
 }
 
 void MainMenu::processSelectAction(int currentItem)
@@ -47,11 +48,13 @@ void MainMenu::processSelectAction(int currentItem)
     if(currentItem == 4)
     {
         parent->showMainMenu();
-        Message message(parent->getParentView());
-        connect(&message, SIGNAL(okButtonPress()), parent->getParentView()->getTown(), SIGNAL(loose()));
-        message.setMessage("Вы точно желаете сдаться?");
-        message.show();
-        message.exec();
+        //Message message(parent->getParentView());
+        //connect(&message, SIGNAL(okButtonPress()), parent->getParentView()->getTown(), SIGNAL(loose()));
+        //message.setMessage("Вы точно желаете сдаться?");
+        //message.show();
+        //message.exec();
+        //std::function<void()> fun = std::bind(&Town::loose, parent->getParentView()->getTown());
+        emit requiredShowMes("Вы точно желаете сдаться?", this, eventTypeForDispMess/*parent->getParentView()->getTown(), "loose()"*/);
     }
 }
 
@@ -61,7 +64,12 @@ void MainMenu::processExitAction()
 }
 
 void MainMenu::connectWithObject(QObject * objectForConnect)
-{}
+{
+    if(typeid(*objectForConnect) == typeid(Widget))
+    {
+        connect(this, SIGNAL(requiredShowMes(QString, QObject * , int)), dynamic_cast<Widget *>(objectForConnect), SLOT(showMessage(QString, QObject * , int)));
+    }
+}
 
 void MainMenu::deleteMenuItem(int item)
 {
@@ -69,5 +77,17 @@ void MainMenu::deleteMenuItem(int item)
     delete menuItems.at(item);
 }
 
-int MainMenu::getPriceOfCurrentItem(QMap<QString, int> *, int)
-{}
+int MainMenu::getPriceOfCurrentItem(QMap<QString, int> * , int)
+{
+    return -1;
+}
+
+bool MainMenu::event(QEvent * ev)
+{
+    if(ev->type() == eventTypeForDispMess)
+    {
+        emit parent->getParentView()->getTown()->loose();
+        return true;
+    }
+    return GameMenu::event(ev);
+}

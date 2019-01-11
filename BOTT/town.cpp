@@ -1,9 +1,7 @@
 #include "town.h"
 #include "view.h"
-#include "message.h"
 #include <QTimer>
-#include <QGraphicsTextItem>
-#include <QGraphicsScene>
+
 
 Town::Town(View * parent) : QObject()
 {
@@ -26,7 +24,7 @@ Town::Town(View * parent) : QObject()
     moneyItem->setFont(QFont("Old English Text MT", 23));
     moneyItem->setDefaultTextColor(QColor(255, 246, 0));
 
-    connect(incomeTimer, SIGNAL(timeout()), this, SLOT(addMoney()));
+    connect(incomeTimer, &QTimer::timeout, this, &Town::addMoney);
 }
 
 Town::~Town()
@@ -59,9 +57,9 @@ void Town::startAllTimers()
 
 void Town::addHealthMoneyToScene()
 {
-    int x = pos().x();
+    long int x = static_cast<long int>(pos().x());
     if(x != 0)
-        x = scene()->width() - 300;
+        x = static_cast<long int>(scene()->width() - 300);
 
     QGraphicsPixmapItem * background = new QGraphicsPixmapItem();
     background->setPixmap(QPixmap(":images/images/HP_Money.png"));
@@ -92,7 +90,7 @@ void Town::setMoney(int mn)
     this->moneyItem->setPlainText(QString::number(money));
 }
 
-void Town::ClearStart()
+void Town::clearStart()
 {
     health = 100;
     money = 10000;
@@ -124,14 +122,11 @@ void Town::setNewIncome()
     {
         emit moneyWasted(parent->getPriceUpgrade("Mine level up"));
         emit modificate();
-        parent->setPriceUpgrade("Mine level up", parent->getPriceUpgrade("Mine level up") * 1.7);
+        parent->setPriceUpgrade("Mine level up", static_cast<int>(parent->getPriceUpgrade("Mine level up") * 1.7));
         income += 500;
     }
     else
     {
-        Message message((QWidget *)(parent->parent()));
-        message.setMessage("Недостаточно денег для покупки этого улучшения!");
-        message.show();
-        message.exec();
+        emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
     }
 }

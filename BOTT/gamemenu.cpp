@@ -2,12 +2,13 @@
 #include "gamemenuhandler.h"
 #include <QGraphicsScene>
 
+
 GameMenu::GameMenu() : QObject()
 {}
 
 GameMenu::~GameMenu()
 {
-    if(nameOfMenu != NULL)
+    if(nameOfMenu != nullptr)
         delete nameOfMenu;
 
     for(int i = 0; i < menuItems.size(); i++)
@@ -22,8 +23,8 @@ void GameMenu::addMenuToScene(GameMenuHandler * parent)
     nameOfMenu->setVisible(false);
     parent->scene()->addItem(nameOfMenu);
 
-    int currentPosX = (parent->pos().x() + parent->pixmap().width() / 2) - menuItems[0]->pixmap().width() / 2,
-        currentPosY = 70;
+    long int currentPosX = static_cast<long int>((parent->pos().x() + parent->pixmap().width() / 2) - menuItems[0]->pixmap().width() / 2),
+             currentPosY = 70;
 
     for(int i = 0; i < menuItems.size(); i++)
     {
@@ -40,7 +41,7 @@ void GameMenu::setMenuVisible(bool visible)
 
     for(int i = 0; i < menuItems.size(); i++)
     {
-        if(menuItems[i] != NULL)
+        if(menuItems[i] != nullptr)
             menuItems[i]->setVisible(visible);
     }
 }
@@ -50,7 +51,7 @@ QVector<QGraphicsPixmapItem *> * GameMenu::getMenuItems()
     return &menuItems;
 }
 
-QGraphicsPixmapItem *GameMenu::getNameOfMenu()
+QGraphicsPixmapItem * GameMenu::getNameOfMenu()
 {
     return nameOfMenu;
 }
