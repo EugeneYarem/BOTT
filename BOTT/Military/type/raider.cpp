@@ -15,9 +15,9 @@ Rider::Rider(Troop & i)
     this->hp = i.getHp();
     this->side = i.getSide();
     if(this->side == ConflictSide::Left)
-        this->setPos(300, 230);
+        this->setPos(300, 220);
     else
-        this->setPos(2060, 230);
+        this->setPos(2060, 220);
 
     initialText();
     this->status = Status::Run;
