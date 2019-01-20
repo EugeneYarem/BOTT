@@ -46,7 +46,11 @@ SOURCES += \
     Military/type/raider.cpp \
     Military/transform.cpp \
     gameMenus/magicmenu.cpp \
-    keeper.cpp
+    keeper.cpp \
+    RbTableHeaderView/RbTableHeaderView.cpp \
+    RbTableHeaderView/RbTableHeaderItem.cpp \
+    RbTableHeaderView/RbTableHeaderModel.cpp
+
 
 HEADERS += \
         widget.h \
@@ -70,7 +74,11 @@ HEADERS += \
     Military/transform.h \
     gameMenus/magicmenu.h \
     keeper.h \
-    enums.h
+    enums.h \
+    RbTableHeaderView/RbTableHeaderView.h \
+    RbTableHeaderView/RbTableHeaderItem.h \
+    RbTableHeaderView/RbTableHeaderModel.h \
+    constants.h
 
 FORMS += \
     widget.ui \

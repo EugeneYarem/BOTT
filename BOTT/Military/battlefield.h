@@ -29,6 +29,9 @@ public:
     void startAllTimers();
     void stopAllTimers();
 
+private:
+    double countArmyAttack(Army * arm1, Army * arm2);
+
 public slots:
     void armyControl();
     void battle();

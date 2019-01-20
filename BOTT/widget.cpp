@@ -1,9 +1,11 @@
+#include "constants.h"
 #include "dialog.h"
 #include "enums.h"
 #include "keeper.h"
 #include "message.h"
 #include "Military/army.h"
 #include "Military/battlefield.h"
+#include "RbTableHeaderView/RbTableHeaderView.h"
 #include "town.h"
 #include "typeinfo.h"
 #include "ui_widget.h"
@@ -19,7 +21,7 @@
 #include <QSqlQuery>
 
 
-Widget::Widget(QWidget *parent) :
+Widget::Widget(QWidget * parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
@@ -28,26 +30,26 @@ Widget::Widget(QWidget *parent) :
     keeper = new Keeper(this);
 
     // Устанавливаем минимальный размер окна (1280 х 720)
-    this->setMinimumSize(1280, 720);
+    this->setMinimumSize(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
 
     // Фиксируем высоту и ширину
     setFixedHeight(minimumHeight());
-    setMaximumWidth(1280);
+    setMaximumWidth(MIN_WINDOW_WIDTH);
 
     // Создаём и настраиваем сцену
     QGraphicsScene * scene = new QGraphicsScene();
-    scene->setSceneRect(0, 0, 2510, 343); // Размер сцены: 2510 x 343
+    scene->setSceneRect(0, 0, 2510, SCENE_HEIGHT); // Размер сцены: 2510 x 343
     scene->setBackgroundBrush(QBrush(QImage(":/images/images/background.png")));
 
     // Создаём и настраиваем view's
-    view = new View(ViewPosition::TopView, this); // view = new View(false)
-    view_2 = new View(ViewPosition::BottomView, this); // view_2 = new View(true)
+    view = new View(ViewPosition::TopView, this);
+    view_2 = new View(ViewPosition::BottomView, this);
     ui->verticalLayout->addWidget(view);
     ui->verticalLayout->addWidget(view_2);
     view->setScene(scene);
     view_2->setScene(scene);
-    view->setSceneRect(0, 0, 1255, 343);
-    view_2->setSceneRect(1255, 0, 1255, 343);
+    view->setSceneRect(0, 0, LAST_SCENE_X_FOR_BOTTOM_VIEW, SCENE_HEIGHT);
+    view_2->setSceneRect(LAST_SCENE_X_FOR_BOTTOM_VIEW, 0, LAST_SCENE_X_FOR_BOTTOM_VIEW, SCENE_HEIGHT);
 
     installEventFilters();
 
@@ -57,9 +59,10 @@ Widget::Widget(QWidget *parent) :
     btf->setArmies(view->getArmy(), view_2->getArmy());
 
     // Создаем и настраиваем аудиопроигрыватель
+    volume = MUSIC_VOLUME;
     musicPlayer = new QMediaPlayer();
     musicPlayer->setMedia(QUrl("qrc:/sounds/musicBackground.mp3"));
-    musicPlayer->setVolume(50);
+    musicPlayer->setVolume(volume);
     musicPlayer->play();
 
     // Инициализация нужных переменных
@@ -71,7 +74,6 @@ Widget::Widget(QWidget *parent) :
     isSaved = false;
     isStartDialogOpen = false;
     lastVisitedPage = 1;
-    settingsChanged = false;
     viewWithOpenMenu = nullptr;
 
     // Загрузка клавиш управления
@@ -87,6 +89,7 @@ Widget::Widget(QWidget *parent) :
     createMusicPlayerConnects();
     createViewsConnects();
     createConnectsForDispMess();
+    createSettingButtonsConnects();
 
     // Заполнение данными меню настроек и статистики
     createSettingsPage();
@@ -96,9 +99,13 @@ Widget::Widget(QWidget *parent) :
     ui->buttonContinue->hide(); // Скрываем кнопку "Продолжить игру"
 
     // загрузка громкости музыки
-    int volume = keeper->loadMusicVolume();
+    volume = keeper->loadMusicVolume();
     if(volume != -1)
         ui->spinBox->setValue(volume);
+    else volume = MUSIC_VOLUME;
+
+    // Инициализацию этой переменной проводить в конце, т.к. при изменении громкости она станет равной true
+    settingsChanged = false;
 }
 
 Widget::~Widget()
@@ -135,46 +142,39 @@ void Widget::startNewGame()
     keeper->earnedMoneyP2Plus( view_2->getTown()->getMoney() );
 }
 
-bool Widget::checkKeyAndSet(QLineEdit *watched, Qt::Key key)
+bool Widget::checkKeyAndSet(QLineEdit * watched, Qt::Key key)
 {
-    if(isLineEditOfFirstPlayer(watched))
+    if(!view->isControlKey(key, SettingMap::Temp) && !view->isCKContainKeyWithoutCrossingWithTS(key)
+       && !view_2->isControlKey(key, SettingMap::Temp) && !view_2->isCKContainKeyWithoutCrossingWithTS(key))
     {
-        if(!view->checkControlKey(key) && !view_2->checkControlKey(key))
+        if(isLineEditOfFirstPlayer(watched))
         {
-            view->setControlKey(view->getValueByControlKey((dynamic_cast<QLineEdit *>(watched))->text()), key);
-            settingsChanged = true;
+            QString tempInMainMap = view->getValueByControlKey(dynamic_cast<QLineEdit *>(watched)->text());
+            QString tempInTempMap = view->getValueByControlKey(dynamic_cast<QLineEdit *>(watched)->text(), SettingMap::Temp);
+            view->setTempControlKey( tempInMainMap.isEmpty() ? tempInTempMap : tempInMainMap , key);
         }
         else
         {
-            showMessage("Эта кнопка уже используется.");
-            return true;
+            QString tempInMainMap = view_2->getValueByControlKey(dynamic_cast<QLineEdit *>(watched)->text());
+            QString tempInTempMap = view_2->getValueByControlKey(dynamic_cast<QLineEdit *>(watched)->text(), SettingMap::Temp);
+            view_2->setTempControlKey( tempInMainMap.isEmpty() ? tempInTempMap : tempInMainMap , key);
         }
+        settingsChanged = true;
+        dynamic_cast<QLineEdit *>(watched)->setText(QKeySequence(key).toString());
+        dynamic_cast<QLineEdit *>(watched)->clearFocus();
+        ui->pushButtonCancel->setEnabled(true);
     }
-    else
-    {
-        if(!view->checkControlKey(key) && !view_2->checkControlKey(key))
-        {
-            view_2->setControlKey(view_2->getValueByControlKey((dynamic_cast<QLineEdit *>(watched))->text()), key);
-            settingsChanged = true;
-        }
-        else
-        {
-            showMessage("Эта кнопка уже используется.");
-            return true;
-        }
-    }
+    else showMessage("Эта кнопка уже используется.");
 
-    (dynamic_cast<QLineEdit *>(watched))->setText(QKeySequence(key).toString());
-    (dynamic_cast<QLineEdit *>(watched))->clearFocus();
     return true;
 }
 
-bool Widget::checkViewAndSetEvent(View *view, QEvent *event)
+bool Widget::checkViewAndSetEvent(View * view, QEvent * event)
 {
-    if(((view->isControlKey((dynamic_cast<QKeyEvent *>(event))->nativeVirtualKey()) || view->isControlKey((dynamic_cast<QKeyEvent *>(event))->key())) && (view == viewWithOpenMenu || viewWithOpenMenu == nullptr) && view->isCanMenuOpen())
-      || view->isShortcut((dynamic_cast<QKeyEvent *>(event))->nativeVirtualKey()) || view->isShortcut((dynamic_cast<QKeyEvent *>(event))->key()))
+    if(((view->isControlKey(dynamic_cast<QKeyEvent *>(event)->nativeVirtualKey()) || view->isControlKey(dynamic_cast<QKeyEvent *>(event)->key())) && (view == viewWithOpenMenu || viewWithOpenMenu == nullptr) && view->isCanMenuOpen())
+      || view->isShortcut(dynamic_cast<QKeyEvent *>(event)->nativeVirtualKey()) || view->isShortcut(dynamic_cast<QKeyEvent *>(event)->key()))
     {
-        if(!view->isShortcut((dynamic_cast<QKeyEvent *>(event))->nativeVirtualKey()) && !view->isShortcut((dynamic_cast<QKeyEvent *>(event))->key()) && viewWithOpenMenu == nullptr)
+        if(!view->isShortcut(dynamic_cast<QKeyEvent *>(event)->nativeVirtualKey()) && !view->isShortcut(dynamic_cast<QKeyEvent *>(event)->key()) && viewWithOpenMenu == nullptr)
             viewWithOpenMenu = view;
         view->setFocus();
         view->event(event);
@@ -186,11 +186,9 @@ bool Widget::checkViewAndSetEvent(View *view, QEvent *event)
 void Widget::save()
 {
     if(settingsChanged)
-        keeper->saveSettings(view->getControlKeys(), view_2->getControlKeys(), ui->spinBox->value());
-
+        keeper->saveSettings(view->getControlKeys(), view_2->getControlKeys(), volume);
     if(!isFirstGame)
         keeper->saveStatistics();
-
     isSaved = true;
 }
 
@@ -214,23 +212,31 @@ void Widget::createSettingsPage()
     ui->lineEditRider_2->setText(QKeySequence(view_2->getControlKey("create rider")).toString());
     ui->lineEditWizard->setText(QKeySequence(view->getControlKey("create wizard")).toString());
     ui->lineEditWizard_2->setText(QKeySequence(view_2->getControlKey("create wizard")).toString());
-
-    connect(ui->spinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->horizontalSlider, &QSlider::setValue);
-    connect(ui->horizontalSlider, &QSlider::valueChanged, ui->spinBox, &QSpinBox::setValue);
+    ui->spinBox->setValue(volume);
 }
 
 void Widget::createStatisticsPage()
 {
-    createStatisticsTable( keeper->getCountOfGamesRecords() );
+    createStatisticsTable( keeper->getCountOfGamesRecords(true) );
     fillInStatisticsTable( keeper->getGamesRecords() );
 }
 
 void Widget::createStatisticsTable(int res)
 {
     ui->tableWidget->setRowCount(res * 2);
-    ui->tableWidget->verticalHeader()->setMaximumWidth(78);
-    ui->tableWidget->verticalHeader()->setMinimumWidth(78);
-    ui->tableWidget->verticalHeader()->setDefaultAlignment(Qt::AlignCenter);
+
+    RbTableHeaderView * vHead = new RbTableHeaderView(Qt::Vertical, res * 2, 1);
+    QAbstractItemModel * vModel = vHead->model();
+
+    connect(vHead, &RbTableHeaderView::sectionPressed, this, &Widget::verticalHeaderSectionPressed);
+    connect(vHead, &RbTableHeaderView::sectionEntered, this, &Widget::verticalHeaderSectionPressed);
+    connect(ui->tableWidget, &QTableWidget::currentCellChanged, this, &Widget::selectVerticalHeaderItems);
+    connect(ui->tableWidget, &QTableWidget::clicked, this, &Widget::selectVerticalHeaderItems);
+
+    vHead->setFont(QFont("Century Gothic", 12));
+    vHead->setColumnWidth(0, 78);
+    vHead->setDefaultAlignment(Qt::AlignCenter);
+    ui->tableWidget->setVerticalHeader(vHead);
 
     ui->tableWidget->setColumnWidth(0, 170);
     ui->tableWidget->setColumnWidth(1, 190);
@@ -253,12 +259,12 @@ void Widget::createStatisticsTable(int res)
 
     for(int i = 0, num = 0; i < res * 2; i++, num++)
     {
-        ui->tableWidget->setVerticalHeaderItem(i, new QTableWidgetItem(QString::number(res - num)));
-        ui->tableWidget->setVerticalHeaderItem(i + 1, new QTableWidgetItem(QString::number(res - num)));
-        ui->tableWidget->verticalHeaderItem(i)->setFont(QFont("Century Gothic", 12));
-        ui->tableWidget->verticalHeaderItem(i + 1)->setFont(QFont("Century Gothic", 12));
-        ui->tableWidget->verticalHeader()->setSectionResizeMode(i, QHeaderView::Fixed);
-        ui->tableWidget->verticalHeader()->setSectionResizeMode(i + 1, QHeaderView::Fixed);
+        vHead->setSpan(i, 0, 2, 0);
+        vHead->setCellBackgroundColor(vModel->index(i, 0), Qt::white);
+        vHead->setSectionResizeMode(i, QHeaderView::Fixed);
+        vHead->setSectionResizeMode(i + 1, QHeaderView::Fixed);
+        vModel->setData(vModel->index(i, 0), QString::number(res - num), Qt::DisplayRole);
+        vModel->setData(vModel->index(i + 1, 0), QString::number(res - num), Qt::DisplayRole);
         i++;
     }
 }
@@ -291,6 +297,7 @@ void Widget::fillInStatisticsTable(QSqlQuery & query)
             //------
 
             ui->tableWidget->setItem(i, 0, new QTableWidgetItem(hoursStr + ":" + minutesStr + ":" + secondsStr));
+            ui->tableWidget->setSpan(i, 0, 2, 1);
 
             QSqlQuery player1 = keeper->getRecordAboutGamer(query.value(1).toInt());
             QSqlQuery player2;
@@ -312,6 +319,8 @@ void Widget::fillInStatisticsTable(QSqlQuery & query)
                     ui->tableWidget->setItem(i + 1, 4, new QTableWidgetItem(QString::number(player2.value(3).toInt())));
                     ui->tableWidget->setItem(i + 1, 5, new QTableWidgetItem(QString::number(player2.value(4).toInt())));
                     ui->tableWidget->setItem(i + 1, 6, new QTableWidgetItem(QString::number(player2.value(5).toInt())));
+                    if(player1.value(1).toString() == player2.value(1).toString())
+                        ui->tableWidget->setSpan(i, 2, 2, 1);
                 }
             }
             i++;
@@ -334,17 +343,42 @@ bool Widget::isSettingLineEdit(QObject * watched)
     else return false;
 }
 
-void Widget::setRequiredBGIToMainMenuItem(QEvent::Type event, QPushButton *button, QString image)
+void Widget::setRequiredBGIToMainMenuItem(QEvent::Type event, QPushButton * button, MenuBG bgType)
 {
-    if(event == QEvent::FocusIn)
-        button->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/" + image + "Focused.png);");
+    QString str = bgType == MenuBG::SpecialBG ? "2" : "";
+    if(event == QEvent::FocusIn || event == QEvent::HoverEnter)
+        button->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/menuItemsFocusedBG" + str + ".png);");
     if(event == QEvent::FocusOut)
-        button->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/" + image + ".png);");
-    if(event == QEvent::HoverEnter)
-        button->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/" + image + "Focused.png);");
+        button->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/menuItemsBG" + str + ".png);");
     if(event == QEvent::HoverLeave)
         if(!button->hasFocus())
-            button->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/" + image + ".png);");
+            button->setStyleSheet("background-image: url(:/images/images/Main_Menu_Of_BOTT/menuItemsBG" + str + ".png);");
+}
+
+void Widget::showMessageAboutUnsavedSettings()
+{
+    if(settingsChanged)
+    {
+        Message * mess = new Message(this);
+        mess->setMessage("Настройки были изменены. Вы желаете их сохранить?");
+        connect(mess, &Message::okButtonPress, [this] () {
+                        volume = ui->spinBox->value();
+                        view->replaceCKByTS();
+                        view_2->replaceCKByTS();
+                        keeper->saveSettings(view->getControlKeys(), view_2->getControlKeys(), volume);
+        });
+        connect(mess, &Message::end, [this] (bool isButtonOkPressed) {
+                        if(!isButtonOkPressed)
+                        {
+                            createSettingsPage();
+                            view->clearTempSettings();
+                            view_2->clearTempSettings();
+                        }
+        });
+        mess->show();
+        mess->exec();
+        settingsChanged = false;
+    }
 }
 
 void Widget::showMessage(QString text, QObject * sender, int eventType)
@@ -379,7 +413,6 @@ void Widget::installEventFilters()
     ui->lineEditRider_2->installEventFilter(this);
     ui->lineEditWizard->installEventFilter(this);
     ui->lineEditWizard_2->installEventFilter(this);
-
     ui->buttonContinue->installEventFilter(this);
     ui->buttonNew->installEventFilter(this);
     ui->buttonSettings->installEventFilter(this);
@@ -425,7 +458,6 @@ void Widget::stopAllTimers()
         view->stopAllTimers();
         view_2->stopAllTimers();
         btf->stopAllTimers();
-
         eventEvoke = true;
     }
 }
@@ -435,7 +467,6 @@ void Widget::startAllTimers()
     view->startAllTimers();
     view_2->startAllTimers();
     btf->startAllTimers();
-
     eventEvoke = false;
 }
 
@@ -463,15 +494,49 @@ void Widget::createStatisticsConnects()
 void Widget::createMusicPlayerConnects()
 {
     // Коннэкты для работы с аудиопроигрывателем
+    connect(ui->spinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->horizontalSlider, &QSlider::setValue);
+    connect(ui->horizontalSlider, &QSlider::valueChanged, ui->spinBox, &QSpinBox::setValue);
     connect(ui->spinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [this] (int value) {
                     musicPlayer->setVolume(value);
                     settingsChanged = true;
+                    ui->pushButtonCancel->setEnabled(true);
     });
     connect(ui->horizontalSlider, &QSlider::valueChanged, [this] (int value) {
                     musicPlayer->setVolume(value);
                     settingsChanged = true;
+                    ui->pushButtonCancel->setEnabled(true);
     });
     connect(musicPlayer, &QMediaPlayer::stateChanged, [this] (QMediaPlayer::State state) { if(state == QMediaPlayer::StoppedState) musicPlayer->play(); });
+}
+
+void Widget::createSettingButtonsConnects()
+{
+    connect(ui->pushButtonStandart, &QPushButton::pressed, [this] () {
+                    view->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)));
+                    view_2->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)));
+                    view->clearTempSettings();
+                    view_2->clearTempSettings();
+                    volume = MUSIC_VOLUME;
+                    keeper->removeSettingsFile();
+                    this->createSettingsPage();
+                    ui->pushButtonCancel->setEnabled(false);
+                    settingsChanged = false;
+    });
+    connect(ui->pushButtonSave, &QPushButton::pressed, [this] () {
+                    volume = ui->spinBox->value();
+                    view->replaceCKByTS();
+                    view_2->replaceCKByTS();
+                    keeper->saveSettings(view->getControlKeys(), view_2->getControlKeys(), volume);
+                    settingsChanged = false;
+                    ui->pushButtonCancel->setEnabled(false);
+    });
+    connect(ui->pushButtonCancel, &QPushButton::pressed, [this] () {
+                    view->clearTempSettings();
+                    view_2->clearTempSettings();
+                    this->createSettingsPage();
+                    settingsChanged = false;
+                    ui->pushButtonCancel->setEnabled(false);
+    });
 }
 
 void Widget::createViewsConnects()
@@ -495,10 +560,9 @@ void Widget::gameOver()
     stopAllTimers();
     view->hide();
     view_2->hide();
-
     if(!isGameOver)
     {
-        setMaximumWidth(1280);
+        setMaximumWidth(MIN_WINDOW_WIDTH);
         gameOverLabel = new QLabel(this);
         ui->verticalLayout->addWidget(gameOverLabel);
         gameOverLabel->move(0, 0);
@@ -510,6 +574,7 @@ void Widget::gameOver()
         gameOverLabel->show();
         isGameOver = true;        
         save();
+        ui->tableWidget->clearSpans();
         createStatisticsPage();
         isExit = true;
     }
@@ -542,41 +607,17 @@ void Widget::setExit()
     isExit = true;
 }
 
-bool Widget::eventFilter(QObject *watched, QEvent *event)
+bool Widget::eventFilter(QObject * watched, QEvent * event)
 {
-    if(watched == ui->buttonContinue)
+    if(watched == ui->buttonContinue || watched == ui->buttonNew || watched == ui->buttonSettings ||
+       watched == ui->buttonStatistics || watched == ui->buttonForPlayers)
     {
-        setRequiredBGIToMainMenuItem(event->type(), ui->buttonContinue, "continue");
+        setRequiredBGIToMainMenuItem(event->type(), dynamic_cast<QPushButton *>(watched));
         return false;
     }
-
-    if(watched == ui->buttonNew)
-    {
-        setRequiredBGIToMainMenuItem(event->type(), ui->buttonNew, "new");
-        return false;
-    }
-
-    if(watched == ui->buttonSettings)
-    {
-        setRequiredBGIToMainMenuItem(event->type(), ui->buttonSettings, "settings");
-        return false;
-    }
-
-    if(watched == ui->buttonStatistics)
-    {
-        setRequiredBGIToMainMenuItem(event->type(), ui->buttonStatistics, "statistics");
-        return false;
-    }
-
-    if(watched == ui->buttonForPlayers)
-    {
-        setRequiredBGIToMainMenuItem(event->type(), ui->buttonForPlayers, "forPlayer");
-        return false;
-    }
-
     if(watched == ui->buttonExit)
     {
-        setRequiredBGIToMainMenuItem(event->type(), ui->buttonExit, "exit");
+        setRequiredBGIToMainMenuItem(event->type(), ui->buttonExit, MenuBG::SpecialBG);
         return false;
     }
 
@@ -612,24 +653,17 @@ bool Widget::eventFilter(QObject *watched, QEvent *event)
 
             if(QKeySequence(nativeKey).toString() >= QKeySequence(key).toString() && QKeySequence(nativeKey).toString().length() >= QKeySequence(key).toString().length()
                && QKeySequence(key).toString() != text && QKeySequence(key).toString() != text.toUpper())
-            {
                 return checkKeyAndSet(dynamic_cast<QLineEdit *>(watched), nativeKey);
-            }
 
             if(QKeySequence(nativeKey).toString().length() < QKeySequence(key).toString().length())
-            {
                 return checkKeyAndSet(dynamic_cast<QLineEdit *>(watched), key);
-            }
 
             if(QKeySequence(key).toString() == text)
-            {
                 return checkKeyAndSet(dynamic_cast<QLineEdit *>(watched), key);
-            }
 
             if(QKeySequence(key).toString() != text && QKeySequence(key).toString() == text.toUpper())
-            {
                 return checkKeyAndSet(dynamic_cast<QLineEdit *>(watched), nativeKey);
-            }
+
             return true;
         }
     }
@@ -647,28 +681,26 @@ bool Widget::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
-void Widget::closeEvent(QCloseEvent *event)
+void Widget::closeEvent(QCloseEvent * event)
 {
     if(isFirstGame)
     {
-        if(settingsChanged)
-            keeper->saveSettings(view->getControlKeys(), view_2->getControlKeys(), ui->spinBox->value());
+        showMessageAboutUnsavedSettings();
         close();
         return;
     }
-
     if(!isSaved)
     {
         Message * mess = new Message(this);
         mess->setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
         connect(mess, &Message::okButtonPress, [this] () {
+                        this->showMessageAboutUnsavedSettings();
                         this->save();
                         this->setExit();
         });
         mess->show();
         mess->exec();
     }
-
     if(!isExit)
         event->ignore();
 }
@@ -689,25 +721,20 @@ void Widget::on_buttonContinue_pressed()
 
     if(isGameOver)
     {
-        setMaximumWidth(1280);
+        setMaximumWidth(MIN_WINDOW_WIDTH);
         return;
     }
-
     setMaximumWidth(16777215);
 }
 
-bool Widget::event(QEvent *event)
+bool Widget::event(QEvent * event)
 {
     if(event->type() == QEvent::KeyRelease && (dynamic_cast<QKeyEvent *>(event))->key() == Qt::Key_Escape)
     {
         if(ui->stackedWidget->currentIndex() == 0)
             stopAllTimers();
-
-        if(ui->stackedWidget->currentIndex() == 2 && settingsChanged)
-        {
-            keeper->saveSettings(view->getControlKeys(), view_2->getControlKeys(), ui->spinBox->value());
-            settingsChanged = false;
-        }
+        if(ui->stackedWidget->currentIndex() == 2)
+            showMessageAboutUnsavedSettings();
 
         clearFocusOfMainMenu();
         int temp = lastVisitedPage;
@@ -718,20 +745,18 @@ bool Widget::event(QEvent *event)
         {
             if(isGameOver)
             {
-                setMaximumWidth(1280);
+                setMaximumWidth(MIN_WINDOW_WIDTH);
                 return true;
             }
-
             setMaximumWidth(16777215);
             startAllTimers();
         }
         else
         {
-            setMaximumWidth(1280);
-            if(temp == 0 && !ui->buttonContinue->isVisible())
+            setMaximumWidth(MIN_WINDOW_WIDTH);
+            if(temp == 0 && ui->buttonContinue->isHidden())
                 ui->stackedWidget->setCurrentIndex(lastVisitedPage);
         }
-
         isStartDialogOpen = false;
 
         return true;
@@ -746,10 +771,8 @@ void Widget::on_buttonNew_pressed()
         clearFocusOfMainMenu();
         if(!isStartDialogOpen)
             showStartDialog();
-
         return;
     }
-
     if(!isSaved)
     {
         clearFocusOfMainMenu();
@@ -768,12 +791,9 @@ void Widget::on_buttonNew_pressed()
             delete gameOverLabel;
             gameOverLabel = nullptr;
         }
-
         clearFocusOfMainMenu();
-
         if(!isStartDialogOpen)
             showStartDialog();
-
         return;
     }
 }
@@ -797,4 +817,76 @@ void Widget::on_buttonForPlayers_pressed()
     lastVisitedPage = 1;
     ui->stackedWidget->setCurrentIndex(4);
     clearFocusOfMainMenu();
+}
+
+
+void Widget::on_pushButtonExitFromFP_pressed()
+{
+    clearFocusOfMainMenu();
+    lastVisitedPage = 4;
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+void Widget::on_pushButtonExitFromSettings_pressed()
+{
+    showMessageAboutUnsavedSettings();
+    clearFocusOfMainMenu();
+    lastVisitedPage = 2;
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+void Widget::selectVerticalHeaderItems()
+{
+    if(QApplication::keyboardModifiers() != Qt::ControlModifier)
+    {
+        dynamic_cast<RbTableHeaderView *>(ui->tableWidget->verticalHeader())->setBackgroundColor(Qt::white);
+        dynamic_cast<RbTableHeaderView *>(ui->tableWidget->verticalHeader())->setForegroundColor(Qt::black);
+    }
+
+    QModelIndex index;
+
+    foreach(auto i, ui->tableWidget->selectedItems())
+    {
+        if(i->row() % 2 == 0)
+            index = ui->tableWidget->verticalHeader()->model()->index(i->row(), 0);
+        else index = ui->tableWidget->verticalHeader()->model()->index(i->row() - 1, 0);
+
+        dynamic_cast<RbTableHeaderView *>(ui->tableWidget->verticalHeader())->setCellBackgroundColor(index, Qt::gray);
+        dynamic_cast<RbTableHeaderView *>(ui->tableWidget->verticalHeader())->setCellForegroundColor(index, Qt::white);
+    }
+
+    ui->tableWidget->verticalHeader()->repaint();
+}
+
+void Widget::verticalHeaderSectionPressed(int beginSection, int endSection)
+{
+    int tempEndSection = endSection;
+    static int lastSection = endSection;
+
+    if(beginSection < endSection && lastSection > endSection && QApplication::keyboardModifiers() != Qt::ControlModifier)
+        ui->tableWidget->setRangeSelected(QTableWidgetSelectionRange(endSection - 1, 0, lastSection, 6), false);
+    if(beginSection > endSection && lastSection < endSection && QApplication::keyboardModifiers() != Qt::ControlModifier)
+        ui->tableWidget->setRangeSelected(QTableWidgetSelectionRange(lastSection - 1, 0, endSection, 6), false);
+
+    QAbstractItemView::SelectionMode oldSelectionMode = ui->tableWidget->selectionMode();
+    ui->tableWidget->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    if(beginSection > endSection)
+    {
+        beginSection++;
+        if(endSection % 2 == 1)
+            endSection--;
+        int temp = beginSection;
+        beginSection = endSection;
+        endSection = temp;
+    }
+
+    if(endSection - beginSection <= 1 && lastSection != endSection && QApplication::keyboardModifiers() != Qt::ControlModifier)
+        ui->tableWidget->clearSelection();
+
+    for (int i = beginSection; i < endSection + 1; ++i)
+        ui->tableWidget->selectRow(i);
+
+    ui->tableWidget->setSelectionMode(oldSelectionMode);
+    lastSection = tempEndSection;
 }

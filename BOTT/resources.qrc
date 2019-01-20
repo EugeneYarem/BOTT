@@ -20,18 +20,7 @@
         <file>images/logo.png</file>
         <file>images/mainMenuBackground.png</file>
         <file>images/Main_Menu_Of_BOTT/bg.png</file>
-        <file>images/Main_Menu_Of_BOTT/continue.png</file>
-        <file>images/Main_Menu_Of_BOTT/exit.png</file>
-        <file>images/Main_Menu_Of_BOTT/menu.png</file>
-        <file>images/Main_Menu_Of_BOTT/new.png</file>
-        <file>images/Main_Menu_Of_BOTT/settings.png</file>
-        <file>images/Main_Menu_Of_BOTT/statistics.png</file>
         <file>images/dialogBG.jpg</file>
-        <file>images/Main_Menu_Of_BOTT/continueFocused.png</file>
-        <file>images/Main_Menu_Of_BOTT/exitFocused.png</file>
-        <file>images/Main_Menu_Of_BOTT/newFocused.png</file>
-        <file>images/Main_Menu_Of_BOTT/settingsFocused.png</file>
-        <file>images/Main_Menu_Of_BOTT/statisticsFocused.png</file>
         <file>images/focus.png</file>
         <file>images/Workshop_Menu/w1.png</file>
         <file>images/Military/archer/archer_attack_1.png</file>
@@ -157,14 +146,16 @@
         <file>images/HP_Money.png</file>
         <file>images/priceLeft.png</file>
         <file>images/priceRight.png</file>
-        <file>images/Main_Menu_Of_BOTT/forPlayer.png</file>
-        <file>images/Main_Menu_Of_BOTT/forPlayerFocused.png</file>
         <file>images/improvementScheme.png</file>
         <file>images/Main_Menu/mC.png</file>
         <file>images/Magic_Menu/m1.png</file>
         <file>images/Magic_Menu/m2.png</file>
         <file>images/Magic_Menu/mMagic.png</file>
         <file>images/Main_Menu/mMag.png</file>
+        <file>images/Main_Menu_Of_BOTT/menuItemsBG.png</file>
+        <file>images/Main_Menu_Of_BOTT/menuItemsFocusedBG.png</file>
+        <file>images/Main_Menu_Of_BOTT/menuItemsBG2.png</file>
+        <file>images/Main_Menu_Of_BOTT/menuItemsFocusedBG2.png</file>
     </qresource>
     <qresource prefix="/sounds">
         <file>musicBackground.mp3</file>

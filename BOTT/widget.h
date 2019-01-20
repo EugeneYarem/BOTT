@@ -1,6 +1,7 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include "enums.h"
 #include <QEvent>
 #include <QWidget>
 
@@ -31,6 +32,7 @@ class Widget : public QWidget
     bool isStartDialogOpen; // Нужна, чтобы диалоговое окно старта новой игры не показывалось несколько раз
     bool settingsChanged; // Переменная, указывающая на то, что настройки управления были изменены. При возвращении в гавное меню в случае, если она true, то настройки сохранятся в файл
     int lastVisitedPage;
+    int volume;
     Keeper * keeper;
     QLabel * gameOverLabel;
     QMediaPlayer * musicPlayer;
@@ -59,6 +61,7 @@ private:
     void clearFocusOfMainMenu();
     void createConnectsForDispMess(); // создание коннектов для вывода нужных сообщений от разных объектов
     void createMusicPlayerConnects();
+    void createSettingButtonsConnects();
     void createSettingsPage();
     void createStatisticsConnects();
     void createStatisticsPage();
@@ -68,7 +71,8 @@ private:
     void installEventFilters();
     void save();
     void setExit();
-    void setRequiredBGIToMainMenuItem(QEvent::Type event, QPushButton * button, QString image); // BGI - background image
+    void setRequiredBGIToMainMenuItem(QEvent::Type event, QPushButton * button, MenuBG bgType = MenuBG::MainBG); // BGI - background image
+    void showMessageAboutUnsavedSettings();
     void showStartDialog();
     void startAllTimers();
     void startNewGame();
@@ -85,6 +89,10 @@ private slots:
     void on_buttonNew_pressed();
     void on_buttonSettings_pressed();
     void on_buttonStatistics_pressed();
+    void on_pushButtonExitFromFP_pressed();
+    void on_pushButtonExitFromSettings_pressed();
+    void selectVerticalHeaderItems();
+    void verticalHeaderSectionPressed(int beginSection, int endSection);
 
 };
 

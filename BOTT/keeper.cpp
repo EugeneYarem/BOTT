@@ -1,12 +1,11 @@
+#include "constants.h"
 #include "keeper.h"
 #include "widget.h"
-#include <QDir>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMap>
-#include <QProcessEnvironment>
 #include <QSqlQuery>
 #include <QVariant>
 #include <QVector>
@@ -14,11 +13,6 @@
 
 Keeper::Keeper(QObject *parent) : QObject(parent)
 {
-    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
-    dataDirPath = QDir::toNativeSeparators(env.value("USERPROFILE") + "/AppData/Local/Battle Of The Towns");
-    dbFilePath = QDir::toNativeSeparators(env.value("USERPROFILE") + "/AppData/Local/Battle Of The Towns/statistics.sqlite");
-    settingFilePath = QDir::toNativeSeparators(env.value("USERPROFILE") + "/AppData/Local/Battle Of The Towns/settings.json");
-
     db = QSqlDatabase::addDatabase("QSQLITE");
     connectDB();
 
@@ -34,7 +28,7 @@ Keeper::~Keeper()
 QVector<int> * Keeper::loadSettings(QMap<QString, Qt::Key> &settings, int id)
 {
     QFile file;
-    file.setFileName(settingFilePath);
+    file.setFileName(SETTING_FILE_PATH);
     try
     {
         if(!file.open(QIODevice::ReadOnly))
@@ -42,8 +36,7 @@ QVector<int> * Keeper::loadSettings(QMap<QString, Qt::Key> &settings, int id)
     }
     catch(int )
     {
-        std::vector<int> errors = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-        return new QVector<int>(QVector<int>::fromStdVector(errors)); // ошибка: нет файла
+        return new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)); // ошибка: нет файла
     }
 
     QJsonDocument jsonDoc = QJsonDocument::fromJson(file.readAll());
@@ -51,8 +44,7 @@ QVector<int> * Keeper::loadSettings(QMap<QString, Qt::Key> &settings, int id)
 
     if(jsonDoc.isEmpty() || jsonDoc.isNull())
     {
-        std::vector<int> errors = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-        return new QVector<int>(QVector<int>::fromStdVector(errors)); // ошибка: нет файла
+        return new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)); // ошибка: нет файла
     }
 
     QVector<int> *errors = new QVector<int>;
@@ -130,11 +122,11 @@ bool Keeper::saveSettings(const QMap<QString, Qt::Key> & settings1, const QMap<Q
     QJsonDocument jsonDoc;
     jsonDoc.setArray(array);
 
-    if(!QFile::exists(dataDirPath))
-        QDir().mkdir(dataDirPath);
+    if(!QFile::exists(DATA_DIR_PATH))
+        QDir().mkdir(DATA_DIR_PATH);
 
     QFile file;
-    file.setFileName(settingFilePath);
+    file.setFileName(SETTING_FILE_PATH);
     try
     {
         if(!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
@@ -262,9 +254,9 @@ QSqlQuery & Keeper::getRecordAboutGamer(int id)
     return player;
 }
 
-int Keeper::getCountOfGamesRecords()
+int Keeper::getCountOfGamesRecords(bool refreshCount)
 {
-    if(countOfGamesRecords == -1)
+    if(countOfGamesRecords == -1 || refreshCount)
     {
         QSqlQuery query = getGamesRecords();
 
@@ -280,7 +272,7 @@ int Keeper::getCountOfGamesRecords()
 int Keeper::loadMusicVolume()
 {
     QFile file;
-    file.setFileName(settingFilePath);
+    file.setFileName(SETTING_FILE_PATH);
     try
     {
         if(!file.open(QIODevice::ReadOnly))
@@ -329,10 +321,10 @@ QString & Keeper::getWinner()
 
 bool Keeper::connectDB()
 {
-    db.setDatabaseName(dbFilePath);
+    db.setDatabaseName(DATABASE_FILE_PATH);
 
-    if(!QFile::exists(dataDirPath))
-        QDir().mkdir(dataDirPath);
+    if(!QFile::exists(DATA_DIR_PATH))
+        QDir().mkdir(DATA_DIR_PATH);
 
     try
     {
@@ -409,4 +401,9 @@ void Keeper::winP1()
 void Keeper::winP2()
 {
     winner = gamerNameP2;
+}
+
+void Keeper::removeSettingsFile()
+{
+    QFile(SETTING_FILE_PATH).remove();
 }

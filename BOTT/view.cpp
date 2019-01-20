@@ -1,9 +1,11 @@
+#include "constants.h"
 #include "enums.h"
 #include "gamemenuhandler.h"
 #include "Military/army.h"
 #include "town.h"
 #include "view.h"
 #include "widget.h"
+#include <QDebug>
 #include <QResizeEvent>
 #include <QTimer>
 
@@ -14,7 +16,7 @@ View::View(ViewPosition viewPosition, Widget * parent) : QGraphicsView(parent)
     this->viewPosition = viewPosition;
 
     if(this->viewPosition == ViewPosition::BottomView)
-        lastSceneX = 1255;
+        lastSceneX = LAST_SCENE_X_FOR_BOTTOM_VIEW;
 
     gameMenu = new GameMenuHandler(this);
     connect(gameMenu, &GameMenuHandler::closeMenu, this, &View::hideMenu);
@@ -44,8 +46,8 @@ View::View(ViewPosition viewPosition, Widget * parent) : QGraphicsView(parent)
 
     inMenuTimer = new QTimer();
     pauseMenuTimer = new QTimer();
-    inMenuTimer_interval = 20000;
-    pauseMenuTimer_interval = 15000;
+    inMenuTimer_interval = IN_MENU_INTERVAL;
+    pauseMenuTimer_interval = MENU_PAUSE_INTERVAL;
     inMenuTimer_remainingTime = -1;
     pauseMenuTimer_remainingTime = -1;
 
@@ -90,15 +92,15 @@ void View::setConfiguration()
     scene()->addItem(gameMenu);
     gameMenu->addMenusToScene();
 
-    priceUpgrade.insert("Hauberk", 5000);
-    priceUpgrade.insert("Armor", 8000);
-    priceUpgrade.insert("Weapon", 12000);
-    priceUpgrade.insert("Quarantine", 500);
-    priceUpgrade.insert("Doctors", 5000);
-    priceUpgrade.insert("Mage_Hp", 2000);
-    priceUpgrade.insert("Mage_Attack", 2000);
-    priceUpgrade.insert("Arquebus", 5000);
-    priceUpgrade.insert("Mine level up", 6000);
+    priceUpgrade.insert("Hauberk", HAUBERK_PRICE);
+    priceUpgrade.insert("Armor", ARMOR_PRICE);
+    priceUpgrade.insert("Weapon", WEAPON_PRICE);
+    priceUpgrade.insert("Quarantine", QUARANTINE_PRICE);
+    priceUpgrade.insert("Doctors", DOCTORS_PRICE);
+    priceUpgrade.insert("Mage_Hp", MAGE_HP_PRICE);
+    priceUpgrade.insert("Mage_Attack", MAGE_ATTACK_PRICE);
+    priceUpgrade.insert("Arquebus", ARQUEBUS_PRICE);
+    priceUpgrade.insert("Mine level up", MINE_LEVEL_UP_PRICE);
 }
 
 bool View::isCanMenuOpen()
@@ -128,13 +130,13 @@ void View::resizeEvent(QResizeEvent *event)
 
     if(this->viewPosition == ViewPosition::BottomView)
     {
-        if(event->size().width() == 1256)
+        if(event->size().width() == LAST_SCENE_X_FOR_BOTTOM_VIEW + 1)
         {
-            lastSceneX = 1255;
-            setSceneRect(1255, 0, 1255, 343);
+            lastSceneX = LAST_SCENE_X_FOR_BOTTOM_VIEW;
+            setSceneRect(LAST_SCENE_X_FOR_BOTTOM_VIEW, 0, LAST_SCENE_X_FOR_BOTTOM_VIEW, SCENE_HEIGHT);
             return;
         }
-        setSceneRect(lastSceneX - (event->size().width() - event->oldSize().width()), 0, scene()->width() - lastSceneX , 343);
+        setSceneRect(lastSceneX - (event->size().width() - event->oldSize().width()), 0, scene()->width() - lastSceneX , SCENE_HEIGHT);
         lastSceneX = lastSceneX - (event->size().width() - event->oldSize().width());
     }
 }
@@ -208,44 +210,44 @@ void View::configureControlKeys(QVector<int> *errors)
     if(this->viewPosition == ViewPosition::BottomView)
     {
         if(errors->contains(0))
-            controlKeys.insert("menu", Qt::Key_M);
+            controlKeys.insert("menu", MENU_P2);
         if(errors->contains(1))
-            controlKeys.insert("menu up", Qt::Key_Up);
+            controlKeys.insert("menu up", MENU_UP_P2);
         if(errors->contains(2))
-            controlKeys.insert("menu down", Qt::Key_Down);
+            controlKeys.insert("menu down", MENU_DOWN_P2);
         if(errors->contains(3))
-            controlKeys.insert("menu select", Qt::Key_Return);
+            controlKeys.insert("menu select", MENU_SELECT_P2);
         if(errors->contains(4))
-            controlKeys.insert("exit from menu", Qt::Key_Backspace);
+            controlKeys.insert("exit from menu", EXIT_FROM_MENU_P2);
         if(errors->contains(5))
-            controlKeys.insert("create soldier", Qt::Key_7);
+            controlKeys.insert("create soldier", CREATE_SOLDIER_P2);
         if(errors->contains(6))
-            controlKeys.insert("create archer", Qt::Key_8);
+            controlKeys.insert("create archer", CREATE_ARCHER_P2);
         if(errors->contains(7))
-            controlKeys.insert("create rider", Qt::Key_9);
+            controlKeys.insert("create rider", CREATE_RIDER_P2);
         if(errors->contains(8))
-            controlKeys.insert("create wizard", Qt::Key_0);
+            controlKeys.insert("create wizard", CREATE_WIZARD_P2);
     }
     else
     {
         if(errors->contains(0))
-            controlKeys.insert("menu", Qt::Key_Q);
+            controlKeys.insert("menu", MENU_P1);
         if(errors->contains(1))
-            controlKeys.insert("menu up", Qt::Key_W);
+            controlKeys.insert("menu up", MENU_UP_P1);
         if(errors->contains(2))
-            controlKeys.insert("menu down", Qt::Key_S);
+            controlKeys.insert("menu down", MENU_DOWN_P1);
         if(errors->contains(3))
-            controlKeys.insert("menu select", Qt::Key_F);
+            controlKeys.insert("menu select", MENU_SELECT_P1);
         if(errors->contains(4))
-            controlKeys.insert("exit from menu", Qt::Key_E);
+            controlKeys.insert("exit from menu", EXIT_FROM_MENU_P1);
         if(errors->contains(5))
-            controlKeys.insert("create soldier", Qt::Key_1);
+            controlKeys.insert("create soldier", CREATE_SOLDIER_P1);
         if(errors->contains(6))
-            controlKeys.insert("create archer", Qt::Key_2);
+            controlKeys.insert("create archer", CREATE_ARCHER_P1);
         if(errors->contains(7))
-            controlKeys.insert("create rider", Qt::Key_3);
+            controlKeys.insert("create rider", CREATE_RIDER_P1);
         if(errors->contains(8))
-            controlKeys.insert("create wizard", Qt::Key_4);
+            controlKeys.insert("create wizard", CREATE_WIZARD_P1);
     }
 
     delete errors;
@@ -256,6 +258,18 @@ bool View::isControlKey(quint32 key)
     foreach (Qt::Key value, controlKeys) {
         if(value == key)
             return true;
+    }
+    return false;
+}
+
+bool View::isCKContainKeyWithoutCrossingWithTS(Qt::Key key)
+{
+    QMap<QString, Qt::Key>::const_iterator i = controlKeys.cbegin();
+    while(i != controlKeys.cend())
+    {
+        if( !tempSettings.contains(i.key()) && i.value() == key )
+            return true;
+        i++;
     }
     return false;
 }
@@ -302,12 +316,13 @@ Qt::Key View::getControlKey(QString key)
     return controlKeys[key];
 }
 
-QString View::getValueByControlKey(QString key)
+QString View::getValueByControlKey(QString key, SettingMap map)
 {
-    foreach (Qt::Key value, controlKeys) {
+    foreach (Qt::Key value, map == SettingMap::Main ? controlKeys : tempSettings) {
         if(QKeySequence(value).toString() == key)
-            return controlKeys.key(value);
+            return map == SettingMap::Main ? controlKeys.key(value) : tempSettings.key(value);
     }
+    return "";
 }
 
 void View::setControlKey(QString key, Qt::Key value)
@@ -315,9 +330,9 @@ void View::setControlKey(QString key, Qt::Key value)
     controlKeys[key] = value;
 }
 
-bool View::checkControlKey(Qt::Key key)
+bool View::isControlKey(Qt::Key key, SettingMap map)
 {
-    foreach (Qt::Key value, controlKeys) {
+    foreach (Qt::Key value, map == SettingMap::Main ? controlKeys : tempSettings) {
         if(value == key)
             return true;
     }
@@ -327,6 +342,11 @@ bool View::checkControlKey(Qt::Key key)
 void View::setPriceUpgrade(QString key, int value)
 {
     priceUpgrade[key] = value;
+}
+
+void View::setTempControlKey(QString keyInControlMap, Qt::Key keyValue)
+{
+    tempSettings.insert(keyInControlMap, keyValue);
 }
 
 int View::getPriceUpgrade(QString key)
@@ -342,6 +362,11 @@ Army *View::getArmy()
 Town *View::getTown()
 {
     return town;
+}
+
+void View::clearTempSettings()
+{
+    tempSettings.clear();
 }
 
 void View::stopAllTimers()
@@ -364,6 +389,20 @@ void View::startAllTimers()
 void View::deleteCurrentMenuItem()
 {
     gameMenu->deleteCurrentMenuItem();
+}
+
+void View::replaceCKByTS()
+{
+    if(!tempSettings.isEmpty())
+    {
+        QMap<QString, Qt::Key>::const_iterator i = tempSettings.cbegin();
+        while(i != tempSettings.cend())
+        {
+            controlKeys[i.key()] = i.value();
+            i++;
+        }
+        tempSettings.clear();
+    }
 }
 
 QMap<QString, Qt::Key> & View::getControlKeys()
@@ -399,7 +438,7 @@ void View::clearStart()
     menuOpen = false;
 }
 
-GameMenuHandler *View::getGameMenu()
+GameMenuHandler * View::getGameMenu()
 {
     return gameMenu;
 }

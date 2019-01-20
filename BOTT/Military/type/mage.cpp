@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "mage.h"
 #include <QTimer>
 
@@ -15,9 +16,9 @@ Mage::Mage(Troop & i)
     this->hp = i.getHp();
     this->side = i.getSide();
     if(this->side == ConflictSide::Left)
-        this->setPos(300, 220);
+        this->setPos(LEFT_START_POSITION_X, START_POSITION_Y);
     else
-        this->setPos(2110, 220);
+        this->setPos(RIGHT_START_POSITION_X, START_POSITION_Y);
 
     initialText();
     this->status = Status::Run;
@@ -41,16 +42,16 @@ void Mage::animation()
         this->setPixmap(QPixmap(imgPrefix + "stand_1.png"));
     else if(this->status == Status::Run)
     {
-        this->setPixmap(QPixmap(imgPrefix + "run_" + getNum(this->animationCounter) + ".png"));
+        this->setPixmap(QPixmap(imgPrefix + "run_" + QString::number(this->animationCounter) + ".png"));
         this->animationCounter++;
-        if(this->animationCounter > 8)
+        if(this->animationCounter > MAGE_RUN_ANIMATION_SLIDES_COUNT)
             this->animationCounter = 1;
     }
     else if(this->status == Status::Attack)
     {
-        this->setPixmap(QPixmap(imgPrefix + "attack_" + getNum(this->animationCounter) + ".png"));
+        this->setPixmap(QPixmap(imgPrefix + "attack_" + QString::number(this->animationCounter) + ".png"));
         this->animationCounter++;
-        if(this->animationCounter > 6)
+        if(this->animationCounter > MAGE_ATTACK_ANIMATION_SLIDES_COUNT)
             this->animationCounter = 1;
     }
 }
@@ -63,13 +64,12 @@ void Mage::run()
         return;
     if(this->side == ConflictSide::Left)
     {
-        this->setPos(this->x() + 5, this->y());
-        this->hpText->setPos(this->x() + this->pixmap().width() / 4, this->y() - 30);
-
+        this->setPos(this->x() + TROOPS_STEP_WIDTH, this->y());
+        this->hpText->setPos(this->x() + this->pixmap().width() / 4, this->y() - TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
     }
     else
     {
-        this->setPos(this->x() - 5, this->y());
-        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - 30);
+        this->setPos(this->x() - TROOPS_STEP_WIDTH, this->y());
+        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
     }
 }

@@ -1,5 +1,5 @@
 #include "archer.h"
-#include "enums.h"
+#include "constants.h"
 #include <QTimer>
 
 
@@ -16,18 +16,16 @@ Archer::Archer(Troop & i)
     this->hp = i.getHp();
     this->side = i.getSide();
     if(this->side == ConflictSide::Left)
-        this->setPos(300, 220);
+        this->setPos(LEFT_START_POSITION_X, START_POSITION_Y);
     else
-        this->setPos(2110, 220);
+        this->setPos(RIGHT_START_POSITION_X, START_POSITION_Y);
 
     this->initialText();
     this->status = Status::Run;
     this->animationCounter = 1;
     this->imgPrefix = i.getImgPrefix();
-
     this->timer_interval = i.getTimerInterval();
     this->timer_remainingTime = i.getTimerRemainingTime();
-
     this->type = i.getType();
 
     timer = new QTimer();
@@ -44,16 +42,16 @@ void Archer::animation()
         this->setPixmap(QPixmap(imgPrefix + "stand_1.png"));
     else if(this->status == Status::Run)
     {
-        this->setPixmap(QPixmap(imgPrefix + "run_" + getNum(this->animationCounter) + ".png"));
+        this->setPixmap(QPixmap(imgPrefix + "run_" + QString::number(this->animationCounter) + ".png"));
         this->animationCounter++;
-        if(this->animationCounter > 7)
+        if(this->animationCounter > ARCHER_RUN_ANIMATION_SLIDES_COUNT)
             this->animationCounter = 1;
     }
     else if(this->status == Status::Attack)
     {
-        this->setPixmap(QPixmap(imgPrefix + "attack_" + getNum(this->animationCounter) + ".png"));
+        this->setPixmap(QPixmap(imgPrefix + "attack_" + QString::number(this->animationCounter) + ".png"));
         this->animationCounter++;
-        if(this->animationCounter > 7)
+        if(this->animationCounter > ARCHER_ATTACK_ANIMATION_SLIDES_COUNT)
             this->animationCounter = 1;
     }
 }
@@ -66,14 +64,12 @@ void Archer::run()
         return;
     if(this->side == ConflictSide::Left)
     {
-        this->setPos(this->x() + 5, this->y());
-        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - 30);
-
+        this->setPos(this->x() + TROOPS_STEP_WIDTH, this->y());
+        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
     }
     else
     {
-        this->setPos(this->x() - 5, this->y());
-        this->hpText->setPos(this->x() + this->pixmap().width() / 3, this->y() - 30);
+        this->setPos(this->x() - TROOPS_STEP_WIDTH, this->y());
+        this->hpText->setPos(this->x() + this->pixmap().width() / 3, this->y() - TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
     }
-
 }

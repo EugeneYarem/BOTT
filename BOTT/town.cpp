@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "town.h"
 #include "view.h"
 #include <QTimer>
@@ -7,12 +8,12 @@ Town::Town(View * parent) : QObject()
 {
     this->parent = parent;
 
-    health = 100;
-    money = 10000;
-    income = 1000;
+    health = TOWN_HEALTH;
+    money = TOWN_MONEY;
+    income = TOWN_INCOME;
     incomeTimer = new QTimer;
-    incomeTimer_interval = 4500;
-    incomeTimer_remainingTime = 4500;
+    incomeTimer_interval = INCOME_INTERVAL;
+    incomeTimer_remainingTime = INCOME_INTERVAL;
 
     healthItem = new QGraphicsTextItem();
     moneyItem = new QGraphicsTextItem();
@@ -92,11 +93,11 @@ void Town::setMoney(int mn)
 
 void Town::clearStart()
 {
-    health = 100;
-    money = 10000;
-    income = 1000;
-    incomeTimer_interval = 4500;
-    incomeTimer_remainingTime = 4500;
+    health = TOWN_HEALTH;
+    money = TOWN_MONEY;
+    income = TOWN_INCOME;
+    incomeTimer_interval = INCOME_INTERVAL;
+    incomeTimer_remainingTime = INCOME_INTERVAL;
     this->healthItem->setPlainText(QString::number(health) + " hp");
     this->moneyItem->setPlainText(QString::number(money));
     startAllTimers();
@@ -122,8 +123,8 @@ void Town::setNewIncome()
     {
         emit moneyWasted(parent->getPriceUpgrade("Mine level up"));
         emit modificate();
-        parent->setPriceUpgrade("Mine level up", static_cast<int>(parent->getPriceUpgrade("Mine level up") * 1.7));
-        income += 500;
+        parent->setPriceUpgrade("Mine level up", static_cast<int>(parent->getPriceUpgrade("Mine level up") * INCOME_UPGRADE_NEW_PRICE_COEFFICIENT));
+        income += INCOME_UPGRADE;
     }
     else
     {
