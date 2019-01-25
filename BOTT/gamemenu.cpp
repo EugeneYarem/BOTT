@@ -35,7 +35,7 @@ void GameMenu::addMenuToScene(GameMenuHandler * parent)
     }
 }
 
-void GameMenu::setMenuVisible(bool visible)
+void GameMenu::setMenuVisible(const bool & visible) const
 {
     nameOfMenu->setVisible(visible);
 
@@ -51,7 +51,7 @@ QVector<QGraphicsPixmapItem *> * GameMenu::getMenuItems()
     return &menuItems;
 }
 
-QGraphicsPixmapItem * GameMenu::getNameOfMenu()
+QGraphicsPixmapItem * GameMenu::getNameOfMenu() const
 {
     return nameOfMenu;
 }
@@ -61,7 +61,7 @@ void GameMenu::setNameOfMenu(QGraphicsPixmapItem * item)
     nameOfMenu = item;
 }
 
-void GameMenu::processExitAction()
+void GameMenu::processExitAction() const
 {
     parent->hideCurrentOpenMenu();
     parent->showMainMenu();

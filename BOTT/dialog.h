@@ -25,8 +25,8 @@ private slots:
     void on_pushButton_pressed();
 
 signals:
-    void dialogIsOpen(bool isOpen);
-    void startNewGame(QString gamer1, QString gamer2);
+    void dialogIsOpen(const bool & isOpen);
+    void startNewGame(const QString & gamer1, const QString & gamer2);
 
 };
 

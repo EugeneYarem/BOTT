@@ -5,7 +5,6 @@
 #include "town.h"
 #include "view.h"
 #include "widget.h"
-#include <QDebug>
 #include <QResizeEvent>
 #include <QTimer>
 
@@ -103,7 +102,7 @@ void View::setConfiguration()
     priceUpgrade.insert("Mine level up", MINE_LEVEL_UP_PRICE);
 }
 
-bool View::isCanMenuOpen()
+bool View::isCanMenuOpen() const
 {
     return canMenuOpen;
 }
@@ -124,7 +123,7 @@ void View::hideMenu()
     pauseMenuTimer->start( pauseMenuTimer_interval );
 }
 
-void View::resizeEvent(QResizeEvent *event)
+void View::resizeEvent(QResizeEvent * event)
 {
     // В этом if настраивается sceneRect нижнего view после события View::resizeEvent
 
@@ -141,7 +140,7 @@ void View::resizeEvent(QResizeEvent *event)
     }
 }
 
-void View::keyPressEvent(QKeyEvent *event)
+void View::keyPressEvent(QKeyEvent * event)
 {
     if(canMenuOpen && (event->nativeVirtualKey() == getControlKey("menu") || event->key() == getControlKey("menu")))
     {
@@ -183,7 +182,7 @@ void View::keyPressEvent(QKeyEvent *event)
         army->addTroop("mage", scene());
 }
 
-bool View::event(QEvent *event)
+bool View::event(QEvent * event)
 {
     if (event->type() == QEvent::KeyPress)
     {
@@ -199,7 +198,7 @@ bool View::event(QEvent *event)
     return QGraphicsView::event(event);
 }
 
-void View::configureControlKeys(QVector<int> *errors)
+void View::configureControlKeys(QVector<int> * errors)
 {
     if(errors->isEmpty())
     {
@@ -253,7 +252,7 @@ void View::configureControlKeys(QVector<int> *errors)
     delete errors;
 }
 
-bool View::isControlKey(quint32 key)
+bool View::isControlKey(const quint32 & key) const
 {
     foreach (Qt::Key value, controlKeys) {
         if(value == key)
@@ -262,7 +261,7 @@ bool View::isControlKey(quint32 key)
     return false;
 }
 
-bool View::isCKContainKeyWithoutCrossingWithTS(Qt::Key key)
+bool View::isCKContainKeyWithoutCrossingWithTS(const Qt::Key & key) const
 {
     QMap<QString, Qt::Key>::const_iterator i = controlKeys.cbegin();
     while(i != controlKeys.cend())
@@ -274,7 +273,7 @@ bool View::isCKContainKeyWithoutCrossingWithTS(Qt::Key key)
     return false;
 }
 
-bool View::isControlKey(int key)
+bool View::isControlKey(const int & key) const
 {
     foreach (Qt::Key value, controlKeys) {
         if(value == key)
@@ -283,7 +282,7 @@ bool View::isControlKey(int key)
     return false;
 }
 
-bool View::isShortcut(quint32 key)
+bool View::isShortcut(const quint32 & key) const
 {
     if(controlKeys.value("create soldier") == key)
         return true;
@@ -297,7 +296,7 @@ bool View::isShortcut(quint32 key)
     return false;
 }
 
-bool View::isShortcut(int key)
+bool View::isShortcut(const int & key) const
 {
     if(controlKeys.value("create soldier") == key)
         return true;
@@ -311,12 +310,12 @@ bool View::isShortcut(int key)
     return false;
 }
 
-Qt::Key View::getControlKey(QString key)
+Qt::Key View::getControlKey(const QString & key) const
 {
     return controlKeys[key];
 }
 
-QString View::getValueByControlKey(QString key, SettingMap map)
+QString View::getValueByControlKey(const QString & key, const SettingMap & map) const
 {
     foreach (Qt::Key value, map == SettingMap::Main ? controlKeys : tempSettings) {
         if(QKeySequence(value).toString() == key)
@@ -325,12 +324,12 @@ QString View::getValueByControlKey(QString key, SettingMap map)
     return "";
 }
 
-void View::setControlKey(QString key, Qt::Key value)
+void View::setControlKey(const QString & key, const Qt::Key & value)
 {
     controlKeys[key] = value;
 }
 
-bool View::isControlKey(Qt::Key key, SettingMap map)
+bool View::isControlKey(const Qt::Key & key, const SettingMap & map) const
 {
     foreach (Qt::Key value, map == SettingMap::Main ? controlKeys : tempSettings) {
         if(value == key)
@@ -339,29 +338,35 @@ bool View::isControlKey(Qt::Key key, SettingMap map)
     return false;
 }
 
-void View::setPriceUpgrade(QString key, int value)
+void View::setPriceUpgrade(const QString & key, const int & value)
 {
-    priceUpgrade[key] = value;
+    //priceUpgrade[key] = value;
+    priceUpgrade.insert(key, value);
 }
 
-void View::setTempControlKey(QString keyInControlMap, Qt::Key keyValue)
+void View::setTempControlKey(const QString & keyInControlMap, const Qt::Key & keyValue)
 {
     tempSettings.insert(keyInControlMap, keyValue);
 }
 
-int View::getPriceUpgrade(QString key)
+int View::getPriceUpgrade(const QString & key) const
 {
     return priceUpgrade[key];
 }
 
-Army *View::getArmy()
+Army * View::getArmy()
 {
     return army;
 }
 
-Town *View::getTown()
+Town * View::getTown() const
 {
     return town;
+}
+
+void View::clearPriceUpgradeMap()
+{
+    priceUpgrade.clear();
 }
 
 void View::clearTempSettings()
@@ -379,16 +384,26 @@ void View::stopAllTimers()
     town->stopAllTimers();
 }
 
-void View::startAllTimers()
+void View::startAllTimers() const
 {
     inMenuTimer->start(inMenuTimer_remainingTime);
     pauseMenuTimer->start(pauseMenuTimer_remainingTime);
     town->startAllTimers();
 }
 
-void View::deleteCurrentMenuItem()
+void View::deleteCurrentMenuItem() const
 {
     gameMenu->deleteCurrentMenuItem();
+}
+
+void View::modificateFromLastGame()
+{
+    gameMenu->restoreLastGame(priceUpgrade);
+}
+
+void View::removePriceUpgrade(const QString & keyInPriceMap)
+{
+    priceUpgrade.remove(keyInPriceMap);
 }
 
 void View::replaceCKByTS()
@@ -410,7 +425,7 @@ QMap<QString, Qt::Key> & View::getControlKeys()
     return controlKeys;
 }
 
-QMap<QString, int> * View::getPriceUpgradeMap()
+const QMap<QString, int> * View::getPriceUpgradeMap() const
 {
     return &priceUpgrade;
 }
@@ -438,7 +453,7 @@ void View::clearStart()
     menuOpen = false;
 }
 
-GameMenuHandler * View::getGameMenu()
+GameMenuHandler * View::getGameMenu() const
 {
     return gameMenu;
 }

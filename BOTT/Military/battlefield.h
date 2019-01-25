@@ -26,15 +26,15 @@ public:
     void clearStart();
     void setArmies(Army * army1, Army * army2);
     void setScene(QGraphicsScene * scene);
-    void startAllTimers();
+    void startAllTimers() const;
     void stopAllTimers();
 
 private:
-    double countArmyAttack(Army * arm1, Army * arm2);
+    double countArmyAttack(Army * arm1, Army * arm2) const;
 
 public slots:
-    void armyControl();
-    void battle();
+    void armyControl() const;
+    void battle() const;
 
 };
 

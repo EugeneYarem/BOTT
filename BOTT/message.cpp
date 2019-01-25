@@ -15,7 +15,7 @@ Message::~Message()
     delete ui;
 }
 
-void Message::setMessage(QString str)
+void Message::setMessage(const QString & str)
 {
     ui->label->setText(str);
 }

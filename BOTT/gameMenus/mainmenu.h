@@ -13,14 +13,15 @@ public:
     MainMenu();
 
     bool event(QEvent * event) override;
-    int getPriceOfCurrentItem(QMap<QString, int> * priceMap, int currentItem) override;
-    void connectWithObject(QObject * objectForConnect) override;
-    void deleteMenuItem(int item);
-    void processExitAction() override;
-    void processSelectAction(int currentItem) override;
+    int getPriceOfCurrentItem(const QMap<QString, int> * priceMap, const int & currentItem) const override;
+    QVector<int> restoreLastGame(const QMap<QString, int> & restorePriceUpgradeMap) const override;
+    void connectWithObject(const QObject * objectForConnect) const override;
+    void deleteMenuItem(const int & item);
+    void processExitAction() const override;
+    void processSelectAction(const int & currentItem) override;
 
 signals:
-    void requiredShowMes(QString text, QObject * sender, int eventType);
+    void requiredShowMes(QString text, QObject * sender, int eventType) const;
 
 };
 

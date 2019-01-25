@@ -8,7 +8,7 @@ class Rider : public Troop
 
 public:
     Rider();
-    Rider(Troop & troop);
+    Rider(const Troop & troop);
 
 public slots:
     void animation() override;

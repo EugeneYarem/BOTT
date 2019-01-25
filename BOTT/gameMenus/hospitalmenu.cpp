@@ -17,7 +17,7 @@ HospitalMenu::HospitalMenu()
     menuItems.push_back(m2);
 }
 
-void HospitalMenu::processSelectAction(int currentItem)
+void HospitalMenu::processSelectAction(const int & currentItem)
 {
     if(currentItem == -1)
         return;
@@ -27,16 +27,17 @@ void HospitalMenu::processSelectAction(int currentItem)
         emit H_DoctorsCountUp();
 }
 
-void HospitalMenu::connectWithObject(QObject * objectForConnect)
+void HospitalMenu::connectWithObject(const QObject * objectForConnect) const
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        connect(this, &HospitalMenu::H_EnterQuarantine, dynamic_cast<Army *>(objectForConnect), &Army::improveQuarantine);
-        connect(this, &HospitalMenu::H_DoctorsCountUp, dynamic_cast<Army *>(objectForConnect), &Army::improveDoctors);
+        connect(this, &HospitalMenu::H_EnterQuarantine, dynamic_cast<const Army *>(objectForConnect), &Army::improveQuarantine);
+        connect(this, &HospitalMenu::H_DoctorsCountUp, dynamic_cast<const Army *>(objectForConnect), &Army::improveDoctors);
+        connect(this, &HospitalMenu::H_DoctorsCountUpInLastGame, dynamic_cast<const Army *>(objectForConnect), &Army::setDoctorsImprove);
     }
 }
 
-int HospitalMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+int HospitalMenu::getPriceOfCurrentItem(const QMap<QString, int> * map, const int & currentItem) const
 {
     if(currentItem == -1)
         return 0;
@@ -44,4 +45,18 @@ int HospitalMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentIte
         return map->value("Quarantine");
     if(currentItem == 1)
         return map->value("Doctors");
+}
+
+QVector<int> HospitalMenu::restoreLastGame(const QMap<QString, int> & rpum) const
+{
+    QVector<int> vec;
+    if(!rpum.contains("Quarantine"))
+        vec.append(0);
+    if(!rpum.contains("Doctors"))
+    {
+        vec.append(1);
+        emit H_DoctorsCountUpInLastGame();
+    }
+
+    return vec;
 }

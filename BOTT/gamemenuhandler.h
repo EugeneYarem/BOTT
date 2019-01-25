@@ -45,15 +45,16 @@ public:
     GameMenuHandler(View * parent);
     ~GameMenuHandler();
 
-    View * getParentView();
+    View * getParentView() const;
     void addMenusToScene(); // Вызывает метод добавления меню на сцену
-    void connectToMenus(QObject * objectForConnect);
+    void connectToMenus(const QObject * objectForConnect) const;
     void deleteCurrentMenuItem();
     void hideCurrentOpenMenu(); // Скрыть открытое меню
-    void processExitAction(); // Метод, который обрабатывает действие выхода из текущего меню
+    void processExitAction() const; // Метод, который обрабатывает действие выхода из текущего меню
     void processSelectAction(); // Метод, который вызывает обработчик выбора пункта соответствующего меню
-    void setCurrentItem(DirectionInMenu upOrDown); // Метод выделения пункта меню; true - вверх, false - вниз
-    void setPriceSide(ConflictSide side); // Устанавливает сторону для вывода цены улучшения
+    void restoreLastGame(const QMap<QString, int> & restorePriceUpgradeMap);
+    void setCurrentItem(const DirectionInMenu & upOrDown); // Метод выделения пункта меню; true - вверх, false - вниз
+    void setPriceSide(const ConflictSide & side); // Устанавливает сторону для вывода цены улучшения
 
     // Методы, в которых соответствующее меню отображается на сцене (оно уже добавлено на сцену через метод addMenusToScene)
     void showHospitalMenu();
@@ -63,7 +64,7 @@ public:
     void showWorkshopMenu();
 
 private:
-    void setFocusAndPricePos(qreal xF, qreal xP, qreal y);
+    void setFocusAndPricePos(const qreal & xF, const qreal & xP, const qreal & y) const;
 
 signals:
     void closeMenu();

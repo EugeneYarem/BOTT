@@ -23,7 +23,7 @@ WorkshopMenu::WorkshopMenu()
     menuItems.push_back(m4);
 }
 
-void WorkshopMenu::processSelectAction(int currentItem)
+void WorkshopMenu::processSelectAction(const int & currentItem)
 {
     if(currentItem == -1)
         return;
@@ -37,18 +37,22 @@ void WorkshopMenu::processSelectAction(int currentItem)
         emit W_WeaponLevelUp();
 }
 
-void WorkshopMenu::connectWithObject(QObject * objectForConnect)
+void WorkshopMenu::connectWithObject(const QObject * objectForConnect) const
 {
     if(typeid(*objectForConnect) == typeid(Army))
-    {
-        connect(this, &WorkshopMenu::W_MakeArquebus, dynamic_cast<Army *>(objectForConnect), &Army::improveArquebus);
-        connect(this, &WorkshopMenu::W_HauberkExplored, dynamic_cast<Army *>(objectForConnect), &Army::improveHauberk);
-        connect(this, &WorkshopMenu::W_ArmorExplored, dynamic_cast<Army *>(objectForConnect), &Army::improveArmor);
-        connect(this, &WorkshopMenu::W_WeaponLevelUp, dynamic_cast<Army *>(objectForConnect), &Army::improveWeapon);
+    {    
+        connect(this, &WorkshopMenu::W_MakeArquebus, dynamic_cast<const Army *>(objectForConnect), &Army::improveArquebus);
+        connect(this, &WorkshopMenu::W_MakeArquebusInLastGame, dynamic_cast<const Army *>(objectForConnect), &Army::setArquebusImprove);
+        connect(this, &WorkshopMenu::W_HauberkExplored, dynamic_cast<const Army *>(objectForConnect), &Army::improveHauberk);
+        connect(this, &WorkshopMenu::W_HauberkExploredInLastGame, dynamic_cast<const Army *>(objectForConnect), &Army::setHauberkImprove);
+        connect(this, &WorkshopMenu::W_ArmorExplored, dynamic_cast<const Army *>(objectForConnect), &Army::improveArmor);
+        connect(this, &WorkshopMenu::W_ArmorExploredInLastGame, dynamic_cast<const Army *>(objectForConnect), &Army::setArmorImprove);
+        connect(this, &WorkshopMenu::W_WeaponLevelUp, dynamic_cast<const Army *>(objectForConnect), &Army::improveWeapon);
+        connect(this, &WorkshopMenu::W_WeaponLevelUpInLastGame, dynamic_cast<const Army *>(objectForConnect), &Army::setWeaponImprove);
     }
 }
 
-int WorkshopMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+int WorkshopMenu::getPriceOfCurrentItem(const QMap<QString, int> * map, const int & currentItem) const
 {
     if(currentItem == -1)
         return 0;
@@ -60,4 +64,31 @@ int WorkshopMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentIte
         return map->value("Armor");
     if(currentItem == 3)
         return map->value("Weapon");
+}
+
+QVector<int> WorkshopMenu::restoreLastGame(const QMap<QString, int> & rpum) const
+{
+    QVector<int> vec;
+    if(!rpum.contains("Arquebus"))
+    {
+        vec.append(0);
+        emit W_MakeArquebusInLastGame();
+    }
+    if(!rpum.contains("Hauberk"))
+    {
+        vec.append(1);
+        emit W_HauberkExploredInLastGame();
+    }
+    if(!rpum.contains("Armor"))
+    {
+        vec.append(2);
+        emit W_ArmorExploredInLastGame();
+    }
+    if(!rpum.contains("Weapon"))
+    {
+        vec.append(3);
+        emit W_WeaponLevelUpInLastGame();
+    }
+
+    return vec;
 }

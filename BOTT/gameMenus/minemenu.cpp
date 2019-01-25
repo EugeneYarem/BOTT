@@ -13,7 +13,7 @@ MineMenu::MineMenu()
     menuItems.push_back(m1);
 }
 
-void MineMenu::processSelectAction(int currentItem)
+void MineMenu::processSelectAction(const int & currentItem)
 {
     if(currentItem == -1)
         return;
@@ -21,18 +21,27 @@ void MineMenu::processSelectAction(int currentItem)
         emit M_LevelUp();
 }
 
-void MineMenu::connectWithObject(QObject * objectForConnect)
+void MineMenu::connectWithObject(const QObject * objectForConnect) const
 {
     if(typeid(*objectForConnect) == typeid(Town))
     {
-        connect(this, &MineMenu::M_LevelUp, dynamic_cast<Town *>(objectForConnect), &Town::setNewIncome);
+        connect(this, &MineMenu::M_LevelUp, dynamic_cast<const Town *>(objectForConnect), &Town::setNewIncome);
     }
 }
 
-int MineMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+int MineMenu::getPriceOfCurrentItem(const QMap<QString, int> * map, const int & currentItem) const
 {
     if(currentItem == -1)
         return 0;
     if(currentItem == 0)
         return map->value("Mine level up");
+}
+
+QVector<int> MineMenu::restoreLastGame(const QMap<QString, int> & rpum) const
+{
+    QVector<int> vec;
+    if(!rpum.contains("Mine level up"))
+        vec.append(0);
+
+    return vec;
 }

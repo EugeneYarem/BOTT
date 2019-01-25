@@ -8,7 +8,7 @@ Archer::Archer()
     timer = new QTimer();
 }
 
-Archer::Archer(Troop & i)
+Archer::Archer(const Troop & i)
 {
     this->setPixmap(i.pixmap());
     this->setTransform(i.transform());
@@ -42,17 +42,17 @@ void Archer::animation()
         this->setPixmap(QPixmap(imgPrefix + "stand_1.png"));
     else if(this->status == Status::Run)
     {
-        this->setPixmap(QPixmap(imgPrefix + "run_" + QString::number(this->animationCounter) + ".png"));
-        this->animationCounter++;
         if(this->animationCounter > ARCHER_RUN_ANIMATION_SLIDES_COUNT)
             this->animationCounter = 1;
+        this->setPixmap(QPixmap(imgPrefix + "run_" + QString::number(this->animationCounter) + ".png"));
+        this->animationCounter++; 
     }
     else if(this->status == Status::Attack)
     {
-        this->setPixmap(QPixmap(imgPrefix + "attack_" + QString::number(this->animationCounter) + ".png"));
-        this->animationCounter++;
         if(this->animationCounter > ARCHER_ATTACK_ANIMATION_SLIDES_COUNT)
             this->animationCounter = 1;
+        this->setPixmap(QPixmap(imgPrefix + "attack_" + QString::number(this->animationCounter) + ".png"));
+        this->animationCounter++;       
     }
 }
 

@@ -8,7 +8,7 @@ class Mage : public Troop
 
 public:
     Mage();
-    Mage(Troop & troop);
+    Mage(const Troop & troop);
 
 public slots:
     void animation() override;

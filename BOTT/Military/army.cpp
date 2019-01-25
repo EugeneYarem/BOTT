@@ -8,7 +8,7 @@
 #include "view.h"
 
 
-Army::Army(View * parent, ConflictSide side)
+Army::Army(View * parent, const ConflictSide & side)
 {
     this->parent = parent;
     this->side = side;
@@ -34,7 +34,7 @@ Army::~Army()
     army.clear();
 }
 
-void Army::addTroop(QString type, QGraphicsScene * scene)
+void Army::addTroop(const QString & type, QGraphicsScene * scene)
 {
     if(army.size() < MAX_ARMY_SIZE)
     {
@@ -97,16 +97,53 @@ void Army::addTroop(QString type, QGraphicsScene * scene)
     }
 }
 
-Troop * Army::getTroop(int n)
+Troop * Army::getTroop(const int & n) const
 {
     if(n < army.size())
         return army[n];
     else return nullptr;
 }
 
-int Army::size()
+void Army::addRestoredTroopsOnScene(QGraphicsScene * scene)
+{
+    foreach(Troop * i, army)
+    {
+        scene->addItem(i);
+        scene->addItem(i->getTextItem());
+    }
+}
+
+int Army::size() const
 {
     return army.size();
+}
+
+QVector<Troop *> Army::getArmy() const
+{
+    return army;
+}
+
+QVector<Troop *> Army::getPrototypes() const
+{
+    QVector<Troop *> vec;
+    vec.append(archer);
+    vec.append(mage);
+    vec.append(rider);
+    vec.append(soldier);
+    return vec;
+}
+
+Troop * Army::createEmptyTroop(const QString & type) const
+{
+    if(type == "soldier")
+        return new Infantry(* soldier);
+    if(type == "archer")
+        return new Archer(* archer);
+    if(type == "rider")
+        return new Rider(* rider);
+    if(type == "mage")
+        return new Mage(* mage);
+    return nullptr;
 }
 
 void Army::deleteTroop()
@@ -120,23 +157,38 @@ void Army::deleteTroop()
     army.resize(army.size() - 1);
 }
 
-int Army::getTownHp()
+void Army::setNewPrototype(const Troop * t)
+{
+    if(t->getType() == "soldier")
+        configureTroop(soldier, Troop::convertPrefixStatusAnimCounterToStr(t->getImgPrefix(), t->getStatus(), t->getAnimationCounter()), t->getType(),
+                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), SOLDIER_INTERVAL, SOLDIER_REMAINING_TIME);
+    if(t->getType() == "archer")
+        configureTroop(archer, Troop::convertPrefixStatusAnimCounterToStr(t->getImgPrefix(), t->getStatus(), t->getAnimationCounter()), t->getType(),
+                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), ARCHER_INTERVAL, ARCHER_REMAINING_TIME);
+    if(t->getType() == "rider")
+        configureTroop(rider, Troop::convertPrefixStatusAnimCounterToStr(t->getImgPrefix(), t->getStatus(), t->getAnimationCounter()), t->getType(),
+                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), RIDER_INTERVAL, RIDER_REMAINING_TIME);
+    if(t->getType() == "mage")
+        configureTroop(mage, Troop::convertPrefixStatusAnimCounterToStr(t->getImgPrefix(), t->getStatus(), t->getAnimationCounter()), t->getType(),
+                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), MAGE_INTERVAL, MAGE_REMAINING_TIME);
+}
+
+int Army::getTownHp() const
 {
     return parent->getTown()->getHealth();
 }
 
-void Army::setTownHp(int hp)
+void Army::setTownHp(const int & hp)
 {
     parent->getTown()->setHealth(hp);
 }
 
-void Army::configureTroop(Troop * troop, QString pixmapFileName, QString type, int attack, int hp, QString imgPref, int interval, int remainingTime)
+void Army::configureTroop(Troop * troop, const QString & pixmapFileName, const QString & type, const int & attack, const int & hp, const QString & imgPref, const int & interval, const int & remainingTime)
 {
     troop->setPixmap(QPixmap( pixmapFileName ));
     troop->setSide( this->side );
     troop->setType( type );
     troop->setAttack( attack );
-    troop->initialText();
     troop->setHp( hp );
     troop->setImgPrefix( imgPref );
     troop->setTimerInterval( interval );
@@ -166,7 +218,7 @@ void Army::clearStart()
     army.clear();
 }
 
-void Army::startAllTimers()
+void Army::startAllTimers() const
 {
     for(int i = 0; i < army.size(); i++)
         army[i]->startAllTimers();
@@ -206,6 +258,7 @@ void Army::improveHauberk()
             emit modificate();
             isHauberkImprove = true;
             parent->deleteCurrentMenuItem();
+            parent->removePriceUpgrade("Hauberk");
         }
         else emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
     }
@@ -239,6 +292,7 @@ void Army::improveArmor()
             emit moneyWasted(parent->getPriceUpgrade("Armor"));
             emit modificate();
             parent->deleteCurrentMenuItem();
+            parent->removePriceUpgrade("Armor");
         }
         else emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
     }
@@ -277,9 +331,35 @@ void Army::improveWeapon()
             emit modificate();
             isWeaponImprove = true;
             parent->deleteCurrentMenuItem();
+            parent->removePriceUpgrade("Weapon");
         }
         else emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
     }
+}
+
+void Army::setArmorImprove()
+{
+    isArmorImprove = true;
+}
+
+void Army::setArquebusImprove()
+{
+    isArquebusImprove = true;
+}
+
+void Army::setDoctorsImprove()
+{
+    isDoctorsImprove = true;
+}
+
+void Army::setHauberkImprove()
+{
+    isHauberkImprove = true;
+}
+
+void Army::setWeaponImprove()
+{
+    isWeaponImprove = true;
 }
 
 void Army::improveQuarantine()
@@ -325,6 +405,7 @@ void Army::improveDoctors()
             emit modificate();
             isDoctorsImprove = true;
             parent->deleteCurrentMenuItem();
+            parent->removePriceUpgrade("Doctors");
         }
         else emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
     }
@@ -359,6 +440,7 @@ void Army::improveArquebus()
             emit modificate();
             isArquebusImprove = true;
             parent->deleteCurrentMenuItem();
+            parent->removePriceUpgrade("Arquebus");
         }
         else emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
     }

@@ -11,14 +11,16 @@ public:
     HospitalMenu();
 
     // GameMenu interface
-    int getPriceOfCurrentItem(QMap<QString, int> * priceMap, int currentItem) override;
-    void connectWithObject(QObject * objectForConnect) override;
-    void processSelectAction(int currentItem) override;
+    int getPriceOfCurrentItem(const QMap<QString, int> * priceMap, const int & currentItem) const override;
+    QVector<int> restoreLastGame(const QMap<QString, int> & restorePriceUpgradeMap) const override;
+    void connectWithObject(const QObject * objectForConnect) const override;
+    void processSelectAction(const int & currentItem) override;
 
 signals:
     // H - Hospital
-    void H_DoctorsCountUp();
-    void H_EnterQuarantine();
+    void H_DoctorsCountUp() const;
+    void H_DoctorsCountUpInLastGame() const;
+    void H_EnterQuarantine() const;
 
 };
 

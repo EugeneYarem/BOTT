@@ -11,13 +11,14 @@ public:
     MineMenu();
 
     // GameMenu interface
-    int getPriceOfCurrentItem(QMap<QString, int> * priceMap, int currentItem) override;
-    void connectWithObject(QObject * objectForConnect) override;
-    void processSelectAction(int currentItem) override;
+    int getPriceOfCurrentItem(const QMap<QString, int> * priceMap, const int & currentItem) const override;
+    QVector<int> restoreLastGame(const QMap<QString, int> & restorePriceUpgradeMap) const override;
+    void connectWithObject(const QObject * objectForConnect) const override;
+    void processSelectAction(const int & currentItem) override;
 
 signals:
     // M - Mine
-    void M_LevelUp();
+    void M_LevelUp() const;
 
 };
 

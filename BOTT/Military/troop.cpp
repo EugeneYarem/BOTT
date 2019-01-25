@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "Military/troop.h"
 #include <QFont>
 #include <QTimer>
@@ -5,6 +6,18 @@
 
 Troop::Troop()
 {
+    side = ConflictSide::Left;
+    attack = 0;
+    hp = 0;
+    animationCounter = 1;
+    timer_interval = 0;
+    timer_remainingTime = 0;
+    imgPrefix = "";
+    type = "";
+    status = Status::Stand;
+    setPos(0, 0);
+    hpText = new QGraphicsTextItem();
+    hpText->setPos(0, 0);
 }
 
 Troop::~Troop()
@@ -13,34 +26,39 @@ Troop::~Troop()
     delete hpText;
 }
 
-double Troop::getHp()
+double Troop::getHp() const
 {
     return this->hp;
 }
 
-double Troop::getAttack()
+int Troop::getAnimationCounter() const
+{
+    return animationCounter;
+}
+
+double Troop::getAttack() const
 {
     return this->attack;
 }
 
-void Troop::setHp(double hp)
+void Troop::setHp(const double & hp)
 {
     this->hp = static_cast<int>(hp);
     hpText->setPlainText(QString::number(static_cast<int>(this->hp)));
 }
 
-void Troop::startAllTimers()
+void Troop::startAllTimers() const
 {
     timer->start(timer_remainingTime);
 }
 
 void Troop::stopAllTimers()
 {
-    timer_remainingTime=timer->remainingTime();
+    timer_remainingTime = timer->remainingTime();
     timer->stop();
 }
 
-void Troop::setSide(ConflictSide side)
+void Troop::setSide(const ConflictSide & side)
 {
     this->side = side;
     if(side == ConflictSide::Right)
@@ -50,27 +68,27 @@ void Troop::setSide(ConflictSide side)
     }
 }
 
-int Troop::getTimerInterval()
+int Troop::getTimerInterval() const
 {
     return this->timer_interval;
 }
 
-int Troop::getTimerRemainingTime()
+int Troop::getTimerRemainingTime() const
 {
     return this->timer_remainingTime;
 }
 
-ConflictSide Troop::getSide()
+ConflictSide Troop::getSide() const
 {
     return this->side;
 }
 
-Status Troop::getStatus()
+Status Troop::getStatus() const
 {
     return this->status;
 }
 
-void Troop::setStatus(Status status)
+void Troop::setStatus(const Status & status)
 {
     if(this->status == status)
         return;
@@ -78,64 +96,62 @@ void Troop::setStatus(Status status)
     animationCounter = 1;
 }
 
-void Troop::setType(QString type)
+void Troop::setType(const QString & type)
 {
     this->type = type;
 }
 
-QString Troop::getType()
+QString Troop::getType() const
 {
     return this->type;
 }
 
-void Troop::setImgPrefix(QString imgPrefix)
+QString Troop::convertPrefixStatusAnimCounterToStr(const QString & imgPrefix, const Status & status, const int & animationCounter)
+{
+    if(status == Status::Attack)
+        return QString(imgPrefix + "attack_" + QString::number(animationCounter) + ".png");
+    if(status == Status::Run)
+        return QString(imgPrefix + "run_" + QString::number(animationCounter) + ".png");
+    else return QString(imgPrefix + "stand_1.png");
+}
+
+void Troop::setImgPrefix(const QString & imgPrefix)
 {
     this->imgPrefix = imgPrefix;
 }
 
-QString Troop::getImgPrefix()
+QString Troop::getImgPrefix() const
 {
     return this->imgPrefix;
 }
 
-QGraphicsTextItem * Troop::getTextItem()
+QGraphicsTextItem * Troop::getTextItem() const
 {
     return this->hpText;
 }
 
 void Troop::initialText()
 {
-    hpText = new QGraphicsTextItem();
-
-    if(this->side == ConflictSide::Left)
-    {
-        hpText->setPos(this->x() - 20, 190);
-    }
-    else
-    {
-        hpText->setPos(this->x() + 20, 190);
-    }
-
     hpText->setPlainText(QString::number(static_cast<int>(this->hp)));
     hpText->setFont(QFont("Old English Text MT", 14));
     hpText->setDefaultTextColor(Qt::white);
 
     if(this->side == ConflictSide::Left)
-        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - 35);
-    else this->hpText->setPos(this->x() + this->pixmap().width() / 3, this->y() - 30);
+        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
+    else this->hpText->setPos(this->x() + this->pixmap().width() / 3, this->y() - TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
 }
 
-void Troop::setAttack(int attack)
+void Troop::setAttack(const int & attack)
 {
     this->attack = attack;
 }
 
-void Troop::setTimerInterval(int time)
+void Troop::setTimerInterval(const int & time)
 {
     this->timer_interval = time;
 }
 
-void Troop::setTimerRemainingTime(int time)
+void Troop::setTimerRemainingTime(const int & time)
 {
     this->timer_remainingTime = time;
 }

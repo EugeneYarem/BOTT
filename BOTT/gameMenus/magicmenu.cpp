@@ -17,7 +17,7 @@ MagicMenu::MagicMenu()
     menuItems.push_back(m2);
 }
 
-void MagicMenu::processSelectAction(int currentItem)
+void MagicMenu::processSelectAction(const int & currentItem)
 {
     if(currentItem == -1)
         return;
@@ -27,16 +27,16 @@ void MagicMenu::processSelectAction(int currentItem)
         emit M_MageHealth();
 }
 
-void MagicMenu::connectWithObject(QObject * objectForConnect)
+void MagicMenu::connectWithObject(const QObject * objectForConnect) const
 {
     if(typeid(*objectForConnect) == typeid(Army))
     {
-        connect(this, &MagicMenu::M_MageHealth, dynamic_cast<Army *>(objectForConnect), &Army::increaseMageHitPoint);
-        connect(this, &MagicMenu::M_MageAttack, dynamic_cast<Army *>(objectForConnect), &Army::increaseMageAttack);
+        connect(this, &MagicMenu::M_MageHealth, dynamic_cast<const Army *>(objectForConnect), &Army::increaseMageHitPoint);
+        connect(this, &MagicMenu::M_MageAttack, dynamic_cast<const Army *>(objectForConnect), &Army::increaseMageAttack);
     }
 }
 
-int MagicMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
+int MagicMenu::getPriceOfCurrentItem(const QMap<QString, int> * map, const int & currentItem) const
 {
     if(currentItem == -1)
         return 0;
@@ -44,4 +44,15 @@ int MagicMenu::getPriceOfCurrentItem(QMap<QString, int> * map, int currentItem)
         return map->value("Mage_Attack");
     if(currentItem == 1)
         return map->value("Mage_Hp");
+}
+
+QVector<int> MagicMenu::restoreLastGame(const QMap<QString, int> & rpum) const
+{
+    QVector<int> vec;
+    if(!rpum.contains("Mage_Attack"))
+        vec.append(0);
+    if(!rpum.contains("Mage_Hp"))
+        vec.append(1);
+
+    return vec;
 }

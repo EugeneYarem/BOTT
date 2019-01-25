@@ -8,7 +8,7 @@ class Infantry : public Troop
 
 public:
     Infantry();
-    Infantry(Troop & troop);
+    Infantry(const Troop & troop);
 
 public slots:
     void animation() override;

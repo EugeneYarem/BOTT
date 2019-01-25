@@ -8,6 +8,7 @@
 
 // Army
 const int MAX_ARMY_SIZE = 6;
+const int TROOP_TYPES_COUNT = 4;
 
 // Army - units price
 const int ARCHER_PRICE = 1000;
@@ -132,5 +133,30 @@ const int SOLDIER_REMAINING_TIME = 100;
 const int LEFT_START_POSITION_X = 300;
 const int RIGHT_START_POSITION_X = 2110;
 const int START_POSITION_Y = 220;
+
+
+// Some additional functions
+inline int getMinPriceUpgrade()
+{
+    static int min = -1;
+    if(min == -1)
+    {
+        std::vector<int> vec;
+        vec.push_back(ARMOR_PRICE);
+        vec.push_back(ARQUEBUS_PRICE);
+        vec.push_back(DOCTORS_PRICE);
+        vec.push_back(HAUBERK_PRICE);
+        vec.push_back(MAGE_ATTACK_PRICE);
+        vec.push_back(MAGE_HP_PRICE);
+        vec.push_back(MINE_LEVEL_UP_PRICE);
+        vec.push_back(QUARANTINE_PRICE);
+        vec.push_back(WEAPON_PRICE);
+
+        std::sort(vec.begin(), vec.end());
+        min = vec[0];
+    }
+
+    return min;
+}
 
 #endif // CONSTANTS_H

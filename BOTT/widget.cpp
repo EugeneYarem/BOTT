@@ -19,6 +19,7 @@
 #include <QLabel>
 #include <QMediaPlayer>
 #include <QSqlQuery>
+#include <QVector>
 
 
 Widget::Widget(QWidget * parent) :
@@ -79,6 +80,11 @@ Widget::Widget(QWidget * parent) :
     // Загрузка клавиш управления
     view->configureControlKeys( keeper->loadSettings( view->getControlKeys(), 0 ) );
     view_2->configureControlKeys( keeper->loadSettings( view_2->getControlKeys(), 1 ) );
+    if(view->getControlKeys() == view_2->getControlKeys())
+    {
+        view->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)));
+        view_2->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)));
+    }
 
     // Сохранение в статистику начальных сумм
     keeper->earnedMoneyP1Plus( view->getTown()->getMoney() );
@@ -95,14 +101,36 @@ Widget::Widget(QWidget * parent) :
     createSettingsPage();
     createStatisticsPage();
 
-    ui->stackedWidget->setCurrentIndex(1); // Отображение главного меню
-    ui->buttonContinue->hide(); // Скрываем кнопку "Продолжить игру"
-
     // загрузка громкости музыки
     volume = keeper->loadMusicVolume();
     if(volume != -1)
         ui->spinBox->setValue(volume);
     else volume = MUSIC_VOLUME;
+
+    ui->stackedWidget->setCurrentIndex(1); // Отображение главного меню
+
+    // Проверка, есть ли незавершенная игра
+    if(keeper->isLastGameExists())
+    {
+        view->clearStart();
+        view_2->clearStart();
+        btf->clearStart();
+        if(keeper->loadLastGame(view->getArmy(), view_2->getArmy(), view->getTown(), view_2->getTown(), view, view_2))
+        {
+            view->getArmy()->addRestoredTroopsOnScene(scene);
+            view_2->getArmy()->addRestoredTroopsOnScene(scene);
+            isFirstGame = false;
+            isGameOver = false;
+            isSaved = false;
+        }
+        else
+        {
+            showMessage("Последняя игра не может быть восстановлена, т. к. файл с её состоянием был поврежден.");           
+            ui->buttonContinue->hide(); // Скрываем кнопку "Продолжить игру"
+        }
+        keeper->removeLastGameFile();
+    }
+    else ui->buttonContinue->hide(); // Скрываем кнопку "Продолжить игру"
 
     // Инициализацию этой переменной проводить в конце, т.к. при изменении громкости она станет равной true
     settingsChanged = false;
@@ -192,7 +220,7 @@ void Widget::save()
     isSaved = true;
 }
 
-void Widget::createSettingsPage()
+void Widget::createSettingsPage() const
 {
     ui->lineEditMenu->setText(QKeySequence(view->getControlKey("menu")).toString());
     ui->lineEditMenu_2->setText(QKeySequence(view_2->getControlKey("menu")).toString());
@@ -215,13 +243,13 @@ void Widget::createSettingsPage()
     ui->spinBox->setValue(volume);
 }
 
-void Widget::createStatisticsPage()
+void Widget::createStatisticsPage() const
 {
     createStatisticsTable( keeper->getCountOfGamesRecords(true) );
     fillInStatisticsTable( keeper->getGamesRecords() );
 }
 
-void Widget::createStatisticsTable(int res)
+void Widget::createStatisticsTable(const int & res) const
 {
     ui->tableWidget->setRowCount(res * 2);
 
@@ -269,7 +297,7 @@ void Widget::createStatisticsTable(int res)
     }
 }
 
-void Widget::fillInStatisticsTable(QSqlQuery & query)
+void Widget::fillInStatisticsTable(QSqlQuery & query) const
 {
     for(int i = 0, num = 0; i < ui->tableWidget->rowCount(); i++, num++)
     {
@@ -328,7 +356,7 @@ void Widget::fillInStatisticsTable(QSqlQuery & query)
     }
 }
 
-bool Widget::isSettingLineEdit(QObject * watched)
+bool Widget::isSettingLineEdit(const QObject * watched) const
 {
     if(watched == ui->lineEditMenu || watched == ui->lineEditMenu_2 ||
        watched == ui->lineEditChoose || watched == ui->lineEditChoose_2 ||
@@ -343,7 +371,7 @@ bool Widget::isSettingLineEdit(QObject * watched)
     else return false;
 }
 
-void Widget::setRequiredBGIToMainMenuItem(QEvent::Type event, QPushButton * button, MenuBG bgType)
+void Widget::setRequiredBGIToMainMenuItem(const QEvent::Type & event, QPushButton * button, const MenuBG & bgType) const
 {
     QString str = bgType == MenuBG::SpecialBG ? "2" : "";
     if(event == QEvent::FocusIn || event == QEvent::HoverEnter)
@@ -421,7 +449,7 @@ void Widget::installEventFilters()
     ui->buttonStatistics->installEventFilter(this);
 }
 
-bool Widget::isLineEditOfFirstPlayer(QObject * watched)
+bool Widget::isLineEditOfFirstPlayer(const QObject * watched) const
 {
     if(watched == ui->lineEditMenu || watched == ui->lineEditChoose ||
        watched == ui->lineEditExit || watched == ui->lineEditUp ||
@@ -442,7 +470,7 @@ void Widget::clearFocusOfMainMenu()
     ui->buttonExit->clearFocus();
 }
 
-void Widget::createConnectsForDispMess()
+void Widget::createConnectsForDispMess() const
 {
     connect(keeper, SIGNAL(requiredShowMes(QString)), this, SLOT(showMessage(QString)));
     connect(view->getTown(), SIGNAL(requiredShowMes(QString)), this, SLOT(showMessage(QString)));
@@ -470,7 +498,7 @@ void Widget::startAllTimers()
     eventEvoke = false;
 }
 
-void Widget::createStatisticsConnects()
+void Widget::createStatisticsConnects() const
 {
     // Коннэкты для сбора статистики о доходах и затратах
     connect(view->getArmy(), &Army::moneyWasted, keeper, &Keeper::wastedMoneyP1Plus);
@@ -542,12 +570,12 @@ void Widget::createSettingButtonsConnects()
 void Widget::createViewsConnects()
 {
     // Коннэктим таймеры view's к слоту, чтобы по таймеру закрывалось меню игрока, у которого оно открыто
-    connect(view, &View::menuVisibleStatusChanged, [this] (View * sender) {
+    connect(view, &View::menuVisibleStatusChanged, [this] (const View * sender) {
             // Если view-отправитель сигнала таймера об истечении времени нахождения в меню - это нынешний view с открытым меню
             if(viewWithOpenMenu == sender)
                 viewWithOpenMenu = nullptr;
     });
-    connect(view_2, &View::menuVisibleStatusChanged, [this] (View * sender) {
+    connect(view_2, &View::menuVisibleStatusChanged, [this] (const View * sender) {
             // Если view-отправитель сигнала таймера об истечении времени нахождения в меню - это нынешний view с открытым меню
             if(viewWithOpenMenu == sender)
                 viewWithOpenMenu = nullptr;
@@ -681,7 +709,7 @@ bool Widget::eventFilter(QObject * watched, QEvent * event)
     return QWidget::eventFilter(watched, event);
 }
 
-void Widget::closeEvent(QCloseEvent * event)
+void Widget::closeEvent(QCloseEvent * )
 {
     if(isFirstGame)
     {
@@ -690,19 +718,9 @@ void Widget::closeEvent(QCloseEvent * event)
         return;
     }
     if(!isSaved)
-    {
-        Message * mess = new Message(this);
-        mess->setMessage("Текущее сражение будет закончено ничьей. Вы согласны?");
-        connect(mess, &Message::okButtonPress, [this] () {
-                        this->showMessageAboutUnsavedSettings();
-                        this->save();
-                        this->setExit();
-        });
-        mess->show();
-        mess->exec();
-    }
-    if(!isExit)
-        event->ignore();
+        keeper->saveLastGame(view->getArmy()->getArmy(), view_2->getArmy()->getArmy(),
+                             view->getArmy()->getPrototypes(), view_2->getArmy()->getPrototypes(),
+                             view->getTown(), view_2->getTown(), *view->getPriceUpgradeMap(), *view_2->getPriceUpgradeMap());
 }
 
 void Widget::on_buttonSettings_pressed()
@@ -738,10 +756,11 @@ bool Widget::event(QEvent * event)
 
         clearFocusOfMainMenu();
         int temp = lastVisitedPage;
+        bool visible = ui->buttonContinue->isVisible();
         lastVisitedPage = ui->stackedWidget->currentIndex();
         ui->stackedWidget->setCurrentIndex(temp);
 
-        if(temp == 0 && ui->buttonContinue->isVisible())
+        if(temp == 0 && visible)
         {
             if(isGameOver)
             {
@@ -835,7 +854,7 @@ void Widget::on_pushButtonExitFromSettings_pressed()
     ui->stackedWidget->setCurrentIndex(1);
 }
 
-void Widget::selectVerticalHeaderItems()
+void Widget::selectVerticalHeaderItems() const
 {
     if(QApplication::keyboardModifiers() != Qt::ControlModifier)
     {
@@ -858,7 +877,7 @@ void Widget::selectVerticalHeaderItems()
     ui->tableWidget->verticalHeader()->repaint();
 }
 
-void Widget::verticalHeaderSectionPressed(int beginSection, int endSection)
+void Widget::verticalHeaderSectionPressed(int beginSection, int endSection) const
 {
     int tempEndSection = endSection;
     static int lastSection = endSection;

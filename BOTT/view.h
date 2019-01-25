@@ -43,29 +43,32 @@ public:
 
     Army * getArmy();
     bool event(QEvent * event) override; // QObject interface
-    bool isCanMenuOpen();
-    bool isControlKey(int key); // Проверка, что нажатая клавиша - клавиша управления игрока
-    bool isControlKey(Qt::Key key, SettingMap map = SettingMap::Main);
-    bool isControlKey(quint32 key);
-    bool isCKContainKeyWithoutCrossingWithTS(Qt::Key key); // CK - QMap<QString, Qt::Key> controlKeys, TS - QMap<QString, Qt::Key> tempSettings
-    bool isShortcut(int key); // Проверка, что это горячая клавиша создания юнита
-    bool isShortcut(quint32 key);
-    GameMenuHandler * getGameMenu();
-    int getPriceUpgrade(QString keyInPriceMap);
+    bool isCanMenuOpen() const;
+    bool isControlKey(const int & key) const; // Проверка, что нажатая клавиша - клавиша управления игрока
+    bool isControlKey(const Qt::Key & key, const SettingMap & map = SettingMap::Main) const;
+    bool isControlKey(const quint32 & key) const;
+    bool isCKContainKeyWithoutCrossingWithTS(const Qt::Key & key) const; // CK - QMap<QString, Qt::Key> controlKeys, TS - QMap<QString, Qt::Key> tempSettings
+    bool isShortcut(const int & key) const; // Проверка, что это горячая клавиша создания юнита
+    bool isShortcut(const quint32 & key) const;
+    const QMap<QString, int> * getPriceUpgradeMap() const;
+    GameMenuHandler * getGameMenu() const;
+    int getPriceUpgrade(const QString & keyInPriceMap) const;
     QMap<QString, Qt::Key> & getControlKeys();
-    QMap<QString, int> * getPriceUpgradeMap();
-    QString getValueByControlKey(QString keyInControlMap, SettingMap map = SettingMap::Main);
-    Qt::Key getControlKey(QString keyInControlMap); // Возвращает код кнопки по ключу
-    Town * getTown();
+    QString getValueByControlKey(const QString & keyInControlMap, const SettingMap & map = SettingMap::Main) const;
+    Qt::Key getControlKey(const QString & keyInControlMap) const; // Возвращает код кнопки по ключу
+    Town * getTown() const;
+    void clearPriceUpgradeMap();
     void clearTempSettings();
     void clearStart();
     void configureControlKeys(QVector<int> * errors);
-    void deleteCurrentMenuItem();
+    void deleteCurrentMenuItem() const;
+    void modificateFromLastGame();
+    void removePriceUpgrade(const QString & keyInPriceMap);
     void replaceCKByTS();
-    void setControlKey(QString keyInControlMap, Qt::Key keyValue);
-    void setPriceUpgrade(QString keyInPriceMap, int value);
-    void setTempControlKey(QString keyInControlMap, Qt::Key keyValue);
-    void startAllTimers();
+    void setControlKey(const QString & keyInControlMap, const Qt::Key & keyValue);
+    void setPriceUpgrade(const QString & keyInPriceMap, const int & value);
+    void setTempControlKey(const QString & keyInControlMap, const Qt::Key & keyValue);
+    void startAllTimers() const;
     void stopAllTimers();
 
     // QWidget interface
@@ -80,7 +83,7 @@ private slots:
     void hideMenu(); // Закрывает окно меню
 
 signals:
-    void menuVisibleStatusChanged(View * view); // Сигнал, сообщающий виджету, что время нахождения игрока в меню закончилось
+    void menuVisibleStatusChanged(const View * view); // Сигнал, сообщающий виджету, что время нахождения игрока в меню закончилось
 
 };
 

@@ -15,10 +15,10 @@ class Message : public QDialog
     Ui::Message *ui;
 
 public:
-    explicit Message(QWidget *parent = nullptr);
+    explicit Message(QWidget * parent = nullptr);
     ~Message() override;
 
-    void setMessage(QString text);
+    void setMessage(const QString & text);
 
     // QWidget interface
 protected:
@@ -35,7 +35,7 @@ signals:
      * (обработать нажатие кнопки, потом обработать закрытие). В других же местах закрыть сообщение нужно до отправки сигнала о нажатии кнопки Ок.
      * Для понимания смотреть функции void Widget::showMessageAboutUnsavedSettings() и void Widget::on_buttonNew_pressed().
     */
-    void end(bool isButtonOkPressed);
+    void end(const bool & isButtonOkPressed);
     void okButtonPress();
 
 };

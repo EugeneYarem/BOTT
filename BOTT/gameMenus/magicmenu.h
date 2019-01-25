@@ -11,14 +11,15 @@ public:
     MagicMenu();
 
     // GameMenu interface
-    int getPriceOfCurrentItem(QMap<QString, int> * priceMap, int currentItem) override;
-    void connectWithObject(QObject * objectForConnect) override;
-    void processSelectAction(int currentItem) override;
+    int getPriceOfCurrentItem(const QMap<QString, int> * priceMap, const int & currentItem) const override;
+    QVector<int> restoreLastGame(const QMap<QString, int> & restorePriceUpgradeMap) const override;
+    void connectWithObject(const QObject * objectForConnect) const override;
+    void processSelectAction(const int & currentItem) override;
 
 signals:
     // M - Magic
-    void M_MageAttack();
-    void M_MageHealth();
+    void M_MageAttack() const;
+    void M_MageHealth() const;
 
 };
 

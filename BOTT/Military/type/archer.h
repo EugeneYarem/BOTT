@@ -8,7 +8,7 @@ class Archer : public Troop
 
 public:
     Archer();
-    Archer(Troop & troop);
+    Archer(const Troop & troop);
 
 public slots:
     void animation() override;

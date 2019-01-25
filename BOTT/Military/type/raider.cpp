@@ -8,7 +8,7 @@ Rider::Rider()
     timer = new QTimer();
 }
 
-Rider::Rider(Troop & i)
+Rider::Rider(const Troop & i)
 {
     this->setPixmap(i.pixmap());
     this->setTransform(i.transform());
@@ -42,17 +42,17 @@ void Rider::animation()
         this->setPixmap(QPixmap(imgPrefix + "stand_1.png"));
     else if(this->status == Status::Run)
     {
-        this->setPixmap(QPixmap(imgPrefix + "run_" + QString::number(this->animationCounter) + ".png"));
-        this->animationCounter++;
         if(this->animationCounter > RIDER_RUN_ANIMATION_SLIDES_COUNT)
             this->animationCounter = 1;
+        this->setPixmap(QPixmap(imgPrefix + "run_" + QString::number(this->animationCounter) + ".png"));
+        this->animationCounter++;      
     }
     else if(this->status == Status::Attack)
     {
-        this->setPixmap(QPixmap(imgPrefix + "attack_" + QString::number(this->animationCounter) + ".png"));
-        this->animationCounter++;
         if(this->animationCounter > RIDER_ATTACK_ANIMATION_SLIDES_COUNT)
             this->animationCounter = 1;
+        this->setPixmap(QPixmap(imgPrefix + "attack_" + QString::number(this->animationCounter) + ".png"));
+        this->animationCounter++;      
     }
 }
 

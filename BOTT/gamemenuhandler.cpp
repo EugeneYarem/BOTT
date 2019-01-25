@@ -72,7 +72,7 @@ void GameMenuHandler::addMenusToScene()
     scene()->addItem(priceItem);
 }
 
-void GameMenuHandler::setPriceSide(ConflictSide side)
+void GameMenuHandler::setPriceSide(const ConflictSide & side)
 {
     this->side = side;
 
@@ -81,7 +81,7 @@ void GameMenuHandler::setPriceSide(ConflictSide side)
     else mPrice->setPixmap(QPixmap(":images/images/priceLeft.png"));
 }
 
-View *GameMenuHandler::getParentView()
+View * GameMenuHandler::getParentView() const
 {
     return parent;
 }
@@ -121,7 +121,7 @@ void GameMenuHandler::showMineMenu()
     currentOpenMenu->setMenuVisible(true);
 }
 
-void GameMenuHandler::setCurrentItem(DirectionInMenu upOrDown) // true - вверх, false - вниз
+void GameMenuHandler::setCurrentItem(const DirectionInMenu & upOrDown) // true - вверх, false - вниз
 {
     int i = 0;
     if(currentItem == -1)
@@ -199,7 +199,36 @@ void GameMenuHandler::processSelectAction()
     priceItem->setVisible(false);
 }
 
-void GameMenuHandler::processExitAction()
+void GameMenuHandler::restoreLastGame(const QMap<QString, int> & rpum)
+{
+    currentOpenMenu = hospitalMenu;
+    foreach(int i, hospitalMenu->restoreLastGame(rpum))
+    {
+        currentItem = i;
+        deleteCurrentMenuItem();
+    }
+    currentOpenMenu = magicMenu;
+    foreach(int i, magicMenu->restoreLastGame(rpum))
+    {
+        currentItem = i;
+        deleteCurrentMenuItem();
+    }
+    currentOpenMenu = mineMenu;
+    foreach(int i, mineMenu->restoreLastGame(rpum))
+    {
+        currentItem = i;
+        deleteCurrentMenuItem();
+    }
+    currentOpenMenu = workshopMenu;
+    foreach(int i, workshopMenu->restoreLastGame(rpum))
+    {
+        currentItem = i;
+        deleteCurrentMenuItem();
+    }
+    hideCurrentOpenMenu();
+}
+
+void GameMenuHandler::processExitAction() const
 {
     currentOpenMenu->processExitAction();
 }
@@ -264,7 +293,7 @@ void GameMenuHandler::deleteCurrentMenuItem()
     }
 }
 
-void GameMenuHandler::connectToMenus(QObject * objectForConnect)
+void GameMenuHandler::connectToMenus(const QObject * objectForConnect) const
 {
     magicMenu->connectWithObject(objectForConnect);
     workshopMenu->connectWithObject(objectForConnect);
@@ -273,7 +302,7 @@ void GameMenuHandler::connectToMenus(QObject * objectForConnect)
     mainMenu->connectWithObject(objectForConnect);
 }
 
-void GameMenuHandler::setFocusAndPricePos(qreal xF, qreal xP, qreal y)
+void GameMenuHandler::setFocusAndPricePos(const qreal & xF, const qreal & xP, const qreal & y) const
 {
     mFocus->setPos(xF, y);
     mPrice->setPos(xP, y);

@@ -11,16 +11,21 @@ public:
     WorkshopMenu();
 
     // GameMenu interface
-    int getPriceOfCurrentItem(QMap<QString, int> * priceMap, int currentItem) override;
-    void connectWithObject(QObject * objectForConnect) override;
-    void processSelectAction(int currentItem) override;
+    int getPriceOfCurrentItem(const QMap<QString, int> * priceMap, const int & currentItem) const override;
+    QVector<int> restoreLastGame(const QMap<QString, int> & restorePriceUpgradeMap) const override;
+    void connectWithObject(const QObject * objectForConnect) const override;
+    void processSelectAction(const int & currentItem) override;
 
 signals:
     // W - workshop
-    void W_ArmorExplored();
-    void W_HauberkExplored(); // hauberk - кольчуга
-    void W_MakeArquebus();
-    void W_WeaponLevelUp();
+    void W_ArmorExplored() const;
+    void W_ArmorExploredInLastGame() const;
+    void W_HauberkExplored() const; // hauberk - кольчуга
+    void W_HauberkExploredInLastGame() const;
+    void W_MakeArquebus() const;
+    void W_MakeArquebusInLastGame() const;
+    void W_WeaponLevelUp() const;
+    void W_WeaponLevelUpInLastGame() const;
 
 };
 

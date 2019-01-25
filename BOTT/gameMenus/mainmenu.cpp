@@ -30,57 +30,54 @@ MainMenu::MainMenu()
     eventTypeForDispMess = QEvent::registerEventType();
 }
 
-void MainMenu::processSelectAction(int currentItem)
+void MainMenu::processSelectAction(const int & currentItem)
 {
     if(currentItem == -1)
         return;
 
+    int cI = currentItem; // Не удалять, т.к. в parent->hideCurrentOpenMenu() поле currentItem обнуляется, и меняеются здесь, т. к. передается по ссылке
+
     parent->hideCurrentOpenMenu();
 
-    if(currentItem == 0)
+    if(cI == 0)
         parent->showMagicMenu();
-    if(currentItem == 1)
+    if(cI == 1)
         parent->showWorkshopMenu();
-    if(currentItem == 2)
+    if(cI == 2)
         parent->showHospitalMenu();
-    if(currentItem == 3)
+    if(cI == 3)
         parent->showMineMenu();
-    if(currentItem == 4)
+    if(cI == 4)
     {
         parent->showMainMenu();
-        //Message message(parent->getParentView());
-        //connect(&message, SIGNAL(okButtonPress()), parent->getParentView()->getTown(), SIGNAL(loose()));
-        //message.setMessage("Вы точно желаете сдаться?");
-        //message.show();
-        //message.exec();
-        //std::function<void()> fun = std::bind(&Town::loose, parent->getParentView()->getTown());
-        emit requiredShowMes("Вы точно желаете сдаться?", this, eventTypeForDispMess/*parent->getParentView()->getTown(), "loose()"*/);
+        emit requiredShowMes("Вы точно желаете сдаться?", this, eventTypeForDispMess);
     }
 }
 
-void MainMenu::processExitAction()
+void MainMenu::processExitAction() const
 {
     emit parent->closeMenu();
 }
 
-void MainMenu::connectWithObject(QObject * objectForConnect)
+void MainMenu::connectWithObject(const QObject * objectForConnect) const
 {
     if(typeid(*objectForConnect) == typeid(Widget))
-    {
-        connect(this, SIGNAL(requiredShowMes(QString, QObject * , int)), dynamic_cast<Widget *>(objectForConnect), SLOT(showMessage(QString, QObject * , int)));
-    }
+        connect(this, SIGNAL(requiredShowMes(QString , QObject * , int )), dynamic_cast<const Widget *>(objectForConnect), SLOT(showMessage(QString , QObject *, int )));
 }
 
-void MainMenu::deleteMenuItem(int item)
+void MainMenu::deleteMenuItem(const int & item)
 {
     parent->scene()->removeItem(menuItems.at(item));
     delete menuItems.at(item);
 }
 
-int MainMenu::getPriceOfCurrentItem(QMap<QString, int> * , int)
+int MainMenu::getPriceOfCurrentItem(const QMap<QString, int> * , const int & ) const
 {
     return -1;
 }
+
+QVector<int> MainMenu::restoreLastGame(const QMap<QString, int> & ) const
+{}
 
 bool MainMenu::event(QEvent * ev)
 {

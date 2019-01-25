@@ -47,7 +47,7 @@ void Battlefield::stopAllTimers()
     arm2->stopAllTimers();
 }
 
-double Battlefield::countArmyAttack(Army * arm1, Army * arm2)
+double Battlefield::countArmyAttack(Army * arm1, Army * arm2) const
 {
     double dmg = 0;
 
@@ -66,7 +66,7 @@ double Battlefield::countArmyAttack(Army * arm1, Army * arm2)
     return dmg;
 }
 
-void Battlefield::startAllTimers()
+void Battlefield::startAllTimers() const
 {
     timer->start(timer_remainingTime);
     timer_B->start(timerB_remainingTime);
@@ -80,7 +80,7 @@ void Battlefield::clearStart()
     arm2->clearStart();
 }
 
-void Battlefield::battle()
+void Battlefield::battle() const
 {  
     this->timer_B->start(timerB_interval);
 
@@ -141,7 +141,7 @@ void Battlefield::battle()
 
 }
 
-void Battlefield::armyControl()
+void Battlefield::armyControl() const
 {
     timer->start(timer_interval);
     if(arm1->size() != 0)

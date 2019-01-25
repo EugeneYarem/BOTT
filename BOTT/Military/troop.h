@@ -2,6 +2,7 @@
 #define TROOP_H
 
 #include "enums.h"
+#include "keeper.h"
 #include "Military/transform.h"
 #include <QGraphicsPixmapItem>
 
@@ -26,25 +27,29 @@ public:
     Troop();
     ~Troop();
 
-    ConflictSide getSide();
-    double getAttack();
-    double getHp();
-    int getTimerInterval();
-    int getTimerRemainingTime();
-    QGraphicsTextItem * getTextItem();
-    QString getImgPrefix();
-    QString getType();
-    Status getStatus();
+    ConflictSide getSide() const;
+    double getAttack() const;
+    double getHp() const;
+    friend bool Keeper::convertJsonObjectToTroop(const QJsonObject & obj, Troop * troop) const;
+    friend void Keeper::convertArmyToJsonArray(const QVector<Troop *> & army, QJsonArray & arr) const;   
+    int getAnimationCounter() const;
+    int getTimerInterval() const;
+    int getTimerRemainingTime() const;
+    QGraphicsTextItem * getTextItem() const;
+    QString getImgPrefix() const;
+    QString getType() const;
+    static QString convertPrefixStatusAnimCounterToStr(const QString & imgPrefix, const Status & status, const int & animationCounter = 1);
+    Status getStatus() const;
     void initialText();
-    void setAttack(int attack);
-    void setHp(double hp);
-    void setImgPrefix(QString imgPrefix);
-    void setTimerInterval(int time);
-    void setTimerRemainingTime(int time);
-    void setType(QString type);
-    void setSide(ConflictSide side);
-    void setStatus(Status status);
-    void startAllTimers();
+    void setAttack(const int & attack);
+    void setHp(const double & hp);
+    void setImgPrefix(const QString & imgPrefix);
+    void setTimerInterval(const int & time);
+    void setTimerRemainingTime(const int & time);
+    void setType(const QString & type);
+    void setSide(const ConflictSide & side);
+    void setStatus(const Status & status);
+    void startAllTimers() const;
     void stopAllTimers();
 
 public slots:

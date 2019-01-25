@@ -35,12 +35,12 @@ Town::~Town()
     delete moneyItem;
 }
 
-int Town::getHealth()
+int Town::getHealth() const
 {
     return health;
 }
 
-int Town::getMoney()
+int Town::getMoney() const
 {
     return money;
 }
@@ -51,7 +51,7 @@ void Town::stopAllTimers()
     incomeTimer->stop();
 }
 
-void Town::startAllTimers()
+void Town::startAllTimers() const
 {
     incomeTimer->start(incomeTimer_remainingTime);
 }
@@ -74,7 +74,7 @@ void Town::addHealthMoneyToScene()
     scene()->addItem(moneyItem);
 }
 
-void Town::setHealth(int hp)
+void Town::setHealth(const int & hp)
 {
     this->health = hp;
     if(health <= 0)
@@ -85,7 +85,7 @@ void Town::setHealth(int hp)
     this->healthItem->setPlainText(QString::number(health) + " hp");
 }
 
-void Town::setMoney(int mn)
+void Town::setMoney(const int & mn)
 {
     this->money = mn;
     this->moneyItem->setPlainText(QString::number(money));
@@ -103,7 +103,7 @@ void Town::clearStart()
     startAllTimers();
 }
 
-void Town::damage(int damage)
+void Town::damage(const int & damage)
 {
     health -= damage;
     healthItem->setPlainText(QString::number(health) + " hp");

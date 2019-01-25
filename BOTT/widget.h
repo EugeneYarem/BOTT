@@ -56,22 +56,22 @@ protected:
 private:
     bool checkKeyAndSet(QLineEdit * watched, Qt::Key key);
     bool checkViewAndSetEvent(View * view, QEvent * event);
-    bool isLineEditOfFirstPlayer(QObject * watched);
-    bool isSettingLineEdit(QObject * watched);
+    bool isLineEditOfFirstPlayer(const QObject * watched) const;
+    bool isSettingLineEdit(const QObject * watched) const;
     void clearFocusOfMainMenu();
-    void createConnectsForDispMess(); // создание коннектов для вывода нужных сообщений от разных объектов
+    void createConnectsForDispMess() const; // создание коннектов для вывода нужных сообщений от разных объектов
     void createMusicPlayerConnects();
     void createSettingButtonsConnects();
-    void createSettingsPage();
-    void createStatisticsConnects();
-    void createStatisticsPage();
-    void createStatisticsTable(int rowCount);
+    void createSettingsPage() const;
+    void createStatisticsConnects() const;
+    void createStatisticsPage() const;
+    void createStatisticsTable(const int & rowCount) const;
     void createViewsConnects();
-    void fillInStatisticsTable(QSqlQuery & records);
+    void fillInStatisticsTable(QSqlQuery & records) const;
     void installEventFilters();
     void save();
     void setExit();
-    void setRequiredBGIToMainMenuItem(QEvent::Type event, QPushButton * button, MenuBG bgType = MenuBG::MainBG); // BGI - background image
+    void setRequiredBGIToMainMenuItem(const QEvent::Type & event, QPushButton * button, const MenuBG & bgType = MenuBG::MainBG) const; // BGI - background image
     void showMessageAboutUnsavedSettings();
     void showStartDialog();
     void startAllTimers();
@@ -91,8 +91,8 @@ private slots:
     void on_buttonStatistics_pressed();
     void on_pushButtonExitFromFP_pressed();
     void on_pushButtonExitFromSettings_pressed();
-    void selectVerticalHeaderItems();
-    void verticalHeaderSectionPressed(int beginSection, int endSection);
+    void selectVerticalHeaderItems() const;
+    void verticalHeaderSectionPressed(int beginSection, int endSection) const;
 
 };
 
