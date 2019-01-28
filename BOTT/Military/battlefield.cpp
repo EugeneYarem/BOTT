@@ -26,6 +26,11 @@ Battlefield::~Battlefield()
     delete timer_B;
 }
 
+QGraphicsScene * Battlefield::getScene() const
+{
+    return scene;
+}
+
 void Battlefield::setScene(QGraphicsScene * scene)
 {
     this->scene = scene;

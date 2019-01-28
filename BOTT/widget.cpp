@@ -69,8 +69,7 @@ Widget::Widget(QWidget * parent) :
     // Инициализация нужных переменных
     eventEvoke = false;
     gameOverLabel = nullptr;
-    isExit = false;
-    isFirstGame = true;
+    wasNotAnyGame = true;
     isGameOver = false;
     isSaved = false;
     isStartDialogOpen = false;
@@ -109,29 +108,6 @@ Widget::Widget(QWidget * parent) :
 
     ui->stackedWidget->setCurrentIndex(1); // Отображение главного меню
 
-    // Проверка, есть ли незавершенная игра
-    if(keeper->isLastGameExists())
-    {
-        view->clearStart();
-        view_2->clearStart();
-        btf->clearStart();
-        if(keeper->loadLastGame(view->getArmy(), view_2->getArmy(), view->getTown(), view_2->getTown(), view, view_2))
-        {
-            view->getArmy()->addRestoredTroopsOnScene(scene);
-            view_2->getArmy()->addRestoredTroopsOnScene(scene);
-            isFirstGame = false;
-            isGameOver = false;
-            isSaved = false;
-        }
-        else
-        {
-            showMessage("Последняя игра не может быть восстановлена, т. к. файл с её состоянием был поврежден.");           
-            ui->buttonContinue->hide(); // Скрываем кнопку "Продолжить игру"
-        }
-        keeper->removeLastGameFile();
-    }
-    else ui->buttonContinue->hide(); // Скрываем кнопку "Продолжить игру"
-
     // Инициализацию этой переменной проводить в конце, т.к. при изменении громкости она станет равной true
     settingsChanged = false;
 }
@@ -147,8 +123,7 @@ Widget::~Widget()
 
 void Widget::startNewGame()
 {
-    isExit = false;
-    isFirstGame = false;
+    wasNotAnyGame = false;
     isGameOver = false;
     isSaved = false;
 
@@ -215,8 +190,12 @@ void Widget::save()
 {
     if(settingsChanged)
         keeper->saveSettings(view->getControlKeys(), view_2->getControlKeys(), volume);
-    if(!isFirstGame)
+    if(!wasNotAnyGame)
+    {
         keeper->saveStatistics();
+        ui->tableWidget->clearSpans();
+        createStatisticsPage();
+    }
     isSaved = true;
 }
 
@@ -449,6 +428,30 @@ void Widget::installEventFilters()
     ui->buttonStatistics->installEventFilter(this);
 }
 
+void Widget::restoreLastGame()
+{
+    // Проверка, есть ли незавершенная игра
+    if(keeper->isLastGameExists())
+    {
+        view->clearStart();
+        view_2->clearStart();
+        btf->clearStart();
+        if(keeper->loadLastGame(view->getArmy(), view_2->getArmy(), view->getTown(), view_2->getTown(), view, view_2))
+        {
+            view->getArmy()->addRestoredTroopsOnScene(btf->getScene());
+            view_2->getArmy()->addRestoredTroopsOnScene(btf->getScene());
+            wasNotAnyGame = false;
+        }
+        else
+        {
+            showMessage("Последняя игра не может быть восстановлена, т. к. файл с её состоянием был поврежден.");
+            ui->buttonContinue->hide(); // Скрываем кнопку "Продолжить игру"
+        }
+        keeper->removeLastGameFile();
+    }
+    else ui->buttonContinue->hide(); // Скрываем кнопку "Продолжить игру"
+}
+
 bool Widget::isLineEditOfFirstPlayer(const QObject * watched) const
 {
     if(watched == ui->lineEditMenu || watched == ui->lineEditChoose ||
@@ -602,23 +605,17 @@ void Widget::gameOver()
         gameOverLabel->show();
         isGameOver = true;        
         save();
-        ui->tableWidget->clearSpans();
-        createStatisticsPage();
-        isExit = true;
     }
 }
 
 void Widget::showStartDialog()
 {
-    if(!isFirstGame)
+    if(!isSaved)
     {
-        if(!isSaved)
-            save();
-        createStatisticsPage();
         ui->buttonContinue->hide();
+        save();
     }
 
-    isExit = true;
     Dialog * dialog = new Dialog(this);
     isStartDialogOpen = true;
     connect(dialog, &Dialog::dialogIsOpen, [this] (bool status) { isStartDialogOpen = status; });
@@ -628,11 +625,6 @@ void Widget::showStartDialog()
     });
     dialog->show();
     dialog->exec();
-}
-
-void Widget::setExit()
-{
-    isExit = true;
 }
 
 bool Widget::eventFilter(QObject * watched, QEvent * event)
@@ -711,12 +703,7 @@ bool Widget::eventFilter(QObject * watched, QEvent * event)
 
 void Widget::closeEvent(QCloseEvent * )
 {
-    if(isFirstGame)
-    {
-        showMessageAboutUnsavedSettings();
-        close();
-        return;
-    }
+    showMessageAboutUnsavedSettings();
     if(!isSaved)
         keeper->saveLastGame(view->getArmy()->getArmy(), view_2->getArmy()->getArmy(),
                              view->getArmy()->getPrototypes(), view_2->getArmy()->getPrototypes(),
@@ -785,7 +772,7 @@ bool Widget::event(QEvent * event)
 
 void Widget::on_buttonNew_pressed()
 {
-    if(isFirstGame)
+    if(wasNotAnyGame)
     {
         clearFocusOfMainMenu();
         if(!isStartDialogOpen)

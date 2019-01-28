@@ -23,6 +23,7 @@ public:
     Battlefield();
     ~Battlefield();
 
+    QGraphicsScene * getScene() const;
     void clearStart();
     void setArmies(Army * army1, Army * army2);
     void setScene(QGraphicsScene * scene);

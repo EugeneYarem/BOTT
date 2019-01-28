@@ -25,12 +25,11 @@ class Widget : public QWidget
 
     Battlefield * btf;
     bool eventEvoke; // Переменная нужна для того, чтобы определить было ли обработано событие нажатие клавиши Esc одним из view.
-    bool isExit; // Если false, то перед выходом будет показано сообщение, том, что игра не окончена, если true - просто закроется
-    bool isFirstGame; // Указывает, что это первая игра в текущей сессии
     bool isGameOver; // Переменная нужна, чтобы при каждой победе показать только один белый фон с победной записью
     bool isSaved; // Указывает, что статистика была сохранена
     bool isStartDialogOpen; // Нужна, чтобы диалоговое окно старта новой игры не показывалось несколько раз
     bool settingsChanged; // Переменная, указывающая на то, что настройки управления были изменены. При возвращении в гавное меню в случае, если она true, то настройки сохранятся в файл
+    bool wasNotAnyGame; // Указывает, что в текущей сессии игры не было еще начато ни одной игры
     int lastVisitedPage;
     int volume;
     Keeper * keeper;
@@ -48,6 +47,8 @@ public:
     // QObject interface
     bool event(QEvent * event) override;
     bool eventFilter(QObject * watched, QEvent * event) override;
+
+    void restoreLastGame();
 
     // QWidget interface
 protected:
@@ -70,7 +71,6 @@ private:
     void fillInStatisticsTable(QSqlQuery & records) const;
     void installEventFilters();
     void save();
-    void setExit();
     void setRequiredBGIToMainMenuItem(const QEvent::Type & event, QPushButton * button, const MenuBG & bgType = MenuBG::MainBG) const; // BGI - background image
     void showMessageAboutUnsavedSettings();
     void showStartDialog();

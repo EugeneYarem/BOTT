@@ -49,7 +49,8 @@ SOURCES += \
     keeper.cpp \
     RbTableHeaderView/RbTableHeaderView.cpp \
     RbTableHeaderView/RbTableHeaderItem.cpp \
-    RbTableHeaderView/RbTableHeaderModel.cpp
+    RbTableHeaderView/RbTableHeaderModel.cpp \
+    constants.cpp
 
 
 HEADERS += \
