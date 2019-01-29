@@ -31,15 +31,15 @@ Widget::Widget(QWidget * parent) :
     keeper = new Keeper(this);
 
     // Устанавливаем минимальный размер окна (1280 х 720)
-    this->setMinimumSize(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
+    this->setMinimumSize(general::MIN_WINDOW_WIDTH, general::MIN_WINDOW_HEIGHT);
 
     // Фиксируем высоту и ширину
     setFixedHeight(minimumHeight());
-    setMaximumWidth(MIN_WINDOW_WIDTH);
+    setMaximumWidth(general::MIN_WINDOW_WIDTH);
 
     // Создаём и настраиваем сцену
     QGraphicsScene * scene = new QGraphicsScene();
-    scene->setSceneRect(0, 0, 2510, SCENE_HEIGHT); // Размер сцены: 2510 x 343
+    scene->setSceneRect(0, 0, 2510, general::SCENE_HEIGHT); // Размер сцены: 2510 x 343
     scene->setBackgroundBrush(QBrush(QImage(":/images/images/background.png")));
 
     // Создаём и настраиваем view's
@@ -49,8 +49,8 @@ Widget::Widget(QWidget * parent) :
     ui->verticalLayout->addWidget(view_2);
     view->setScene(scene);
     view_2->setScene(scene);
-    view->setSceneRect(0, 0, LAST_SCENE_X_FOR_BOTTOM_VIEW, SCENE_HEIGHT);
-    view_2->setSceneRect(LAST_SCENE_X_FOR_BOTTOM_VIEW, 0, LAST_SCENE_X_FOR_BOTTOM_VIEW, SCENE_HEIGHT);
+    view->setSceneRect(0, 0, general::LAST_SCENE_X_FOR_BOTTOM_VIEW, general::SCENE_HEIGHT);
+    view_2->setSceneRect(general::LAST_SCENE_X_FOR_BOTTOM_VIEW, 0, general::LAST_SCENE_X_FOR_BOTTOM_VIEW, general::SCENE_HEIGHT);
 
     installEventFilters();
 
@@ -60,7 +60,7 @@ Widget::Widget(QWidget * parent) :
     btf->setArmies(view->getArmy(), view_2->getArmy());
 
     // Создаем и настраиваем аудиопроигрыватель
-    volume = MUSIC_VOLUME;
+    volume = general::MUSIC_VOLUME;
     musicPlayer = new QMediaPlayer();
     musicPlayer->setMedia(QUrl("qrc:/sounds/musicBackground.mp3"));
     musicPlayer->setVolume(volume);
@@ -71,7 +71,7 @@ Widget::Widget(QWidget * parent) :
     gameOverLabel = nullptr;
     wasNotAnyGame = true;
     isGameOver = false;
-    isSaved = false;
+    isSaved = true;
     isStartDialogOpen = false;
     lastVisitedPage = 1;
     viewWithOpenMenu = nullptr;
@@ -81,8 +81,8 @@ Widget::Widget(QWidget * parent) :
     view_2->configureControlKeys( keeper->loadSettings( view_2->getControlKeys(), 1 ) );
     if(view->getControlKeys() == view_2->getControlKeys())
     {
-        view->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)));
-        view_2->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)));
+        view->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(general::ERRORS_READING_SETTINGS)));
+        view_2->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(general::ERRORS_READING_SETTINGS)));
     }
 
     // Сохранение в статистику начальных сумм
@@ -104,7 +104,7 @@ Widget::Widget(QWidget * parent) :
     volume = keeper->loadMusicVolume();
     if(volume != -1)
         ui->spinBox->setValue(volume);
-    else volume = MUSIC_VOLUME;
+    else volume = general::MUSIC_VOLUME;
 
     ui->stackedWidget->setCurrentIndex(1); // Отображение главного меню
 
@@ -441,6 +441,7 @@ void Widget::restoreLastGame()
             view->getArmy()->addRestoredTroopsOnScene(btf->getScene());
             view_2->getArmy()->addRestoredTroopsOnScene(btf->getScene());
             wasNotAnyGame = false;
+            isSaved = false;
         }
         else
         {
@@ -543,11 +544,11 @@ void Widget::createMusicPlayerConnects()
 void Widget::createSettingButtonsConnects()
 {
     connect(ui->pushButtonStandart, &QPushButton::pressed, [this] () {
-                    view->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)));
-                    view_2->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(ERRORS_READING_SETTINGS)));
+                    view->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(general::ERRORS_READING_SETTINGS)));
+                    view_2->configureControlKeys(new QVector<int>(QVector<int>::fromStdVector(general::ERRORS_READING_SETTINGS)));
                     view->clearTempSettings();
                     view_2->clearTempSettings();
-                    volume = MUSIC_VOLUME;
+                    volume = general::MUSIC_VOLUME;
                     keeper->removeSettingsFile();
                     this->createSettingsPage();
                     ui->pushButtonCancel->setEnabled(false);
@@ -593,7 +594,7 @@ void Widget::gameOver()
     view_2->hide();
     if(!isGameOver)
     {
-        setMaximumWidth(MIN_WINDOW_WIDTH);
+        setMaximumWidth(general::MIN_WINDOW_WIDTH);
         gameOverLabel = new QLabel(this);
         ui->verticalLayout->addWidget(gameOverLabel);
         gameOverLabel->move(0, 0);
@@ -726,7 +727,7 @@ void Widget::on_buttonContinue_pressed()
 
     if(isGameOver)
     {
-        setMaximumWidth(MIN_WINDOW_WIDTH);
+        setMaximumWidth(general::MIN_WINDOW_WIDTH);
         return;
     }
     setMaximumWidth(16777215);
@@ -751,7 +752,7 @@ bool Widget::event(QEvent * event)
         {
             if(isGameOver)
             {
-                setMaximumWidth(MIN_WINDOW_WIDTH);
+                setMaximumWidth(general::MIN_WINDOW_WIDTH);
                 return true;
             }
             setMaximumWidth(16777215);
@@ -759,7 +760,7 @@ bool Widget::event(QEvent * event)
         }
         else
         {
-            setMaximumWidth(MIN_WINDOW_WIDTH);
+            setMaximumWidth(general::MIN_WINDOW_WIDTH);
             if(temp == 0 && ui->buttonContinue->isHidden())
                 ui->stackedWidget->setCurrentIndex(lastVisitedPage);
         }

@@ -2,7 +2,7 @@
 #define TROOP_H
 
 #include "enums.h"
-#include "keeper.h"
+#include "dataHandlers/jsonhandler.h"
 #include "Military/transform.h"
 #include <QGraphicsPixmapItem>
 
@@ -30,8 +30,8 @@ public:
     ConflictSide getSide() const;
     double getAttack() const;
     double getHp() const;
-    friend bool Keeper::convertJsonObjectToTroop(const QJsonObject & obj, Troop * troop) const;
-    friend void Keeper::convertArmyToJsonArray(const QVector<Troop *> & army, QJsonArray & arr) const;   
+    friend bool JsonHandler::convertJsonObjectToTroop(const QJsonObject & obj, Troop * troop) const;
+    friend void JsonHandler::convertArmyToJsonArray(const QVector<Troop *> & army, QJsonArray & arr) const;
     int getAnimationCounter() const;
     int getTimerInterval() const;
     int getTimerRemainingTime() const;

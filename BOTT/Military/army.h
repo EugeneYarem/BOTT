@@ -2,6 +2,7 @@
 #define ARMY_H
 
 #include "enums.h"
+#include "dataHandlers/jsonhandler.h"
 #include "Military/troop.h"
 #include <QObject>
 
@@ -26,8 +27,8 @@ public:
     Army(View * parentView, const ConflictSide & side);
     ~Army();
 
-    friend bool Keeper::convertJsonArrayToArmy(const QJsonArray & arr, Army * army) const;
-    friend bool Keeper::convertJsonArrayToPrototypes(const QJsonArray & arr, Army * army) const;
+    friend bool JsonHandler::convertJsonArrayToArmy(const QJsonArray & arr, Army * army) const;
+    friend bool JsonHandler::convertJsonArrayToPrototypes(const QJsonArray & arr, Army * army) const;
     int getTownHp() const;
     int size() const;
     QVector<Troop *> getArmy() const;

@@ -50,7 +50,9 @@ SOURCES += \
     RbTableHeaderView/RbTableHeaderView.cpp \
     RbTableHeaderView/RbTableHeaderItem.cpp \
     RbTableHeaderView/RbTableHeaderModel.cpp \
-    constants.cpp
+    constants.cpp \
+    dataHandlers/jsonhandler.cpp \
+    dataHandlers/databasehandler.cpp
 
 
 HEADERS += \
@@ -79,7 +81,9 @@ HEADERS += \
     RbTableHeaderView/RbTableHeaderView.h \
     RbTableHeaderView/RbTableHeaderItem.h \
     RbTableHeaderView/RbTableHeaderModel.h \
-    constants.h
+    constants.h \
+    dataHandlers/jsonhandler.h \
+    dataHandlers/databasehandler.h
 
 FORMS += \
     widget.ui \

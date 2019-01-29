@@ -36,61 +36,61 @@ Army::~Army()
 
 void Army::addTroop(const QString & type, QGraphicsScene * scene)
 {
-    if(army.size() < MAX_ARMY_SIZE)
+    if(army.size() < army::MAX_ARMY_SIZE)
     {
         if(type == "soldier")
         {
-            if(parent->getTown()->getMoney() >= SOLDIER_PRICE)
+            if(parent->getTown()->getMoney() >= army_units_price::SOLDIER_PRICE)
             {
                 army.resize(army.size() + 1);
                 army[army.size() - 1] = new Infantry(* soldier);
                 army[army.size() - 1]->startAllTimers();
                 scene->addItem(army[army.size() - 1]);
                 scene->addItem(army[army.size() - 1]->getTextItem());
-                parent->getTown()->setMoney(parent->getTown()->getMoney() - SOLDIER_PRICE);
-                emit this->moneyWasted(SOLDIER_PRICE);
+                parent->getTown()->setMoney(parent->getTown()->getMoney() - army_units_price::SOLDIER_PRICE);
+                emit this->moneyWasted(army_units_price::SOLDIER_PRICE);
                 emit this->uniteCreated();
             }
         }
         if(type == "archer")
         {
-            if(parent->getTown()->getMoney() >= ARCHER_PRICE)
+            if(parent->getTown()->getMoney() >= army_units_price::ARCHER_PRICE)
             {
                 army.resize(army.size() + 1);
                 army[army.size() - 1] = new Archer(* archer);
                 army[army.size() - 1]->startAllTimers();
                 scene->addItem(army[army.size() - 1]);
                 scene->addItem(army[army.size() - 1]->getTextItem());
-                parent->getTown()->setMoney(parent->getTown()->getMoney() - ARCHER_PRICE);
-                emit this->moneyWasted(ARCHER_PRICE);
+                parent->getTown()->setMoney(parent->getTown()->getMoney() - army_units_price::ARCHER_PRICE);
+                emit this->moneyWasted(army_units_price::ARCHER_PRICE);
                 emit this->uniteCreated();
             }
         }
         if(type == "rider")
         {
-            if(parent->getTown()->getMoney() >= RIDER_PRICE)
+            if(parent->getTown()->getMoney() >= army_units_price::RIDER_PRICE)
             {
                 army.resize(army.size() + 1);
                 army[army.size() - 1] = new Rider(* rider);
                 army[army.size() - 1]->startAllTimers();
                 scene->addItem(army[army.size() - 1]);
                 scene->addItem(army[army.size() - 1]->getTextItem());
-                parent->getTown()->setMoney(parent->getTown()->getMoney() - RIDER_PRICE);
-                emit this->moneyWasted(RIDER_PRICE);
+                parent->getTown()->setMoney(parent->getTown()->getMoney() - army_units_price::RIDER_PRICE);
+                emit this->moneyWasted(army_units_price::RIDER_PRICE);
                 emit this->uniteCreated();
             }
         }
         if(type == "mage")
         {
-            if(parent->getTown()->getMoney() >= MAGE_PRICE)
+            if(parent->getTown()->getMoney() >= army_units_price::MAGE_PRICE)
             {
                 army.resize(army.size() + 1);
                 army[army.size() - 1] = new Mage(* mage);
                 army[army.size() - 1]->startAllTimers();
                 scene->addItem(army[army.size() - 1]);
                 scene->addItem(army[army.size() - 1]->getTextItem());
-                parent->getTown()->setMoney(parent->getTown()->getMoney() - MAGE_PRICE);
-                emit this->moneyWasted(MAGE_PRICE);
+                parent->getTown()->setMoney(parent->getTown()->getMoney() - army_units_price::MAGE_PRICE);
+                emit this->moneyWasted(army_units_price::MAGE_PRICE);
                 emit this->uniteCreated();
             }
         }
@@ -161,16 +161,16 @@ void Army::setNewPrototype(const Troop * t)
 {
     if(t->getType() == "soldier")
         configureTroop(soldier, Troop::convertPrefixStatusAnimCounterToStr(t->getImgPrefix(), t->getStatus(), t->getAnimationCounter()), t->getType(),
-                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), SOLDIER_INTERVAL, SOLDIER_REMAINING_TIME);
+                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), troops_configuration::SOLDIER_INTERVAL, troops_configuration::SOLDIER_REMAINING_TIME);
     if(t->getType() == "archer")
         configureTroop(archer, Troop::convertPrefixStatusAnimCounterToStr(t->getImgPrefix(), t->getStatus(), t->getAnimationCounter()), t->getType(),
-                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), ARCHER_INTERVAL, ARCHER_REMAINING_TIME);
+                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), troops_configuration::ARCHER_INTERVAL, troops_configuration::ARCHER_REMAINING_TIME);
     if(t->getType() == "rider")
         configureTroop(rider, Troop::convertPrefixStatusAnimCounterToStr(t->getImgPrefix(), t->getStatus(), t->getAnimationCounter()), t->getType(),
-                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), RIDER_INTERVAL, RIDER_REMAINING_TIME);
+                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), troops_configuration::RIDER_INTERVAL, troops_configuration::RIDER_REMAINING_TIME);
     if(t->getType() == "mage")
         configureTroop(mage, Troop::convertPrefixStatusAnimCounterToStr(t->getImgPrefix(), t->getStatus(), t->getAnimationCounter()), t->getType(),
-                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), MAGE_INTERVAL, MAGE_REMAINING_TIME);
+                       static_cast<int>(t->getAttack()), static_cast<int>(t->getHp()), t->getImgPrefix(), troops_configuration::MAGE_INTERVAL, troops_configuration::MAGE_REMAINING_TIME);
 }
 
 int Army::getTownHp() const
@@ -203,14 +203,14 @@ void Army::clearStart()
     isDoctorsImprove = false;
     isArquebusImprove = false;
 
-    configureTroop(soldier, ":/images/images/Military/infantry/farmer_stand_1.png", "soldier", SOLDIER_ATTACK,
-                   SOLDIER_HP, ":/images/images/Military/infantry/farmer_", SOLDIER_INTERVAL, SOLDIER_REMAINING_TIME);
-    configureTroop(archer, ":/images/images/Military/archer/archer_stand_1.png", "archer", ARCHER_ATTACK,
-                   ARCHER_HP, ":/images/images/Military/archer/archer_", ARCHER_INTERVAL, ARCHER_REMAINING_TIME);
-    configureTroop(rider, ":/images/images/Military/rider/cavalier_stand_1.png", "rider", RIDER_ATTACK,
-                   RIDER_HP, ":/images/images/Military/rider/cavalier_", RIDER_INTERVAL, RIDER_REMAINING_TIME);
-    configureTroop(mage, ":/images/images/Military/mag/mag_stand_1.png", "mage", MAGE_ATTACK,
-                   MAGE_HP, ":/images/images/Military/mag/mag_", MAGE_INTERVAL, MAGE_REMAINING_TIME);
+    configureTroop(soldier, ":/images/images/Military/infantry/farmer_stand_1.png", "soldier", troops_configuration::SOLDIER_ATTACK,
+                   troops_configuration::SOLDIER_HP, ":/images/images/Military/infantry/farmer_", troops_configuration::SOLDIER_INTERVAL, troops_configuration::SOLDIER_REMAINING_TIME);
+    configureTroop(archer, ":/images/images/Military/archer/archer_stand_1.png", "archer", troops_configuration::ARCHER_ATTACK,
+                   troops_configuration::ARCHER_HP, ":/images/images/Military/archer/archer_", troops_configuration::ARCHER_INTERVAL, troops_configuration::ARCHER_REMAINING_TIME);
+    configureTroop(rider, ":/images/images/Military/rider/cavalier_stand_1.png", "rider", troops_configuration::RIDER_ATTACK,
+                   troops_configuration::RIDER_HP, ":/images/images/Military/rider/cavalier_", troops_configuration::RIDER_INTERVAL, troops_configuration::RIDER_REMAINING_TIME);
+    configureTroop(mage, ":/images/images/Military/mag/mag_stand_1.png", "mage", troops_configuration::MAGE_ATTACK,
+                   troops_configuration::MAGE_HP, ":/images/images/Military/mag/mag_", troops_configuration::MAGE_INTERVAL, troops_configuration::MAGE_REMAINING_TIME);
 
     for(int i = 0; i < army.size(); i++)
         delete army[i];
@@ -240,8 +240,8 @@ void Army::improveHauberk()
             str.resize(str.size() - 7);
             str += "soldier_";
             soldier->setImgPrefix(str);
-            soldier->setAttack(static_cast<int>(soldier->getAttack() + SOLDIER_ATTACK_UPGRADE_COEFFICIENT));
-            soldier->setHp(soldier->getHp() + SOLDIER_HP_UPGRADE_COEFFICIENT);
+            soldier->setAttack(static_cast<int>(soldier->getAttack() + army_upgrade_coefficients::SOLDIER_ATTACK_UPGRADE_COEFFICIENT));
+            soldier->setHp(soldier->getHp() + army_upgrade_coefficients::SOLDIER_HP_UPGRADE_COEFFICIENT);
             soldier->setPixmap(QPixmap(soldier->getImgPrefix() + "stand_1.png"));
 
             for(int i = 0; i < army.size(); i++)
@@ -249,8 +249,8 @@ void Army::improveHauberk()
                 if(army[i]->getType() == "soldier")
                 {
                     army[i]->setImgPrefix(str);
-                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + SOLDIER_ATTACK_UPGRADE_COEFFICIENT));
-                    army[i]->setHp(army[i]->getHp() + SOLDIER_HP_UPGRADE_COEFFICIENT);
+                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + army_upgrade_coefficients::SOLDIER_ATTACK_UPGRADE_COEFFICIENT));
+                    army[i]->setHp(army[i]->getHp() + army_upgrade_coefficients::SOLDIER_HP_UPGRADE_COEFFICIENT);
                 }
             }
             parent->getTown()->setMoney(parent->getTown()->getMoney() - parent->getPriceUpgrade("Hauberk"));
@@ -274,8 +274,8 @@ void Army::improveArmor()
             str.resize(str.size() - 8);
             str += "knight_";
             soldier->setImgPrefix(str);
-            soldier->setAttack(static_cast<int>(soldier->getAttack() + SOLDIER_ATTACK_UPGRADE2_COEFFICIENT));
-            soldier->setHp(soldier->getHp() + SOLDIER_HP_UPGRADE2_COEFFICIENT);
+            soldier->setAttack(static_cast<int>(soldier->getAttack() + army_upgrade_coefficients::SOLDIER_ATTACK_UPGRADE2_COEFFICIENT));
+            soldier->setHp(soldier->getHp() + army_upgrade_coefficients::SOLDIER_HP_UPGRADE2_COEFFICIENT);
             soldier->setPixmap(QPixmap(soldier->getImgPrefix() + "stand_1.png"));
 
             for(int i = 0; i < army.size(); i++)
@@ -283,8 +283,8 @@ void Army::improveArmor()
                 if(army[i]->getType() == "soldier")
                 {
                     army[i]->setImgPrefix(str);
-                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + SOLDIER_ATTACK_UPGRADE2_COEFFICIENT));
-                    army[i]->setHp(army[i]->getHp() + SOLDIER_HP_UPGRADE2_COEFFICIENT);
+                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + army_upgrade_coefficients::SOLDIER_ATTACK_UPGRADE2_COEFFICIENT));
+                    army[i]->setHp(army[i]->getHp() + army_upgrade_coefficients::SOLDIER_HP_UPGRADE2_COEFFICIENT);
                 }
             }
             isArmorImprove = true;
@@ -308,22 +308,22 @@ void Army::improveWeapon()
             str.resize(str.size() - 9);
             str += "rider_";
             rider->setImgPrefix(str);
-            rider->setAttack(static_cast<int>(rider->getAttack() + RIDER_ATTACK_UPGRADE_COEFFICIENT));
-            rider->setHp(rider->getHp() + RIDER_HP_UPGRADE_COEFFICIENT);
+            rider->setAttack(static_cast<int>(rider->getAttack() + army_upgrade_coefficients::RIDER_ATTACK_UPGRADE_COEFFICIENT));
+            rider->setHp(rider->getHp() + army_upgrade_coefficients::RIDER_HP_UPGRADE_COEFFICIENT);
             rider->setPixmap(QPixmap(rider->getImgPrefix() + "stand_1.png"));
-            soldier->setAttack(static_cast<int>(soldier->getAttack() + SOLDIER_ATTACK_UPGRADE3_COEFFICIENT));
+            soldier->setAttack(static_cast<int>(soldier->getAttack() + army_upgrade_coefficients::SOLDIER_ATTACK_UPGRADE3_COEFFICIENT));
 
             for(int i = 0; i < army.size(); i++)
             {
                 if(army[i]->getType() == "rider")
                 {
                     army[i]->setImgPrefix(str);
-                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + RIDER_ATTACK_UPGRADE_COEFFICIENT));
-                    army[i]->setHp(army[i]->getHp() + RIDER_HP_UPGRADE_COEFFICIENT);
+                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + army_upgrade_coefficients::RIDER_ATTACK_UPGRADE_COEFFICIENT));
+                    army[i]->setHp(army[i]->getHp() + army_upgrade_coefficients::RIDER_HP_UPGRADE_COEFFICIENT);
                 }
                 if(army[i]->getType() == "soldier")
                 {
-                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + SOLDIER_ATTACK_UPGRADE3_COEFFICIENT));
+                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + army_upgrade_coefficients::SOLDIER_ATTACK_UPGRADE3_COEFFICIENT));
                 }
             }
             parent->getTown()->setMoney(parent->getTown()->getMoney() - parent->getPriceUpgrade("Weapon"));
@@ -366,20 +366,20 @@ void Army::improveQuarantine()
 {
     if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Quarantine"))
     {
-        soldier->setHp(soldier->getHp() + HP_QUARANTINE_UPGRADE_COEFFICIENT);
-        rider->setHp(soldier->getHp() + HP_QUARANTINE_UPGRADE_COEFFICIENT);
-        archer->setHp(soldier->getHp() + HP_QUARANTINE_UPGRADE_COEFFICIENT);
-        mage->setHp(soldier->getHp() + HP_QUARANTINE_UPGRADE_COEFFICIENT);
+        soldier->setHp(soldier->getHp() + army_upgrade_coefficients::HP_QUARANTINE_UPGRADE_COEFFICIENT);
+        rider->setHp(soldier->getHp() + army_upgrade_coefficients::HP_QUARANTINE_UPGRADE_COEFFICIENT);
+        archer->setHp(soldier->getHp() + army_upgrade_coefficients::HP_QUARANTINE_UPGRADE_COEFFICIENT);
+        mage->setHp(soldier->getHp() + army_upgrade_coefficients::HP_QUARANTINE_UPGRADE_COEFFICIENT);
 
         for(int i = 0; i < army.size(); i++)
         {
-            army[i]->setHp(army[i]->getHp() + HP_QUARANTINE_UPGRADE_COEFFICIENT);
+            army[i]->setHp(army[i]->getHp() + army_upgrade_coefficients::HP_QUARANTINE_UPGRADE_COEFFICIENT);
         }
         int price = parent->getPriceUpgrade("Quarantine");
         parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
         emit moneyWasted(parent->getPriceUpgrade("Quarantine"));
         emit modificate();
-        parent->setPriceUpgrade("Quarantine", static_cast<int>(price * QUARANTINE_UPGRADE_NEW_PRICE_COEFFICIENT));
+        parent->setPriceUpgrade("Quarantine", static_cast<int>(price * army_upgrade_coefficients::QUARANTINE_UPGRADE_NEW_PRICE_COEFFICIENT));
     }
     else emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
 }
@@ -390,14 +390,14 @@ void Army::improveDoctors()
     {
         if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Doctors"))
         {
-            soldier->setHp(soldier->getHp() * HP_DOCTORS_UPGRADE_COEFFICIENT);
-            rider->setHp(soldier->getHp() * HP_DOCTORS_UPGRADE_COEFFICIENT);
-            archer->setHp(soldier->getHp() * HP_DOCTORS_UPGRADE_COEFFICIENT);
-            mage->setHp(soldier->getHp() * HP_DOCTORS_UPGRADE_COEFFICIENT);
+            soldier->setHp(soldier->getHp() * army_upgrade_coefficients::HP_DOCTORS_UPGRADE_COEFFICIENT);
+            rider->setHp(soldier->getHp() * army_upgrade_coefficients::HP_DOCTORS_UPGRADE_COEFFICIENT);
+            archer->setHp(soldier->getHp() * army_upgrade_coefficients::HP_DOCTORS_UPGRADE_COEFFICIENT);
+            mage->setHp(soldier->getHp() * army_upgrade_coefficients::HP_DOCTORS_UPGRADE_COEFFICIENT);
 
             for(int i = 0; i < army.size(); i++)
             {
-                army[i]->setHp(army[i]->getHp() * HP_DOCTORS_UPGRADE_COEFFICIENT);
+                army[i]->setHp(army[i]->getHp() * army_upgrade_coefficients::HP_DOCTORS_UPGRADE_COEFFICIENT);
             }
             int price = parent->getPriceUpgrade("Doctors");
             parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
@@ -422,8 +422,8 @@ void Army::improveArquebus()
             str += "crossbow_";
             archer->setImgPrefix(str);
 
-            archer->setAttack(static_cast<int>(archer->getAttack() + ARCHER_ATTACK_UPGRADE_COEFFICIENT));
-            archer->setHp(archer->getHp() + ARCHER_HP_UPGRADE_COEFFICIENT);
+            archer->setAttack(static_cast<int>(archer->getAttack() + army_upgrade_coefficients::ARCHER_ATTACK_UPGRADE_COEFFICIENT));
+            archer->setHp(archer->getHp() + army_upgrade_coefficients::ARCHER_HP_UPGRADE_COEFFICIENT);
             archer->setPixmap(QPixmap(archer->getImgPrefix() + "stand_1.png"));
 
             for(int i = 0; i < army.size(); i++)
@@ -431,8 +431,8 @@ void Army::improveArquebus()
                 if(army[i]->getType() == "archer")
                 {
                     army[i]->setImgPrefix(str);
-                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + ARCHER_ATTACK_UPGRADE_COEFFICIENT));
-                    army[i]->setHp(army[i]->getHp() + ARCHER_HP_UPGRADE_COEFFICIENT);
+                    army[i]->setAttack(static_cast<int>(army[i]->getAttack() + army_upgrade_coefficients::ARCHER_ATTACK_UPGRADE_COEFFICIENT));
+                    army[i]->setHp(army[i]->getHp() + army_upgrade_coefficients::ARCHER_HP_UPGRADE_COEFFICIENT);
                 }
             }
             parent->getTown()->setMoney(parent->getTown()->getMoney() - parent->getPriceUpgrade("Arquebus"));
@@ -450,18 +450,18 @@ void Army::increaseMageHitPoint()
 {
     if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Mage_Hp"))
     {
-        mage->setHp(mage->getHp() + MAGE_HP_UPGRADE_COEFFICIENT);
+        mage->setHp(mage->getHp() + army_upgrade_coefficients::MAGE_HP_UPGRADE_COEFFICIENT);
 
         for(int i = 0; i < army.size(); i++)
         {
             if(army[i]->getType() == "mage")
-                army[i]->setHp(army[i]->getHp() + MAGE_HP_UPGRADE_COEFFICIENT);
+                army[i]->setHp(army[i]->getHp() + army_upgrade_coefficients::MAGE_HP_UPGRADE_COEFFICIENT);
         }
         int price = parent->getPriceUpgrade("Mage_Hp");
         parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
         emit moneyWasted(parent->getPriceUpgrade("Mage_Hp"));
         emit modificate();
-        parent->setPriceUpgrade("Mage_Hp", static_cast<int>(price * MAGE_HP_UPGRADE_NEW_PRICE_COEFFICIENT));
+        parent->setPriceUpgrade("Mage_Hp", static_cast<int>(price * army_upgrade_coefficients::MAGE_HP_UPGRADE_NEW_PRICE_COEFFICIENT));
     }
     else emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
 }
@@ -470,18 +470,18 @@ void Army::increaseMageAttack()
 {
     if(parent->getTown()->getMoney() >= parent->getPriceUpgrade("Mage_Attack"))
     {
-        mage->setAttack(static_cast<int>(mage->getAttack() + MAGE_ATTACK_UPGRADE_COEFFICIENT));
+        mage->setAttack(static_cast<int>(mage->getAttack() + army_upgrade_coefficients::MAGE_ATTACK_UPGRADE_COEFFICIENT));
 
         for(int i = 0; i < army.size(); i++)
         {
             if(army[i]->getType() == "mage")
-                army[i]->setAttack(static_cast<int>(army[i]->getAttack() + MAGE_ATTACK_UPGRADE_COEFFICIENT));
+                army[i]->setAttack(static_cast<int>(army[i]->getAttack() + army_upgrade_coefficients::MAGE_ATTACK_UPGRADE_COEFFICIENT));
         }
         int price = parent->getPriceUpgrade("Mage_Attack");
         parent->getTown()->setMoney(parent->getTown()->getMoney() - price);
         emit moneyWasted(parent->getPriceUpgrade("Mage_Attack"));
         emit modificate();
-        parent->setPriceUpgrade("Mage_Attack", static_cast<int>(price * MAGE_ATTACK_UPGRADE_NEW_PRICE_COEFFICIENT));
+        parent->setPriceUpgrade("Mage_Attack", static_cast<int>(price * army_upgrade_coefficients::MAGE_ATTACK_UPGRADE_NEW_PRICE_COEFFICIENT));
     }
     else emit requiredShowMes("Недостаточно денег для покупки этого улучшения!");
 }

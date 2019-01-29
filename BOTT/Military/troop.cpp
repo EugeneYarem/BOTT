@@ -137,8 +137,8 @@ void Troop::initialText()
     hpText->setDefaultTextColor(Qt::white);
 
     if(this->side == ConflictSide::Left)
-        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
-    else this->hpText->setPos(this->x() + this->pixmap().width() / 3, this->y() - TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
+        this->hpText->setPos(this->x() + this->pixmap().width() / 2, this->y() - troops_animation::TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
+    else this->hpText->setPos(this->x() + this->pixmap().width() / 3, this->y() - troops_animation::TROOPS_HP_TEXT_HEIGHT_UNDER_TROOP);
 }
 
 void Troop::setAttack(const int & attack)

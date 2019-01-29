@@ -13,10 +13,10 @@ Battlefield::Battlefield()
 
     connect(timer, &QTimer::timeout, this, &Battlefield::armyControl); // каждую секунду проверяем есть ли войска рядом
     connect(timer_B, &QTimer::timeout, this, &Battlefield::battle);
-    timer_interval = ARMY_CONTROL_TIMER_INTERVAL;
-    timer_remainingTime = ARMY_CONTROL_TIMER_INTERVAL;
-    timerB_interval = BATTLE_TIMER_INTERVAL;
-    timerB_remainingTime = BATTLE_TIMER_INTERVAL;
+    timer_interval = battlefield::ARMY_CONTROL_TIMER_INTERVAL;
+    timer_remainingTime = battlefield::ARMY_CONTROL_TIMER_INTERVAL;
+    timerB_interval = battlefield::BATTLE_TIMER_INTERVAL;
+    timerB_remainingTime = battlefield::BATTLE_TIMER_INTERVAL;
 }
 
 Battlefield::~Battlefield()
@@ -91,7 +91,7 @@ void Battlefield::battle() const
 
     if(arm1->size() != 0 && arm2->size() != 0)
     {
-        if(arm2->getTroop(0)->x() - arm1->getTroop(0)->x() <= DISTANCE_BETWEEN_ARMIES_FOR_START_BATTLE)//если они достаточно близко, то расчитываем показатели атаки
+        if(arm2->getTroop(0)->x() - arm1->getTroop(0)->x() <= battlefield::DISTANCE_BETWEEN_ARMIES_FOR_START_BATTLE)//если они достаточно близко, то расчитываем показатели атаки
         {
             double dmg1 = countArmyAttack(this->arm1, this->arm2),
                    dmg2 = countArmyAttack(this->arm2, this->arm1);
@@ -122,22 +122,22 @@ void Battlefield::battle() const
     {
         if(arm1->size() != 0)
         {
-            if(arm1->getTroop(0)->x() >= DISTANCE_TO_TOWN2_TO_ATTACK)
+            if(arm1->getTroop(0)->x() >= battlefield::DISTANCE_TO_TOWN2_TO_ATTACK)
             {
                 double dmg = 0;
                 for(int i = 0; i < arm1->size(); i++)
-                    dmg += arm1->getTroop(i)->getAttack() * ATTACK_TOWN_COEFFICIENT;
+                    dmg += arm1->getTroop(i)->getAttack() * battlefield::ATTACK_TOWN_COEFFICIENT;
 
                 arm2->setTownHp(static_cast<int>(arm2->getTownHp() - dmg));
             }
         }
         else if(arm2->size() != 0)
         {
-            if(arm2->getTroop(0)->x() <= DISTANCE_TO_TOWN1_TO_ATTACK)
+            if(arm2->getTroop(0)->x() <= battlefield::DISTANCE_TO_TOWN1_TO_ATTACK)
             {
                 double dmg = 0;
                 for(int i = 0; i < arm2->size(); i++)
-                    dmg += arm2->getTroop(i)->getAttack() * ATTACK_TOWN_COEFFICIENT;
+                    dmg += arm2->getTroop(i)->getAttack() * battlefield::ATTACK_TOWN_COEFFICIENT;
 
                 arm1->setTownHp(static_cast<int>(arm1->getTownHp() - dmg));
             }
@@ -151,11 +151,11 @@ void Battlefield::armyControl() const
     timer->start(timer_interval);
     if(arm1->size() != 0)
     {
-        if(arm1->getTroop(0)->x() >= DISTANCE_TO_TOWN2_TO_ATTACK)
+        if(arm1->getTroop(0)->x() >= battlefield::DISTANCE_TO_TOWN2_TO_ATTACK)
             arm1->getTroop(0)->setStatus(Status::Attack);
         else if(arm2->size() != 0)
         {
-           if(arm1->getTroop(0)->x() >= arm2->getTroop(0)->x() - DISTANCE_BETWEEN_TROOPS_FOR_START_BATTLE)
+           if(arm1->getTroop(0)->x() >= arm2->getTroop(0)->x() - battlefield::DISTANCE_BETWEEN_TROOPS_FOR_START_BATTLE)
                arm1->getTroop(0)->setStatus(Status::Attack);
            else arm1->getTroop(0)->setStatus(Status::Run);
         }
@@ -179,7 +179,7 @@ void Battlefield::armyControl() const
             arm2->getTroop(0)->setStatus(Status::Attack);
         else if(arm1->size() != 0)
         {
-           if(arm2->getTroop(0)->x() <= arm1->getTroop(0)->x() + DISTANCE_BETWEEN_TROOPS_FOR_START_BATTLE)
+           if(arm2->getTroop(0)->x() <= arm1->getTroop(0)->x() + battlefield::DISTANCE_BETWEEN_TROOPS_FOR_START_BATTLE)
                arm2->getTroop(0)->setStatus(Status::Attack);
            else arm2->getTroop(0)->setStatus(Status::Run);
         }
@@ -189,8 +189,8 @@ void Battlefield::armyControl() const
         {
             int dist;
             if(arm2->getTroop(i - 1)->getType() == "rider" && arm2->getTroop(i)->getType() != "rider")
-                dist = DISTANCE_BETWEEN_TROOPS_FOR_START_BATTLE + 30;
-            else dist = DISTANCE_BETWEEN_TROOPS_FOR_START_BATTLE;
+                dist = battlefield::DISTANCE_BETWEEN_TROOPS_FOR_START_BATTLE + 30;
+            else dist = battlefield::DISTANCE_BETWEEN_TROOPS_FOR_START_BATTLE;
 
             if(arm2->getTroop(i)->x() <= (arm2->getTroop(i - 1)->x() + dist))
                 arm2->getTroop(i)->setStatus(Status::Stand);

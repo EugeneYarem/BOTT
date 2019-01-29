@@ -15,7 +15,7 @@ View::View(ViewPosition viewPosition, Widget * parent) : QGraphicsView(parent)
     this->viewPosition = viewPosition;
 
     if(this->viewPosition == ViewPosition::BottomView)
-        lastSceneX = LAST_SCENE_X_FOR_BOTTOM_VIEW;
+        lastSceneX = general::LAST_SCENE_X_FOR_BOTTOM_VIEW;
 
     gameMenu = new GameMenuHandler(this);
     connect(gameMenu, &GameMenuHandler::closeMenu, this, &View::hideMenu);
@@ -45,8 +45,8 @@ View::View(ViewPosition viewPosition, Widget * parent) : QGraphicsView(parent)
 
     inMenuTimer = new QTimer();
     pauseMenuTimer = new QTimer();
-    inMenuTimer_interval = IN_MENU_INTERVAL;
-    pauseMenuTimer_interval = MENU_PAUSE_INTERVAL;
+    inMenuTimer_interval = general::IN_MENU_INTERVAL;
+    pauseMenuTimer_interval = general::MENU_PAUSE_INTERVAL;
     inMenuTimer_remainingTime = -1;
     pauseMenuTimer_remainingTime = -1;
 
@@ -91,15 +91,15 @@ void View::setConfiguration()
     scene()->addItem(gameMenu);
     gameMenu->addMenusToScene();
 
-    priceUpgrade.insert("Hauberk", HAUBERK_PRICE);
-    priceUpgrade.insert("Armor", ARMOR_PRICE);
-    priceUpgrade.insert("Weapon", WEAPON_PRICE);
-    priceUpgrade.insert("Quarantine", QUARANTINE_PRICE);
-    priceUpgrade.insert("Doctors", DOCTORS_PRICE);
-    priceUpgrade.insert("Mage_Hp", MAGE_HP_PRICE);
-    priceUpgrade.insert("Mage_Attack", MAGE_ATTACK_PRICE);
-    priceUpgrade.insert("Arquebus", ARQUEBUS_PRICE);
-    priceUpgrade.insert("Mine level up", MINE_LEVEL_UP_PRICE);
+    priceUpgrade.insert("Hauberk", upgrades_price::HAUBERK_PRICE);
+    priceUpgrade.insert("Armor", upgrades_price::ARMOR_PRICE);
+    priceUpgrade.insert("Weapon", upgrades_price::WEAPON_PRICE);
+    priceUpgrade.insert("Quarantine", upgrades_price::QUARANTINE_PRICE);
+    priceUpgrade.insert("Doctors", upgrades_price::DOCTORS_PRICE);
+    priceUpgrade.insert("Mage_Hp", upgrades_price::MAGE_HP_PRICE);
+    priceUpgrade.insert("Mage_Attack", upgrades_price::MAGE_ATTACK_PRICE);
+    priceUpgrade.insert("Arquebus", upgrades_price::ARQUEBUS_PRICE);
+    priceUpgrade.insert("Mine level up", upgrades_price::MINE_LEVEL_UP_PRICE);
 }
 
 bool View::isCanMenuOpen() const
@@ -129,13 +129,13 @@ void View::resizeEvent(QResizeEvent * event)
 
     if(this->viewPosition == ViewPosition::BottomView)
     {
-        if(event->size().width() == LAST_SCENE_X_FOR_BOTTOM_VIEW + 1)
+        if(event->size().width() == general::LAST_SCENE_X_FOR_BOTTOM_VIEW + 1)
         {
-            lastSceneX = LAST_SCENE_X_FOR_BOTTOM_VIEW;
-            setSceneRect(LAST_SCENE_X_FOR_BOTTOM_VIEW, 0, LAST_SCENE_X_FOR_BOTTOM_VIEW, SCENE_HEIGHT);
+            lastSceneX = general::LAST_SCENE_X_FOR_BOTTOM_VIEW;
+            setSceneRect(general::LAST_SCENE_X_FOR_BOTTOM_VIEW, 0, general::LAST_SCENE_X_FOR_BOTTOM_VIEW, general::SCENE_HEIGHT);
             return;
         }
-        setSceneRect(lastSceneX - (event->size().width() - event->oldSize().width()), 0, scene()->width() - lastSceneX , SCENE_HEIGHT);
+        setSceneRect(lastSceneX - (event->size().width() - event->oldSize().width()), 0, scene()->width() - lastSceneX , general::SCENE_HEIGHT);
         lastSceneX = lastSceneX - (event->size().width() - event->oldSize().width());
     }
 }
@@ -209,44 +209,44 @@ void View::configureControlKeys(QVector<int> * errors)
     if(this->viewPosition == ViewPosition::BottomView)
     {
         if(errors->contains(0))
-            controlKeys.insert("menu", MENU_P2);
+            controlKeys.insert("menu", control_keys::MENU_P2);
         if(errors->contains(1))
-            controlKeys.insert("menu up", MENU_UP_P2);
+            controlKeys.insert("menu up", control_keys::MENU_UP_P2);
         if(errors->contains(2))
-            controlKeys.insert("menu down", MENU_DOWN_P2);
+            controlKeys.insert("menu down", control_keys::MENU_DOWN_P2);
         if(errors->contains(3))
-            controlKeys.insert("menu select", MENU_SELECT_P2);
+            controlKeys.insert("menu select", control_keys::MENU_SELECT_P2);
         if(errors->contains(4))
-            controlKeys.insert("exit from menu", EXIT_FROM_MENU_P2);
+            controlKeys.insert("exit from menu", control_keys::EXIT_FROM_MENU_P2);
         if(errors->contains(5))
-            controlKeys.insert("create soldier", CREATE_SOLDIER_P2);
+            controlKeys.insert("create soldier", control_keys::CREATE_SOLDIER_P2);
         if(errors->contains(6))
-            controlKeys.insert("create archer", CREATE_ARCHER_P2);
+            controlKeys.insert("create archer", control_keys::CREATE_ARCHER_P2);
         if(errors->contains(7))
-            controlKeys.insert("create rider", CREATE_RIDER_P2);
+            controlKeys.insert("create rider", control_keys::CREATE_RIDER_P2);
         if(errors->contains(8))
-            controlKeys.insert("create wizard", CREATE_WIZARD_P2);
+            controlKeys.insert("create wizard", control_keys::CREATE_WIZARD_P2);
     }
     else
     {
         if(errors->contains(0))
-            controlKeys.insert("menu", MENU_P1);
+            controlKeys.insert("menu", control_keys::MENU_P1);
         if(errors->contains(1))
-            controlKeys.insert("menu up", MENU_UP_P1);
+            controlKeys.insert("menu up", control_keys::MENU_UP_P1);
         if(errors->contains(2))
-            controlKeys.insert("menu down", MENU_DOWN_P1);
+            controlKeys.insert("menu down", control_keys::MENU_DOWN_P1);
         if(errors->contains(3))
-            controlKeys.insert("menu select", MENU_SELECT_P1);
+            controlKeys.insert("menu select", control_keys::MENU_SELECT_P1);
         if(errors->contains(4))
-            controlKeys.insert("exit from menu", EXIT_FROM_MENU_P1);
+            controlKeys.insert("exit from menu", control_keys::EXIT_FROM_MENU_P1);
         if(errors->contains(5))
-            controlKeys.insert("create soldier", CREATE_SOLDIER_P1);
+            controlKeys.insert("create soldier", control_keys::CREATE_SOLDIER_P1);
         if(errors->contains(6))
-            controlKeys.insert("create archer", CREATE_ARCHER_P1);
+            controlKeys.insert("create archer", control_keys::CREATE_ARCHER_P1);
         if(errors->contains(7))
-            controlKeys.insert("create rider", CREATE_RIDER_P1);
+            controlKeys.insert("create rider", control_keys::CREATE_RIDER_P1);
         if(errors->contains(8))
-            controlKeys.insert("create wizard", CREATE_WIZARD_P1);
+            controlKeys.insert("create wizard", control_keys::CREATE_WIZARD_P1);
     }
 
     delete errors;

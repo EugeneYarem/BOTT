@@ -1,7 +1,7 @@
 #ifndef TOWN_H
 #define TOWN_H
 
-#include "keeper.h"
+#include "dataHandlers/jsonhandler.h"
 #include <QGraphicsPixmapItem>
 #include <QObject>
 
@@ -25,8 +25,8 @@ public:
     Town(View * parent);
     ~Town();
 
-    friend bool Keeper::convertJsonObjectToTown(const QJsonObject & obj, Town * town) const;
-    friend void Keeper::convertTownToJsonObject(const Town * town, QJsonObject & obj) const;
+    friend bool JsonHandler::convertJsonObjectToTown(const QJsonObject & obj, Town * town) const;
+    friend void JsonHandler::convertTownToJsonObject(const Town * town, QJsonObject & obj) const;
     int getHealth() const;
     int getMoney() const;
     void addHealthMoneyToScene();
